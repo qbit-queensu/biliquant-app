@@ -17,7 +17,7 @@ export default function JaundiceGuide() {
           <p className="hero-subtitle">
             A comprehensive and reassuring resource to help you navigate, manage, and support your newborn through neonatal jaundice.
           </p>
-          <button className="hero-button">Download a Guide</button>
+          <button className="hero-button" onClick={() => window.open('/jaundice-guide.pdf', '_blank')}>Download a Guide</button>
         </div>
       </section>
 
