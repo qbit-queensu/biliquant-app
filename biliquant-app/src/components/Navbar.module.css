@@ -1,0 +1,100 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(13, 59, 102, 0.2);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.75rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .navbar {
+    padding: 0.75rem 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    padding: 0.75rem 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar {
+    padding: 0.75rem 8rem;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-primary);
+}
+
+.logoIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-accent);
+}
+
+.brandName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-primary);
+}
+
+.navLinks {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .navLinks {
+    display: flex;
+  }
+}
+
+.navLink {
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--color-accent);
+}
+
+.ctaButton {
+  display: flex;
+  min-width: 84px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  height: 2.5rem;
+  padding: 0 1rem;
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.ctaButton:hover {
+  transform: scale(1.05);
+}

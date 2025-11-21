@@ -1,50 +1,6 @@
-/* Import font FIRST */
-@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;600;700;800&display=swap');
+/* App-level styles */
+/* Most styles are handled by CSS Modules in individual components */
 
-/* Design tokens */
-:root {
-  /* Color palette */
-  --color-primary: #0D3B66; /* deep blue */
-  --color-accent: #F4D35E;  /* yellow */
-  --color-bg: #FAF0CA;      /* light cream */
-  --color-muted: #888888;
-  --color-surface: #ffffff;
-
-  /* Typography */
-  --font-sans: 'Albert Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  --h1-size: 70px;
-  --h2-size: 40px;
-  --h3-size: 22px;
-  --p-size: 12px;
-
-  /* Layout */
-  --page-max-width: 1280px;
-  --page-gutter: 2rem;
-  --page-margin-vertical: 128px;
-}
-
-/* Global reset / base styles */
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  padding: var(--page-margin-vertical) 0;
-  background: var(--color-bg);
-  color: var(--color-primary);
-  font-family: var(--font-sans);
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Content container */
 #root {
   max-width: var(--page-max-width);
   margin: 0 auto;
@@ -156,4 +112,6 @@ p,
 
 .read-the-docs {
   color: #888;
+  width: 100%;
+  min-height: 100vh;
 }
