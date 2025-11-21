@@ -25,11 +25,6 @@ function Footer() {
                     Projects
                   </a>
                 </li>
-                <li>
-                  <a className={styles.link} href="#">
-                    Join Us
-                  </a>
-                </li>
               </ul>
             </div>
             <div className={styles.linkColumn}>

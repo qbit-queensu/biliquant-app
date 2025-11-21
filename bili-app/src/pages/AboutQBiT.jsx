@@ -19,9 +19,6 @@ function AboutQBiT() {
               <button className={styles.primaryButton}>
                 <span>Our Projects</span>
               </button>
-              <button className={styles.secondaryButton}>
-                <span>Apply Now</span>
-              </button>
             </div>
           </div>
         </section>
@@ -152,40 +149,6 @@ function AboutQBiT() {
                     Learn More →
                   </a>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Get Involved Section */}
-        <section className={styles.section}>
-          <div className={styles.getInvolvedGrid}>
-            <div className={styles.getInvolvedContent}>
-              <h2 className={styles.sectionTitle}>Get Involved</h2>
-              <p className={styles.sectionDescription}>
-                Are you a passionate and driven student at Queen's University?
-                Join us in creating the next generation of biomedical solutions.
-                We recruit new members at the beginning of each academic year.
-              </p>
-              <button className={styles.ctaButton}>
-                <span>View Application Details</span>
-              </button>
-            </div>
-            <div className={styles.getInvolvedCards}>
-              <div className={styles.infoCard}>
-                <h4 className={styles.infoCardTitle}>Application Process</h4>
-                <p className={styles.infoCardText}>
-                  Our application consists of a written submission and an
-                  interview stage, designed to assess your skills, experience,
-                  and passion for innovation.
-                </p>
-              </div>
-              <div className={styles.infoCard}>
-                <h4 className={styles.infoCardTitle}>Who We Look For</h4>
-                <p className={styles.infoCardText}>
-                  We welcome students from all faculties, including Engineering,
-                  Health Sciences, Arts and Science, and Business.
-                </p>
               </div>
             </div>
           </div>

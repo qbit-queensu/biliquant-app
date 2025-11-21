@@ -42,10 +42,6 @@ function Navbar() {
           Contact
         </Link>
       </nav>
-
-      <button className={styles.ctaButton}>
-        <span>Get Involved</span>
-      </button>
     </header>
   );
 }
