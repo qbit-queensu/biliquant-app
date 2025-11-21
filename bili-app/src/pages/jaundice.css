@@ -1,252 +1,249 @@
 /* ---------- COLORS ---------- */
 :root {
-    --dark-blue: #1D3557;
-    --light-yellow: #F7F3E3;
-    --yellow: #E8C873;
-    --text-dark: #1a1a1a;
-    --brand-blue: #0D3B66;
-    --brand-yellow: #F4D35E;
+  --dark-blue: #1d3557;
+  --light-yellow: #f7f3e3;
+  --yellow: #e8c873;
+  --text-dark: #1a1a1a;
+  --brand-blue: #0d3b66;
+  --brand-yellow: #f4d35e;
 }
 
 /* ---------- GLOBAL RESET ---------- */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    background: var(--light-yellow);
-    color: var(--text-dark);
-    display: flex;
-    justify-content: center;
+  background: var(--light-yellow);
+  color: var(--text-dark);
+  display: flex;
+  justify-content: center;
 }
 
 .page {
-    max-width: 1280px;
-    margin: 64px auto;
-    padding: 0 32px;
+  width: 100%;
+  margin: 64px 0;
+  padding: 0;
 }
 
 /* ---------- TYPOGRAPHY ---------- */
-h1 { 
-    font-size: 70px; 
-    font-weight: 700; 
-    color: var(--dark-blue); 
+h1 {
+  font-size: 70px;
+  font-weight: 700;
+  color: var(--dark-blue);
 }
 
-h2 { 
-    font-size: 40px; 
-    font-weight: 600; 
-    color: var(--dark-blue); 
-    margin-bottom: 24px;
+h2 {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--dark-blue);
+  margin-bottom: 24px;
 }
 
-h3 { 
-    font-size: 22px; 
-    font-weight: 500; 
-    color: var(--dark-blue); 
+h3 {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--dark-blue);
 }
 
 p {
-    font-size: 14px;
-    line-height: 1.7;
-    margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-top: 16px;
 }
 
 /* ---------- SECTIONS ---------- */
 .section {
-    margin-bottom: 60px;
+  margin-bottom: 60px;
 }
 
 /* ---------- LOGO ---------- */
 .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 80px;
 }
 
 .logo-icon {
-    width: 40px;
-    height: 40px;
-    color: var(--yellow);
+  width: 40px;
+  height: 40px;
+  color: var(--yellow);
 }
 
 .logo-icon svg {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 /* ---------- HERO SECTION ---------- */
 .hero-section {
-    background: linear-gradient(rgba(13, 59, 102, 0.3) 0%, rgba(13, 59, 102, 0.7) 100%),
-                url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUHFroteZQhN87s42XCExPhsoPNPHz6MCzf5jIruEKhP-RvQMfAqoq-w4C-tjmO-_FgQQ8IitRAIQqcv2tNwasirzOA2dgA-k3JBaS0M9H_Ov0_UYztGRghftHYY6tu3vkrpkFGMgVOJ5DZcd8620lO8ET8BHr_-jZkk5KZSKxmq_5Chixau-3P-wqGgRpAtO987Ktw-0wveiHUD-X2P8g2TgjNGOsJjx94qem0n7pQcOt00V_gif7BOAOLHWXrkO_S9EvrepMuHA");
-    background-size: cover;
-    background-position: center;
-    border-radius: 12px;
-    padding: 80px 40px;
-    min-height: 480px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    margin-bottom: 60px;
+  background: linear-gradient(
+      rgba(13, 59, 102, 0.3) 0%,
+      rgba(13, 59, 102, 0.7) 100%
+    ),
+    url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUHFroteZQhN87s42XCExPhsoPNPHz6MCzf5jIruEKhP-RvQMfAqoq-w4C-tjmO-_FgQQ8IitRAIQqcv2tNwasirzOA2dgA-k3JBaS0M9H_Ov0_UYztGRghftHYY6tu3vkrpkFGMgVOJ5DZcd8620lO8ET8BHr_-jZkk5KZSKxmq_5Chixau-3P-wqGgRpAtO987Ktw-0wveiHUD-X2P8g2TgjNGOsJjx94qem0n7pQcOt00V_gif7BOAOLHWXrkO_S9EvrepMuHA");
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  padding: 80px 40px;
+  min-height: 480px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 60px;
 }
 
 .hero-content {
-    max-width: 700px;
-    text-align: center;
+  max-width: 700px;
+  text-align: center;
 }
 
 .hero-title {
-    color: white;
-    font-size: 48px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 16px;
+  color: white;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 16px;
 }
 
 .hero-subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 24px;
 }
 
 .hero-button {
-    background: var(--brand-yellow);
-    color: var(--brand-blue);
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: opacity 0.3s;
+  background: var(--brand-yellow);
+  color: var(--brand-blue);
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s;
 }
 
 .hero-button:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 /* ---------- CONTENT BOX ---------- */
 .content-box {
-    background: #E6E6E6;
-    padding: 40px;
-    border-radius: 10px;
-    max-width: 1100px;
-    margin: 0 auto;
+  background: #e6e6e6;
+  padding: 40px;
+  border-radius: 10px;
 }
 
 /* ---------- SIGNS BOX ---------- */
 .signs-box {
-    background: rgba(13, 59, 102, 0.1);
-    padding: 40px;
-    border-radius: 12px;
-    max-width: 1100px;
-    margin: 0 auto;
+  background: rgba(13, 59, 102, 0.1);
+  padding: 40px;
+  border-radius: 12px;
 }
 
 .signs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 32px;
-    margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-top: 24px;
 }
 
 .sign-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .sign-icon {
-    font-size: 32px;
-    flex-shrink: 0;
+  font-size: 32px;
+  flex-shrink: 0;
 }
 
 .sign-content h3 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--brand-blue);
-    margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin-bottom: 8px;
 }
 
 .sign-content p {
-    font-size: 14px;
-    color: rgba(13, 59, 102, 0.8);
-    margin-top: 0;
+  font-size: 14px;
+  color: rgba(13, 59, 102, 0.8);
+  margin-top: 0;
 }
 
 /* ---------- ACCORDION ---------- */
 .accordion-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 1100px;   max-width: 1100px;
-    margin: 0 auto;    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .accordion-item {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .accordion-header {
-    padding: 20px 24px;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--brand-blue);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.3s;
+  padding: 20px 24px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brand-blue);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
 }
 
 .accordion-header:hover {
-    background: rgba(13, 59, 102, 0.05);
+  background: rgba(13, 59, 102, 0.05);
 }
 
 .accordion-arrow {
-    transition: transform 0.3s;
-    font-size: 14px;
+  transition: transform 0.3s;
+  font-size: 14px;
 }
 
 .accordion-arrow.open {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .accordion-content {
-    padding: 0 24px 24px 24px;
-    color: rgba(13, 59, 102, 0.8);
-    line-height: 1.7;
+  padding: 0 24px 24px 24px;
+  color: rgba(13, 59, 102, 0.8);
+  line-height: 1.7;
 }
 
 .accordion-content p {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .accordion-content ul {
-    list-style: disc;
-    padding-left: 20px;
-    margin-top: 12px;
+  list-style: disc;
+  padding-left: 20px;
+  margin-top: 12px;
 }
 
 .accordion-content ul li {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 .accordion-content a {
-    color: var(--brand-blue);
-    text-decoration: none;
-    transition: color 0.3s;
+  color: var(--brand-blue);
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
 .accordion-content a:hover {
-    color: var(--brand-yellow);
+  color: var(--brand-yellow);
 }
