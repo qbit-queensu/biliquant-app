@@ -63,7 +63,7 @@ p,
   background: var(--color-surface);
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(13, 59, 102, 0.06);
-  padding: 2rem;
+  padding: 2 rem;
 }
 
 /* Responsiveness */
@@ -79,13 +79,6 @@ p,
   }
 }
 
-/* Vite default logo styles (optional) */
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
 
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
