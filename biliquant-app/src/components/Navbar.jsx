@@ -4,7 +4,7 @@ import styles from "./Navbar.module.css";
 function Navbar() {
   return (
     <header className={styles.navbar}>
-      <div className={styles.logo}>
+      <Link to="/" className={styles.logo}>
         <div className={styles.logoIcon}>
           <svg
             fill="none"
@@ -20,7 +20,7 @@ function Navbar() {
           </svg>
         </div>
         <h2 className={styles.brandName}>BiliQuant</h2>
-      </div>
+      </Link>
 
       <nav className={styles.navLinks}>
         <Link to="/about_qbit" className={styles.navLink}>
