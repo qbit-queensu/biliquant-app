@@ -32,6 +32,9 @@ function Navbar() {
         <Link to="/projects" className={styles.navLink}>
           Projects
         </Link>
+        <Link to ="/test_entry" className={styles.navLink}>
+          Test Entry
+        </Link>
         <Link to="/jaundice" className={styles.navLink}>
           Jaundice Guide
         </Link>

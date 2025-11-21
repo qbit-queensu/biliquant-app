@@ -5,6 +5,7 @@ import AboutQBiT from "./pages/AboutQBiT";
 import ContactUs from "./pages/ContactUs";
 import JaundiceGuide from "./pages/jaundice";
 import BilliQuantMission from "./pages/mission";
+import TestEntry from "./pages/TestEntry";  
 import "./App.css";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="contact" element={<ContactUs />} />
         <Route path="jaundice" element={<JaundiceGuide />} />
         <Route path="mission" element={<BilliQuantMission />} />
+        <Route path="test_entry" element={<TestEntry />} />
       </Route>
     </Routes>
   );

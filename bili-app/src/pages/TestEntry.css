@@ -1,0 +1,105 @@
+.test-entry-container {
+  background: #faf7e8;
+  min-height: 100vh;
+  padding: 40px 160px;   /* reduced so center works */
+  text-align: center;
+  font-family: Arial, sans-serif;
+
+  /* added so the card can be centered and sized independently */
+  display: flex;
+  flex-direction: column;     /* <-- stack children vertically */
+  align-items: center;        /* <-- center the card and title */
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+/* Page title */
+.page-title {
+  font-size: 36px;
+  color: #0f2a53;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* White centered card */
+.form-card {
+  background: #fff;
+  width: 100%;          /* let it fill available space */
+  max-width: 5000px;    /* choose how wide you want it */
+  margin: 0 auto;       /* centers the card */
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 1px solid #eee;
+  box-sizing: border-box;
+}
+
+/* Section title */
+.form-title {
+  font-size: 22px;
+  margin-bottom: 25px;
+}
+
+/* Connect button */
+.device-btn-container {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.device-btn {
+  background: #0f2a53;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.device-btn:hover {
+  background: #0a1e3c;
+}
+
+/* Labels */
+label {
+  display: block;
+  font-weight: 600;
+  text-align: left;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+textarea {
+  min-height: 150px;
+}
+
+/* Submit button */
+.submit-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
+  background: #333;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #111;
+}
+
