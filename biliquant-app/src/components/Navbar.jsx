@@ -32,6 +32,12 @@ function Navbar() {
         <Link to="/projects" className={styles.navLink}>
           Projects
         </Link>
+        <Link to="/jaundice" className={styles.navLink}>
+          Jaundice Guide
+        </Link>
+        <Link to="/mission" className={styles.navLink}>
+          Mission
+        </Link>
         <Link to="/contact" className={styles.navLink}>
           Contact
         </Link>

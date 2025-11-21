@@ -82,7 +82,7 @@ p {
 
 /* ---------- HERO SECTION ---------- */
 .hero-section {
-    background: linear-gradient(rgba(13, 59, 102, 0.3) 0%, rgba(13, 59, 102, 0.7) 100%), 
+    background: linear-gradient(rgba(13, 59, 102, 0.3) 0%, rgba(13, 59, 102, 0.7) 100%),
                 url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUHFroteZQhN87s42XCExPhsoPNPHz6MCzf5jIruEKhP-RvQMfAqoq-w4C-tjmO-_FgQQ8IitRAIQqcv2tNwasirzOA2dgA-k3JBaS0M9H_Ov0_UYztGRghftHYY6tu3vkrpkFGMgVOJ5DZcd8620lO8ET8BHr_-jZkk5KZSKxmq_5Chixau-3P-wqGgRpAtO987Ktw-0wveiHUD-X2P8g2TgjNGOsJjx94qem0n7pQcOt00V_gif7BOAOLHWXrkO_S9EvrepMuHA");
     background-size: cover;
     background-position: center;
@@ -91,11 +91,13 @@ p {
     min-height: 480px;
     display: flex;
     align-items: flex-end;
+    justify-content: center;
     margin-bottom: 60px;
 }
 
 .hero-content {
     max-width: 700px;
+    text-align: center;
 }
 
 .hero-title {
@@ -135,6 +137,7 @@ p {
     padding: 40px;
     border-radius: 10px;
     max-width: 1100px;
+    margin: 0 auto;
 }
 
 /* ---------- SIGNS BOX ---------- */
@@ -142,6 +145,8 @@ p {
     background: rgba(13, 59, 102, 0.1);
     padding: 40px;
     border-radius: 12px;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .signs-grid {
@@ -180,6 +185,8 @@ p {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    max-width: 1100px;   max-width: 1100px;
+    margin: 0 auto;    margin: 0 auto;
 }
 
 .accordion-item {

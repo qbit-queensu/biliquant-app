@@ -3,6 +3,8 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import AboutQBiT from "./pages/AboutQBiT";
 import ContactUs from "./pages/ContactUs";
+import JaundiceGuide from "./pages/jaundice";
+import BilliQuantMission from "./pages/mission";
 import "./App.css";
 
 function App() {
@@ -12,6 +14,8 @@ function App() {
         <Route index element={<Home />} />
         <Route path="about_qbit" element={<AboutQBiT />} />
         <Route path="contact" element={<ContactUs />} />
+        <Route path="jaundice" element={<JaundiceGuide />} />
+        <Route path="mission" element={<BilliQuantMission />} />
       </Route>
     </Routes>
   );

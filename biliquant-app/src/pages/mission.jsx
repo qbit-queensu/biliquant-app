@@ -4,12 +4,6 @@ import './mission.css';
 export default function BilliQuantMission() {
   return (
     <div className="page">
-      {/* LOGO */}
-      <header className="logo">
-        <span className="logo-icon"></span>
-        <h1>BilliQuant</h1>
-      </header>
-
       {/* MISSION */}
       <section className="section">
         <div className="mission-box">
