@@ -1,12 +1,6 @@
 /* App-level styles */
 /* Most styles are handled by CSS Modules in individual components */
 
-#root {
-  max-width: var(--page-max-width);
-  margin: 0 auto;
-  padding: var(--page-gutter);
-  text-align: center;
-}
 
 /* Headings and paragraph styles */
 h1,
@@ -43,68 +37,5 @@ p,
   color: rgba(0, 0, 0, 0.8);
 }
 
-/* Buttons / accents */
-.btn-primary {
-  display: inline-block;
-  background: var(--color-accent);
-  color: var(--color-primary);
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.muted {
-  color: var(--color-muted);
-}
-
-/* Card style */
-.card {
-  background: var(--color-surface);
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(13, 59, 102, 0.06);
-  padding: 2 rem;
-}
-
-/* Responsiveness */
-@media (max-width: 640px) {
-  :root {
-    --h1-size: 40px;
-    --h2-size: 28px;
-    --h3-size: 18px;
-  }
-
-  body {
-    padding: 64px 0;
-  }
-}
 
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.read-the-docs {
-  color: #888;
-  width: 100%;
-  min-height: 100vh;
-}

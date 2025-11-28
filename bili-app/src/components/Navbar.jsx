@@ -44,6 +44,12 @@ function Navbar() {
         <Link to="/contact" className={styles.navLink}>
           Contact
         </Link>
+        <Link to="/patient_analytics" className={styles.navLink}>
+          Patient Analytics
+        </Link>
+        <Link to="/profile" className={styles.navLink}>
+          Profile
+        </Link>
       </nav>
     </header>
   );

@@ -1,0 +1,263 @@
+/* Child Profile Page Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Main container */
+.container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  background-color: #FAF0CA;
+}
+
+/* Profile card */
+.profileCard {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Profile header section */
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.avatarContainer {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  border: 2px solid #E0E0E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8F8F8;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileTitle {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #0D3B66;
+  letter-spacing: -0.02em;
+}
+
+/* Form styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 2rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #666;
+  letter-spacing: 0.01em;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #F0F0F0;
+  border-radius: 12px;
+  background-color: #FAFAF5;
+  color: #333;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #B0B0B0;
+  font-size: 0.95rem;
+}
+
+.input:hover {
+  border-color: #E0E0E0;
+  background-color: #FFF;
+}
+
+.input:focus {
+  border-color: #0D3B66;
+  background-color: #FFF;
+  box-shadow: 0 0 0 3px rgba(13, 59, 102, 0.08);
+}
+
+/* Select dropdown styling */
+select.input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+/* Date input styling */
+input[type="date"].input {
+  cursor: pointer;
+}
+
+input[type="date"].input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+input[type="date"].input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .profileCard {
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+  }
+
+  .profileHeader {
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profileTitle {
+    font-size: 1.75rem;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.125rem;
+  }
+
+  .input {
+    padding: 0.75rem 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageHeader {
+    height: 80px;
+  }
+
+  .profileCard {
+    padding: 1.5rem 1rem;
+  }
+
+  .profileTitle {
+    font-size: 1.5rem;
+  }
+
+  .formSection {
+    gap: 1rem;
+  }
+
+  .form {
+    gap: 2rem;
+  }
+}
+
+/* Animation for form interactions */
+@keyframes fieldFocus {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.input:focus {
+  animation: fieldFocus 0.3s ease;
+}
+
+/* Ensure body has no margin */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* For Next.js or React root */
+#root, #__next {
+  margin: 0;
+  padding: 0;
+}

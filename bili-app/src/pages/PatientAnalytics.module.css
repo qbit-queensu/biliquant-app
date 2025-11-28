@@ -1,0 +1,325 @@
+/* Patient Analytics Page - Full Viewport Layout */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  width: 100vw;
+  height: 100vh;
+  background-color: #FAF0CA;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+}
+
+.pageContainer {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.pageTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0D3B66;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.editLink {
+  background: none;
+  border: none;
+  color: #0D3B66;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.editLink:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+/* Cards Grid */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  flex: 1;
+  width: 100%;
+  align-content: start;
+}
+
+/* Card styles */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(13, 59, 102, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+}
+
+/* First card (bilirubin) - centered text, right-aligned button */
+.card:first-child {
+  justify-content: space-between;
+}
+
+.card:first-child .cardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Normal alignment for trend card */
+.card:last-child {
+  align-items: stretch;
+}
+
+.card:last-child .actionButton {
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardLabel {
+  font-size: 1.25rem;
+  color: #0D3B66;
+  margin: 0;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.bilirubinValue {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #0D3B66;
+  margin: 0.75rem 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.riskZone {
+  font-size: 1.125rem;
+  color: #0D3B66;
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+.measurementDate {
+  font-size: 0.9375rem;
+  color: #666;
+  margin: 0.5rem 0;
+  opacity: 0.8;
+}
+
+.trendTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0D3B66;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.01em;
+}
+
+.chartContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0 2rem 0;
+  min-height: 200px;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  max-height: 250px;
+}
+
+.actionButton {
+  background: white;
+  border: 2px solid #0D3B66;
+  color: #0D3B66;
+  padding: 0.875rem 2rem;
+  border-radius: 30px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-end;
+  margin-top: auto;
+  white-space: nowrap;
+}
+
+.actionButton:hover {
+  background: #0D3B66;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 59, 102, 0.2);
+}
+
+.actionButton:active {
+  transform: translateY(0);
+}
+
+/* Large desktop adjustments */
+@media (min-width: 1400px) {
+  .pageContainer {
+    max-width: 1400px;
+    padding: 4rem 3rem;
+  }
+  
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+  
+  .card {
+    min-height: 320px;
+  }
+}
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+  .pageContainer {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .pageTitle {
+    font-size: 2rem;
+  }
+  
+  .bilirubinValue {
+    font-size: 3rem;
+  }
+  
+  .card {
+    padding: 2rem;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .page {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .pageContainer {
+    padding: 2rem 1rem;
+    gap: 1.5rem;
+  }
+  
+  .headerSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .pageTitle {
+    font-size: 1.75rem;
+  }
+  
+  .card {
+    padding: 1.75rem;
+    min-height: 240px;
+  }
+  
+  .bilirubinValue {
+    font-size: 2.5rem;
+  }
+  
+  .actionButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .cardsGrid {
+    gap: 1.5rem;
+  }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 1.5rem 1rem;
+  }
+  
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+  
+  .bilirubinValue {
+    font-size: 2.25rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+  
+  .cardLabel {
+    font-size: 1.125rem;
+  }
+  
+  .riskZone {
+    font-size: 1rem;
+  }
+  
+  .trendTitle {
+    font-size: 1.5rem;
+  }
+  
+  .actionButton {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+/* Ensure body has no margin/padding */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* For Next.js or React apps with root div */
+#root, #__next {
+  margin: 0;
+  padding: 0;
+}

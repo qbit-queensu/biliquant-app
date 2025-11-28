@@ -7,6 +7,8 @@ import JaundiceGuide from "./pages/jaundice";
 import BilliQuantMission from "./pages/mission";
 import TestEntry from "./pages/TestEntry";  
 import "./App.css";
+import PatientAnalytics from "./pages/PatientAnalytics";
+import ChildProfile from "./pages/ChildProfile";
 
 function App() {
   return (
@@ -17,7 +19,8 @@ function App() {
         <Route path="contact" element={<ContactUs />} />
         <Route path="jaundice" element={<JaundiceGuide />} />
         <Route path="mission" element={<BilliQuantMission />} />
-        <Route path="test_entry" element={<TestEntry />} />
+        <Route path="patient_analytics" element={<PatientAnalytics />} />
+        <Route path="profile" element={<ChildProfile/>} />
       </Route>
     </Routes>
   );
