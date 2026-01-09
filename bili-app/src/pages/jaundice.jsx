@@ -1,42 +1,48 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './jaundice.css';
 
 export default function JaundiceGuide() {
-  const [openAccordion, setOpenAccordion] = useState('causes');
-
-  const toggleAccordion = (id) => {
-    setOpenAccordion(openAccordion === id ? null : id);
-  };
-
   return (
     <div className="page">
       {/* HERO SECTION */}
       <section className="hero-section">
         <div className="hero-content">
-          <h2 className="hero-title">Understanding Newborn Jaundice: A Guide for Your Family</h2>
+          <h1 className="hero-title">Understanding Newborn Jaundice</h1>
+          <div className="hero-accent"></div>
           <p className="hero-subtitle">
-            A comprehensive and reassuring resource to help you navigate, manage, and support your newborn through neonatal jaundice.
+            Neonatal jaundice affects 60% of term infants and 85% of preterm infants.
+            This comprehensive guide provides evidence-based information for parents and caregivers.
           </p>
-          <button className="hero-button" onClick={() => window.open('/jaundice-guide.pdf', '_blank')}>Download a Guide</button>
+          <button className="hero-button" onClick={() => window.open('/jaundice-guide.pdf', '_blank')}>
+            Download Guide →
+          </button>
         </div>
       </section>
 
       {/* WHAT IS JAUNDICE */}
-      <section className="section">
-        <div className="content-box">
-          <h2>What is Jaundice?</h2>
-          <p>
-            A simple, clear explanation of what neonatal jaundice is, why it occurs in newborns, and what parents can typically expect. 
-            This section aims to provide foundational knowledge in an easy-to-understand manner. Neonatal jaundice is a common and usually 
-            harmless condition in newborn babies that causes yellowing of the skin and the whites of the eyes.
+      <section className="jaundice-section">
+        <div className="jaundice-content">
+          <div className="jaundice-header">
+            <h1 className="jaundice-title">What is Jaundice?</h1>
+            <div className="title-accent"></div>
+          </div>
+          <p className="jaundice-text">
+            Bilirubin is produced from the breakdown of hemoglobin when red blood cells reach the end of their lifespan.
+            Newborns produce approximately twice as much bilirubin as adults due to increased red blood cell turnover,
+            immature liver function, and increased enterohepatic circulation. This natural process leads to the visible
+            yellowing of skin and eyes known as jaundice. While most cases resolve naturally, understanding bilirubin
+            metabolism helps parents recognize when medical attention is needed.
           </p>
         </div>
       </section>
 
       {/* SIGNS TO WATCH FOR */}
-      <section className="section">
-        <div className="signs-box">
-          <h2>Signs to Watch For</h2>
+      <section className="signs-section">
+        <div className="signs-content">
+          <div className="signs-header">
+            <h1 className="signs-title">Signs to Watch For</h1>
+            <div className="title-accent"></div>
+          </div>
           <div className="signs-grid">
             <div className="sign-card">
               <div className="sign-icon">👁️</div>
@@ -63,110 +69,95 @@ export default function JaundiceGuide() {
         </div>
       </section>
 
-      {/* CAUSES, DIAGNOSIS & TREATMENT */}
-      <section className="section">
-        <h2>Causes, Diagnosis & Treatment</h2>
-        <div className="accordion-container">
-          <div className="accordion-item">
-            <div 
-              className="accordion-header"
-              onClick={() => toggleAccordion('causes')}
-            >
-              <span>Causes and Types</span>
-              <span className={`accordion-arrow ${openAccordion === 'causes' ? 'open' : ''}`}>▼</span>
-            </div>
-            {openAccordion === 'causes' && (
-              <div className="accordion-content">
-                <p>
-                  Jaundice occurs when there is a buildup of bilirubin, a yellow substance produced when red blood cells are broken down. 
-                  Learn about physiological (normal) jaundice, breastfeeding jaundice, and other less common types.
-                </p>
-              </div>
-            )}
+      {/* CAUSES AND TYPES */}
+      <section className="info-section">
+        <div className="info-content">
+          <div className="info-header">
+            <h1 className="info-title">Causes and Types</h1>
+            <div className="title-accent"></div>
           </div>
+          <div className="info-text">
+            <h3>Physiological Jaundice</h3>
+            <p>The normal process of RBC breakdown combined with an immature hepatic system. Appears day 2-3 of life, peaks day 5-7, resolves by day 10-14 in term infants.</p>
 
-          <div className="accordion-item">
-            <div 
-              className="accordion-header"
-              onClick={() => toggleAccordion('diagnosis')}
-            >
-              <span>Diagnosis and Monitoring</span>
-              <span className={`accordion-arrow ${openAccordion === 'diagnosis' ? 'open' : ''}`}>▼</span>
-            </div>
-            {openAccordion === 'diagnosis' && (
-              <div className="accordion-content">
-                <p>
-                  Doctors diagnose jaundice through a physical exam and can confirm it with a simple skin or blood test to measure bilirubin levels. 
-                  Monitoring is crucial, especially in the first few days of life.
-                </p>
-              </div>
-            )}
-          </div>
+            <h3>Pathological Jaundice</h3>
+            <p>Results from underlying disease or exceeds age-specific treatment thresholds. Red flags include jaundice within first 24 hours, rapidly rising bilirubin (&gt;8.5 μmol/L/hour), or persistence beyond expected timeframe.</p>
 
-          <div className="accordion-item">
-            <div 
-              className="accordion-header"
-              onClick={() => toggleAccordion('treatment')}
-            >
-              <span>Treatment Options</span>
-              <span className={`accordion-arrow ${openAccordion === 'treatment' ? 'open' : ''}`}>▼</span>
-            </div>
-            {openAccordion === 'treatment' && (
-              <div className="accordion-content">
-                <p>
-                  Most cases of newborn jaundice resolve on their own. For higher bilirubin levels, common treatments include phototherapy 
-                  (light therapy) and ensuring adequate feeding to help eliminate bilirubin from the body.
-                </p>
-              </div>
-            )}
+            <h3>Risk Factors</h3>
+            <p>Prematurity, blood group incompatibility, bruising/cephalohematoma, family history of hemolytic disease, exclusive breastfeeding, and gestational age under 38 weeks.</p>
           </div>
         </div>
       </section>
 
-      {/* LEARN MORE & GET SUPPORT */}
-      <section className="section">
-        <h2>Learn More & Get Support</h2>
-        <div className="accordion-container">
-          <div className="accordion-item">
-            <div 
-              className="accordion-header"
-              onClick={() => toggleAccordion('learn')}
-            >
-              <span>Learn More</span>
-              <span className={`accordion-arrow ${openAccordion === 'learn' ? 'open' : ''}`}>▼</span>
-            </div>
-            {openAccordion === 'learn' && (
-              <div className="accordion-content">
-                <ul>
-                  <li><a href="#">Educational Videos Placeholder</a></li>
-                  <li><a href="#">Parental Tips for Home Care Placeholder</a></li>
-                  <li><a href="#">Frequently Asked Questions Placeholder</a></li>
-                </ul>
-              </div>
-            )}
+      {/* DIAGNOSIS AND MONITORING */}
+      <section className="diagnosis-section">
+        <div className="diagnosis-content">
+          <div className="diagnosis-header">
+            <h1 className="diagnosis-title">Diagnosis and Monitoring</h1>
+            <div className="title-accent"></div>
           </div>
+          <div className="diagnosis-text">
+            <h3>Clinical Assessment</h3>
+            <p>Visual inspection in bright light, blanching test, and examination of key areas (sclera, gums, blanched skin).</p>
 
-          <div className="accordion-item">
-            <div 
-              className="accordion-header"
-              onClick={() => toggleAccordion('support')}
-            >
-              <span>Get Support</span>
-              <span className={`accordion-arrow ${openAccordion === 'support' ? 'open' : ''}`}>▼</span>
-            </div>
-            {openAccordion === 'support' && (
-              <div className="accordion-content">
-                <ul>
-                  <li><a href="#">Local Support Groups Placeholder</a></li>
-                  <li><a href="#">Professional Organizations Placeholder</a></li>
-                  <li><a href="#">Downloadable Guides Placeholder</a></li>
-                </ul>
-              </div>
-            )}
+            <h3>Measurement Methods</h3>
+            <p>Transcutaneous bilirubin (TcB) provides rapid screening, while serum bilirubin (SBR) remains the gold standard for quantification. TcB is excellent for screening when &gt;50 μmol/L below phototherapy threshold.</p>
+
+            <h3>Monitoring Guidelines</h3>
+            <p>All babies &lt;35 weeks gestation require SBR measurement. Term infants with visible jaundice need measurement before discharge, with risk-based follow-up at 24-72 hours.</p>
           </div>
         </div>
       </section>
 
+      {/* TREATMENT OPTIONS */}
+      <section className="treatment-section">
+        <div className="treatment-content">
+          <div className="treatment-header">
+            <h1 className="treatment-title">Treatment Options</h1>
+            <div className="title-accent"></div>
+          </div>
+          <div className="treatment-text">
+            <h3>Phototherapy</h3>
+            <p>Uses visible light (430-490 nm) to convert unconjugated bilirubin into water-soluble isomers. Standard phototherapy reduces bilirubin by 17-34 μmol/L within 4-6 hours. Intensive phototherapy (doubled intensity) reduces levels by 20-40% within 4-6 hours.</p>
+
+            <h3>Exchange Transfusion</h3>
+            <p>Reserved for severe hyperbilirubinemia above exchange thresholds or rapidly rising bilirubin despite intensive phototherapy. Removes ~80 mL/kg of infant's blood, replacing with donor RBCs and plasma.</p>
+
+            <h3>Feeding Support</h3>
+            <p>Adequate feeding is fundamental - promotes bilirubin excretion via stool and prevents dehydration. Lactation consultation recommended for breastfeeding difficulties. Continue breastfeeding during phototherapy.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* GET SUPPORT */}
+      <section className="support-section">
+        <div className="support-content">
+          <div className="support-header">
+            <h1 className="support-title">Get Support</h1>
+            <div className="title-accent"></div>
+          </div>
+          <div className="support-grid">
+            <div className="support-card">
+              <h3>📚 Educational Resources</h3>
+              <ul>
+                <li>Understanding Bilirubin Metabolism</li>
+                <li>Phototherapy: What Parents Need to Know</li>
+                <li>Feeding Support for Jaundiced Infants</li>
+                <li>Recognizing Warning Signs</li>
+              </ul>
+            </div>
+            <div className="support-card">
+              <h3>🏥 Professional Support</h3>
+              <ul>
+                <li>24/7 Neonatal Helpline</li>
+                <li>Lactation Consultant Services</li>
+                <li>Follow-up Care Coordination</li>
+                <li>Multidisciplinary Care Team</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

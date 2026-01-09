@@ -1,11 +1,15 @@
+/* ---------- MODERN JAUNDICE PAGE DESIGN ---------- */
+
 /* ---------- COLORS ---------- */
 :root {
   --dark-blue: #1d3557;
   --light-yellow: #f7f3e3;
   --yellow: #e8c873;
-  --text-dark: #1a1a1a;
   --brand-blue: #0d3b66;
   --brand-yellow: #f4d35e;
+  --soft-white: rgba(255, 255, 255, 0.95);
+  --shadow-light: rgba(29, 53, 87, 0.08);
+  --shadow-medium: rgba(29, 53, 87, 0.12);
 }
 
 /* ---------- GLOBAL RESET ---------- */
@@ -13,237 +17,603 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  background: var(--light-yellow);
-  color: var(--text-dark);
-  display: flex;
-  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .page {
   width: 100%;
-  margin: 0;
-  padding: 1.25rem 0;
-}
-
-/* ---------- TYPOGRAPHY ---------- */
-h1 {
-  font-size: 70px;
-  font-weight: 700;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--light-yellow) 0%, rgba(247, 243, 227, 0.8) 100%);
   color: var(--dark-blue);
+  position: relative;
+  overflow-x: hidden;
 }
 
-h2 {
-  font-size: 40px;
-  font-weight: 600;
-  color: var(--dark-blue);
-  margin-bottom: 24px;
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(circle at 30% 70%, rgba(232, 200, 115, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(13, 59, 102, 0.06) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-h3 {
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--dark-blue);
+/* ---------- SHARED STYLES ---------- */
+.title-accent {
+  width: 100px;
+  height: 5px;
+  background: linear-gradient(90deg, var(--yellow), var(--brand-blue));
+  border-radius: 3px;
+  margin: 0 auto 20px;
+  position: relative;
 }
 
-p {
-  font-size: 14px;
-  line-height: 1.7;
-  margin-top: 16px;
-}
-
-/* ---------- SECTIONS ---------- */
-.section {
-  margin-bottom: 60px;
-}
-
-/* ---------- LOGO ---------- */
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 80px;
-}
-
-.logo-icon {
-  width: 40px;
-  height: 40px;
-  color: var(--yellow);
-}
-
-.logo-icon svg {
-  width: 100%;
-  height: 100%;
+.title-accent::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(90deg, var(--yellow), var(--brand-blue));
+  border-radius: 3px;
+  opacity: 0.4;
+  filter: blur(3px);
 }
 
 /* ---------- HERO SECTION ---------- */
 .hero-section {
-  background: linear-gradient(
-      rgba(13, 59, 102, 0.3) 0%,
-      rgba(13, 59, 102, 0.7) 100%
-    ),
+  position: relative;
+  padding: 120px 40px 100px;
+  background:
+    linear-gradient(rgba(13, 59, 102, 0.85), rgba(13, 59, 102, 0.75)),
     url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUHFroteZQhN87s42XCExPhsoPNPHz6MCzf5jIruEKhP-RvQMfAqoq-w4C-tjmO-_FgQQ8IitRAIQqcv2tNwasirzOA2dgA-k3JBaS0M9H_Ov0_UYztGRghftHYY6tu3vkrpkFGMgVOJ5DZcd8620lO8ET8BHr_-jZkk5KZSKxmq_5Chixau-3P-wqGgRpAtO987Ktw-0wveiHUD-X2P8g2TgjNGOsJjx94qem0n7pQcOt00V_gif7BOAOLHWXrkO_S9EvrepMuHA");
   background-size: cover;
   background-position: center;
-  border-radius: 12px;
-  padding: 80px 40px;
-  min-height: 480px;
+  background-attachment: fixed;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 60px;
+  min-height: 70vh;
 }
 
 .hero-content {
-  max-width: 700px;
+  max-width: 800px;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-title {
-  color: white;
-  font-size: 48px;
+  font-size: clamp(3.5rem, 10vw, 6rem);
   font-weight: 900;
-  line-height: 1.2;
+  color: white;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   margin-bottom: 16px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-accent {
+  width: 140px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--brand-yellow), white);
+  border-radius: 3px;
+  margin: 0 auto 32px;
+  box-shadow: 0 0 15px rgba(244, 211, 94, 0.5);
 }
 
 .hero-subtitle {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 24px;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-weight: 400;
 }
 
 .hero-button {
   background: var(--brand-yellow);
   color: var(--brand-blue);
   border: none;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 16px 32px;
+  font-size: 1.125rem;
   font-weight: 700;
-  border-radius: 8px;
+  border-radius: 50px;
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(244, 211, 94, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(244, 211, 94, 0.4);
+}
+
+.hero-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.hero-button:hover::before {
+  left: 100%;
+}
+
+/* ---------- JAUNDICE SECTION ---------- */
+.jaundice-section {
+  padding: 100px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+}
+
+.jaundice-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.jaundice-header {
+  margin-bottom: 40px;
+}
+
+.jaundice-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--dark-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.jaundice-text {
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  line-height: 1.7;
+  color: var(--dark-blue);
+  max-width: 700px;
+  margin: 0 auto;
+  font-weight: 400;
   opacity: 0.9;
 }
 
-/* ---------- CONTENT BOX ---------- */
-.content-box {
-  background: #e6e6e6;
-  padding: 40px;
-  border-radius: 10px;
+/* ---------- SIGNS SECTION ---------- */
+.signs-section {
+  padding: 100px 40px;
 }
 
-/* ---------- SIGNS BOX ---------- */
-.signs-box {
-  background: rgba(13, 59, 102, 0.1);
-  padding: 40px;
-  border-radius: 12px;
+.signs-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.signs-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.signs-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--dark-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
 }
 
 .signs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 32px;
-  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .sign-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.sign-icon {
-  font-size: 32px;
-  flex-shrink: 0;
-}
-
-.sign-content h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--brand-blue);
-  margin-bottom: 8px;
-}
-
-.sign-content p {
-  font-size: 14px;
-  color: rgba(13, 59, 102, 0.8);
-  margin-top: 0;
-}
-
-/* ---------- ACCORDION ---------- */
-.accordion-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.accordion-item {
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px 32px;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px var(--shadow-light);
+  border: 1px solid rgba(29, 53, 87, 0.06);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
   overflow: hidden;
 }
 
-.accordion-header {
-  padding: 20px 24px;
-  font-size: 18px;
+.sign-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 70px var(--shadow-medium);
+}
+
+.sign-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--yellow),
+    var(--brand-blue),
+    var(--brand-yellow)
+  );
+}
+
+.sign-icon {
+  font-size: 4rem;
+  margin-bottom: 24px;
+  display: block;
+  text-align: center;
+}
+
+.sign-content h3 {
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--brand-blue);
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background 0.3s;
+  margin-bottom: 16px;
+  text-align: center;
 }
 
-.accordion-header:hover {
-  background: rgba(13, 59, 102, 0.05);
+.sign-content p {
+  font-size: 1rem;
+  color: var(--dark-blue);
+  line-height: 1.6;
+  opacity: 0.8;
+  text-align: center;
+  margin: 0;
 }
 
-.accordion-arrow {
-  transition: transform 0.3s;
-  font-size: 14px;
+/* ---------- INFO SECTION (Causes and Types) ---------- */
+.info-section {
+  padding: 100px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
 }
 
-.accordion-arrow.open {
-  transform: rotate(180deg);
+.info-content {
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.accordion-content {
-  padding: 0 24px 24px 24px;
-  color: rgba(13, 59, 102, 0.8);
-  line-height: 1.7;
+.info-header {
+  text-align: center;
+  margin-bottom: 60px;
 }
 
-.accordion-content p {
+.info-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--dark-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.info-text h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin: 32px 0 16px 0;
+}
+
+.info-text h3:first-child {
   margin-top: 0;
 }
 
-.accordion-content ul {
-  list-style: disc;
-  padding-left: 20px;
-  margin-top: 12px;
+.info-text p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--dark-blue);
+  margin: 0 0 24px 0;
+  opacity: 0.9;
 }
 
-.accordion-content ul li {
-  margin-bottom: 8px;
+/* ---------- DIAGNOSIS SECTION ---------- */
+.diagnosis-section {
+  padding: 100px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
 }
 
-.accordion-content a {
+.diagnosis-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.diagnosis-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.diagnosis-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--dark-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.diagnosis-text h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
   color: var(--brand-blue);
-  text-decoration: none;
-  transition: color 0.3s;
+  margin: 32px 0 16px 0;
 }
 
-.accordion-content a:hover {
-  color: var(--brand-yellow);
+.diagnosis-text h3:first-child {
+  margin-top: 0;
+}
+
+.diagnosis-text p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--dark-blue);
+  margin: 0 0 24px 0;
+  opacity: 0.9;
+}
+
+/* ---------- TREATMENT SECTION ---------- */
+.treatment-section {
+  padding: 100px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
+}
+
+.treatment-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.treatment-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.treatment-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--dark-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.treatment-text h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin: 32px 0 16px 0;
+}
+
+.treatment-text h3:first-child {
+  margin-top: 0;
+}
+
+.treatment-text p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--dark-blue);
+  margin: 0 0 24px 0;
+  opacity: 0.9;
+}
+
+/* ---------- SUPPORT SECTION ---------- */
+.support-section {
+  padding: 100px 40px 120px;
+}
+
+.support-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.support-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.support-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--dark-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 50px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.support-card {
+  background: white;
+  padding: 48px 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px var(--shadow-light);
+  border: 1px solid rgba(29, 53, 87, 0.06);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.support-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 80px var(--shadow-medium);
+}
+
+.support-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--brand-blue),
+    var(--yellow),
+    var(--brand-yellow)
+  );
+}
+
+.support-card h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.support-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.support-card li {
+  font-size: 1.0625rem;
+  color: var(--dark-blue);
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(29, 53, 87, 0.08);
+  opacity: 0.9;
+}
+
+.support-card li:last-child {
+  border-bottom: none;
+}
+
+/* ---------- RESPONSIVE DESIGN ---------- */
+@media (max-width: 1024px) {
+  .signs-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+
+  .support-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 100px 20px 80px;
+    min-height: 60vh;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 12vw, 4.5rem);
+  }
+
+  .jaundice-section,
+  .signs-section,
+  .info-section,
+  .diagnosis-section,
+  .treatment-section,
+  .support-section {
+    padding: 80px 20px;
+  }
+
+  .jaundice-title,
+  .signs-title,
+  .info-title,
+  .diagnosis-title,
+  .treatment-title,
+  .support-title {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+  }
+
+  .signs-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .sign-card {
+    padding: 32px 24px;
+  }
+
+  .support-card {
+    padding: 40px 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 80px 20px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .title-accent {
+    width: 80px;
+    height: 4px;
+  }
+
+  .hero-accent {
+    width: 100px;
+    height: 5px;
+  }
+
+  .jaundice-title,
+  .signs-title,
+  .info-title,
+  .support-title {
+    font-size: 2.5rem;
+  }
+
+  .sign-card {
+    padding: 28px 20px;
+  }
+
+  .support-card {
+    padding: 32px 24px;
+  }
+
+  .support-card h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-section,
+.jaundice-section,
+.signs-section,
+.info-section,
+.support-section {
+  animation: fadeInUp 1s ease-out;
+}
+
+.sign-card:nth-child(1) { animation-delay: 0.1s; }
+.sign-card:nth-child(2) { animation-delay: 0.2s; }
+.sign-card:nth-child(3) { animation-delay: 0.3s; }
+
+.support-card:nth-child(1) { animation-delay: 0.1s; }
+.support-card:nth-child(2) { animation-delay: 0.2s; }
+
+.sign-card,
+.support-card {
+  animation: fadeInUp 0.8s ease-out;
+  animation-fill-mode: both;
 }
