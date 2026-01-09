@@ -9,11 +9,15 @@ import TestEntry from "./pages/TestEntry";
 import "./App.css";
 import PatientAnalytics from "./pages/PatientAnalytics";
 import ChildProfile from "./pages/ChildProfile";
+import LogIn from "./pages/LogIn";
+
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/" element={<LogIn />} />
+
+      <Route path="/home" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="about_qbit" element={<AboutQBiT />} />
         <Route path="contact" element={<ContactUs />} />
