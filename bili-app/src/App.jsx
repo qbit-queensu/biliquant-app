@@ -23,6 +23,7 @@ function App() {
         <Route path="contact" element={<ContactUs />} />
         <Route path="jaundice" element={<JaundiceGuide />} />
         <Route path="mission" element={<BilliQuantMission />} />
+        <Route path="test_entry" element={<TestEntry />} />
         <Route path="patient_analytics" element={<PatientAnalytics />} />
         <Route path="profile" element={<ChildProfile/>} />
       </Route>
