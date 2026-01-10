@@ -1,44 +1,97 @@
-import { Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styles from "./Navbar.module.css";
 import logoImg from "../assets/vite.svg";
 
 function Navbar() {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
+  const navItems = [
+    { to: "/home/about_qbit", label: "About" },
+    { to: "/home/team", label: "Team" },
+    { to: "/home/projects", label: "Projects" },
+    { to: "/home/test_entry", label: "Test Entry" },
+    { to: "/home/jaundice", label: "Jaundice Guide" },
+    { to: "/home/mission", label: "Mission" },
+    { to: "/home/contact", label: "Contact" },
+    { to: "/home/patient_analytics", label: "Patient Analytics" },
+    { to: "/home/profile", label: "Profile" },
+  ];
+
   return (
     <header className={styles.navbar}>
-      <Link to="/home" className={styles.logo}>
-        <img src={logoImg} alt="Logo" className={styles.logoImg} />
-        <h2 className={styles.brandName}>BiliQuant</h2>
-      </Link>
+      <div className={styles.inner}>
+        <Link to="/home" className={styles.logo} aria-label="Go to home">
+          <img src={logoImg} alt="" className={styles.logoImg} />
+          <span className={styles.brandName}>BiliQuant</span>
+        </Link>
 
-      <nav className={styles.navLinks}>
-        <Link to="/home/about_qbit" className={styles.navLink}>
-          About
-        </Link>
-        <Link to="/home/team" className={styles.navLink}>
-          Team
-        </Link>
-        <Link to="/home/projects" className={styles.navLink}>
-          Projects
-        </Link>
-        <Link to="/home/test_entry" className={styles.navLink}>
-          Test Entry
-        </Link>
-        <Link to="/home/jaundice" className={styles.navLink}>
-          Jaundice Guide
-        </Link>
-        <Link to="/home/mission" className={styles.navLink}>
-          Mission
-        </Link>
-        <Link to="/home/contact" className={styles.navLink}>
-          Contact
-        </Link>
-        <Link to="/home/patient_analytics" className={styles.navLink}>
-          Patient Analytics
-        </Link>
-        <Link to="/home/profile" className={styles.navLink}>
-          Profile
-        </Link>
-      </nav>
+        {/* Desktop links */}
+        <nav className={styles.navLinks} aria-label="Primary navigation">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `${styles.navLink} ${isActive ? styles.active : ""}`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className={styles.hamburger}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span className={styles.hamburgerBar} />
+          <span className={styles.hamburgerBar} />
+          <span className={styles.hamburgerBar} />
+        </button>
+      </div>
+
+      {/* Mobile dropdown panel */}
+      <div
+        className={`${styles.mobileMenu} ${open ? styles.mobileMenuOpen : ""}`}
+      >
+        {/* Clickable backdrop */}
+        <button
+          className={styles.backdrop}
+          aria-hidden={!open}
+          tabIndex={open ? 0 : -1}
+          onClick={() => setOpen(false)}
+        />
+
+        <nav
+          id="mobile-nav"
+          className={`${styles.mobilePanel} ${open ? styles.mobilePanelOpen : ""}`}
+          aria-label="Mobile navigation"
+        >
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `${styles.mobileLink} ${isActive ? styles.mobileActive : ""}`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
     </header>
   );
 }
