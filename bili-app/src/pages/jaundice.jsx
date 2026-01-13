@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './jaundice.css';
+import CountUp from '../components/CountUp';
+import { calculateJaundiceCases } from '../utils/jaundiceCalculator';
 
 export default function JaundiceGuide() {
+  const [birthCount, setBirthCount] = useState(25000);
+
+  // Increment birth count at random intervals (1-4 seconds) to simulate live births
+  useEffect(() => {
+    const scheduleNextIncrement = () => {
+      const delay = Math.random() * 3000 + 1000; // 1-4 seconds
+      setTimeout(() => {
+        setBirthCount(prev => prev + 1);
+        scheduleNextIncrement(); // Schedule next increment
+      }, delay);
+    };
+    scheduleNextIncrement();
+    return () => {}; // Cleanup handled by not scheduling next
+  }, []);
+
+  const results = calculateJaundiceCases(birthCount);
+
   return (
     <div className="page">
       {/* HERO SECTION */}
@@ -10,12 +29,51 @@ export default function JaundiceGuide() {
           <h1 className="hero-title">Understanding Newborn Jaundice</h1>
           <div className="hero-accent"></div>
           <p className="hero-subtitle">
-            Neonatal jaundice affects 60% of term infants and 85% of preterm infants.
+            Neonatal jaundice affects 60% of term infants and 80% of preterm infants.
             This comprehensive guide provides evidence-based information for parents and caregivers.
           </p>
           <button className="hero-button" onClick={() => window.open('/jaundice-guide.pdf', '_blank')}>
             Download Guide →
           </button>
+        </div>
+      </section>
+
+      {/* JAUNDICE ESTIMATOR */}
+      <section className="estimator-section">
+        <div className="estimator-content">
+          <div className="estimator-header">
+            <h1 className="estimator-title">Jaundice Case Estimator</h1>
+            <div className="title-accent"></div>
+          </div>
+          <p className="estimator-text">
+            Using the latest live births data from Statistics Canada to estimate jaundice cases.
+            Based on 60% prevalence for term babies and 80% for preterm babies (assuming 15% preterm).
+          </p>
+
+          <div className="birth-data">
+            <h3>Live Birth Counter - Canada</h3>
+            <div className="birth-count">
+              <CountUp to={birthCount} separator="," className="count-up-text large" />
+              <span className="period"> (Since January 1, 2026)</span>
+            </div>
+          </div>
+          {results.total > 0 && (
+            <div className="results">
+              <h3>Neonatal Jaundice Cases (In Canada)</h3>
+              <div className="result-item total-emphasis">
+                <span>Total Cases: </span>
+                <CountUp to={results.total} separator="," className="count-up-text large" />
+              </div>
+              <div className="result-item">
+                <span>Term Babies: </span>
+                <CountUp to={results.term} separator="," className="count-up-text" />
+              </div>
+              <div className="result-item">
+                <span>Preterm Babies: </span>
+                <CountUp to={results.preterm} separator="," className="count-up-text" />
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

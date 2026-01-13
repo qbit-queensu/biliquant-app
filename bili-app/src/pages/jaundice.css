@@ -316,6 +316,172 @@
   opacity: 0.9;
 }
 
+/* ---------- ESTIMATOR SECTION ---------- */
+.estimator-section {
+  padding: 100px 40px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%, rgba(255, 255, 255, 0.15) 100%);
+}
+
+.estimator-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.estimator-header {
+  margin-bottom: 40px;
+}
+
+.estimator-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  color: var(--dark-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.estimator-text {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--dark-blue);
+  max-width: 700px;
+  margin: 0 auto 40px;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.input-group {
+  margin-bottom: 40px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin-bottom: 16px;
+}
+
+.input-group input {
+  width: 100%;
+  max-width: 300px;
+  padding: 16px 20px;
+  font-size: 1.125rem;
+  border: 2px solid rgba(29, 53, 87, 0.1);
+  border-radius: 12px;
+  background: white;
+  color: var(--dark-blue);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--brand-yellow);
+  box-shadow: 0 0 0 3px rgba(244, 211, 94, 0.2);
+}
+
+.results {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px var(--shadow-light);
+  border: 1px solid rgba(29, 53, 87, 0.06);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.results h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin-bottom: 24px;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.25rem;
+  color: var(--dark-blue);
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(29, 53, 87, 0.08);
+  margin-bottom: 8px;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.result-item.total-emphasis {
+  background: linear-gradient(135deg, rgba(244, 211, 94, 0.1), rgba(232, 200, 115, 0.1));
+  border: 2px solid var(--brand-yellow);
+  border-radius: 12px;
+  padding: 20px 16px;
+  margin: 16px 0;
+  font-weight: 700;
+}
+
+.result-item span:first-child {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.count-up-text {
+  font-weight: 700;
+  color: var(--brand-blue);
+  font-size: 1.375rem;
+}
+
+.count-up-text.large {
+  font-size: 2rem;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 1.125rem;
+  color: var(--dark-blue);
+  opacity: 0.8;
+}
+
+.error-text {
+  text-align: center;
+  font-size: 1.125rem;
+  color: #d32f2f;
+  background: rgba(211, 47, 47, 0.1);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(211, 47, 47, 0.2);
+}
+
+.birth-data {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.birth-data h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin-bottom: 16px;
+}
+
+.birth-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.25rem;
+  color: var(--dark-blue);
+}
+
+.period {
+  opacity: 0.7;
+  font-weight: 500;
+}
+
 /* ---------- DIAGNOSIS SECTION ---------- */
 .diagnosis-section {
   padding: 100px 40px;
@@ -514,6 +680,7 @@
     font-size: clamp(2.5rem, 12vw, 4.5rem);
   }
 
+  .estimator-section,
   .jaundice-section,
   .signs-section,
   .info-section,
@@ -598,6 +765,7 @@
 }
 
 .hero-section,
+.estimator-section,
 .jaundice-section,
 .signs-section,
 .info-section,
