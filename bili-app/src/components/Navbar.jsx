@@ -14,8 +14,6 @@ function Navbar() {
 
   const navItems = [
     { to: "/home/about_qbit", label: "About" },
-    { to: "/home/team", label: "Team" },
-    { to: "/home/projects", label: "Projects" },
     { to: "/home/test_entry", label: "Test Entry" },
     { to: "/home/jaundice", label: "Jaundice Guide" },
     { to: "/home/mission", label: "Mission" },
@@ -76,7 +74,9 @@ function Navbar() {
 
         <nav
           id="mobile-nav"
-          className={`${styles.mobilePanel} ${open ? styles.mobilePanelOpen : ""}`}
+          className={`${styles.mobilePanel} ${
+            open ? styles.mobilePanelOpen : ""
+          }`}
           aria-label="Mobile navigation"
         >
           {navItems.map((item) => (

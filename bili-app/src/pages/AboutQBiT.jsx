@@ -1,4 +1,5 @@
 import styles from "./AboutQBiT.module.css";
+import bilirubenImg from "../assets/bilirubenometer_cartoon.png";
 
 function AboutQBiT() {
   return (
@@ -15,11 +16,6 @@ function AboutQBiT() {
               collaboration at Queen's University. We believe in education
               through application.
             </p>
-            <div className={styles.buttonContainer}>
-              <button className={styles.primaryButton}>
-                <span>Our Projects</span>
-              </button>
-            </div>
           </div>
         </section>
 
@@ -28,7 +24,7 @@ function AboutQBiT() {
           className={styles.heroImage}
           style={{
             backgroundImage:
-              'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAdpmPf3V72phzS2ItTXZwulgNYZB-CHrYwfEnx-uaz_gBlIipGm6ow9IYWPOsjBoRI6LEpfvjWlwNSlUk6jwmq24bwEJtePYq4145dUB3_F0LpBNlY5b6Fsa3GzlQcrDj-AmQ7tqCsL5VkXeoIdNsl_qsdHcWeKZdt1kbBjPF38PPdME0VLdqID5b_PkLskCMpBZl1GvDp46GXW2P11kJOruFTO5Ptdia9N99LuQ-7PnSVJveSkxP9m0bQ52qOtMoHichI12n5V4E")',
+              'url("https://www.inside.unsw.edu.au/sites/default/files/article/ASB.jpg")',
           }}
           role="img"
           aria-label="A diverse group of students collaborating in a modern lab setting, focused on a biomedical device."
@@ -112,8 +108,7 @@ function AboutQBiT() {
                 <div
                   className={styles.projectImage}
                   style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDySqlzi9816ecCAPxjxyjxsypxfc-pduShqtQyyBgPfjWI4pTyri3u2f7oCI3FSR5YN2upg_93qZVUWGuqCnQSn_Kq1gby0eMokdWzmAVZX1J3I63TM_8-yGSe9i2n7OHycdqWppkgSGReR1V4zhm9qwjk6OJTohuh4GbJ4Mc1RFBNEvueibU3GCJ6BUnxnNqLoDaU-Q7223qoOW7sygErBi8vrECpC3kdSEZ3WQravCZOTS7jY0Onod3N7jHYj90k4O4mst3F4pU")',
+                    backgroundImage: `url(${bilirubenImg})`,
                   }}
                   role="img"
                   aria-label="A medical professional holding a small, portable bilirubinometer near a newborn's forehead."

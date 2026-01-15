@@ -8,7 +8,7 @@ function Home() {
         <h1 className={styles.title}>Welcome to BiliQuant</h1>
         <p className={styles.subtitle}>Queen's Biomedical Innovation Team</p>
         <div className={styles.links}>
-          <Link to="/about_qbit" className={styles.link}>
+          <Link to="/home/about_qbit" className={styles.link}>
             Learn About QBiT →
           </Link>
         </div>
