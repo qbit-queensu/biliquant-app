@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./ContactUs.module.css";
+import { supabase } from "../lib/supabaseClient";
 
 function ContactUs() {
   const [formData, setFormData] = useState({
@@ -66,31 +67,22 @@ function ContactUs() {
     setSubmitStatus(null);
 
     try {
-      // Using FormSubmit.co service
-      const response = await fetch(
-        "https://formsubmit.co/qbit@engsoc.queensu.ca",
+      const { error } = await supabase.from("contact_messages").insert([
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-            _subject: `New Contact Form Submission from ${formData.name}`,
-            _captcha: "false",
-          }),
-        }
-      );
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+        },
+      ]);
 
-      if (response.ok) {
-        setSubmitStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
+      if (error) {
+        console.error("Supabase insert error:", error);
         setSubmitStatus("error");
+        return;
       }
+
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       console.error("Form submission error:", error);
       setSubmitStatus("error");
