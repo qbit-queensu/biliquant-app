@@ -12,10 +12,7 @@ export default function BilliQuantMission() {
             <div className="title-accent"></div>
           </div>
           <p className="mission-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            The Queen's Biomedical Innovation Team (QBiT) empowers undergraduate students to explore the frontiers of biomedical engineering through hands-on, real-world design projects. By tackling challenges such as developing accessible solutions for neonatal jaundice, we provide students with opportunities to build technical expertise, cultivate creativity, and strengthen leadership skills. QBiT fosters collaboration across disciplines, promotes awareness of biomedical engineering on campus, and encourages innovation in a volunteer-driven, inclusive, and supportive environment, preparing students to make meaningful contributions to health outcomes locally and globally.
           </p>
         </div>
       </section>
@@ -40,10 +37,7 @@ export default function BilliQuantMission() {
             <div className="title-accent"></div>
           </div>
           <p className="vision-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-            enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            QBiT aspires to be a premier undergraduate biomedical innovation community recognized for translating creative ideas into impactful solutions that improve human health. We aim to inspire curiosity, drive innovation, and cultivate the next generation of biomedical engineers and leaders who are equipped to address pressing medical challenges such as neonatal jaundice, while advancing accessible, sustainable, and life-changing technologies for communities worldwide.
           </p>
         </div>
       </section>
