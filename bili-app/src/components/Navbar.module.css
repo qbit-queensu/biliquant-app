@@ -2,112 +2,210 @@
   position: sticky;
   top: 0;
   z-index: 50;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(13, 59, 102, 0.12);
+  box-shadow: 0 6px 18px rgba(13, 59, 102, 0.06);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  white-space: nowrap;
-  border-bottom: 1px solid rgba(13, 59, 102, 0.2);
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 0.75rem 1rem;
+  gap: 1rem;
 }
 
 @media (min-width: 640px) {
-  .navbar {
-    padding: 0.75rem 2rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .navbar {
-    padding: 0.75rem 4rem;
+  .inner {
+    padding: 0.9rem 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .navbar {
-    padding: 0.75rem 8rem;
+  .inner {
+    padding: 0.95rem 2rem;
   }
 }
 
+/* Brand */
 .logo {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+  text-decoration: none;
   color: var(--color-primary);
 }
 
-.logoIcon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: var(--color-accent);
+.logoImg {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
 }
 
 .brandName {
-  font-size: 1.1rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--color-primary);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  line-height: 1;
 }
 
+/* Desktop nav */
 .navLinks {
   display: none;
   align-items: center;
-  gap: 2rem;
+  gap: 1.25rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .navLinks {
     display: flex;
   }
 }
 
 .navLink {
-  color: var(--color-text-primary);
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: normal;
+  position: relative;
   text-decoration: none;
-  transition: color 0.2s ease;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.35rem 0.2rem;
+  transition: color 0.18s ease;
 }
 
 .navLink:hover {
   color: var(--color-accent);
 }
 
-.ctaButton {
-  display: flex;
-  min-width: 84px;
+.active {
+  color: var(--color-accent);
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-accent);
+}
+
+/* Hamburger (mobile) */
+.hamburger {
+  display: inline-flex;
+  flex-direction: column; /* 🔑 FIX */
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  height: 2.5rem;
-  padding: 0 1rem;
-  background-color: var(--color-accent);
-  color: var(--color-primary);
-  font-size: 0.875rem;
-  font-weight: 700;
-  line-height: normal;
-  letter-spacing: 0.05em;
+  gap: 5px; /* 🔑 FIX */
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(13, 59, 102, 0.12);
+  background: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  transition: transform 0.2s ease;
+  padding: 0;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.ctaButton:hover {
-  transform: scale(1.05);
+.hamburger:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.9);
 }
 
-.logo {
-  display: flex;
-  align-items: center; /* aligns image + text on same baseline */
-  gap: 0.75rem;
-}
-
-.logoImg {
-  width: 32px;
-  height: 32px;
-  object-fit: contain; /* ensures no stretching */
+.hamburgerBar {
   display: block;
+  width: 20px; /* slightly wider = more premium look */
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+
+@media (min-width: 900px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+/* Mobile menu overlay + panel */
+.mobileMenu {
+  position: relative;
+  pointer-events: none;
+}
+
+.mobileMenuOpen {
+  pointer-events: auto;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 59, 102, 0.22);
+  border: 0;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mobileMenuOpen .backdrop {
+  opacity: 1;
+}
+
+.mobilePanel {
+  position: fixed;
+  top: 64px; /* below navbar */
+  right: 12px;
+  left: 12px;
+  max-width: 520px;
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(13, 59, 102, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(13, 59, 102, 0.18);
+  padding: 0.5rem;
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.mobilePanelOpen {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (min-width: 900px) {
+  .mobilePanel,
+  .backdrop {
+    display: none;
+  }
+}
+
+/* Mobile links */
+.mobileLink {
+  display: block;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mobileLink:hover {
+  background: rgba(13, 59, 102, 0.06);
+  color: var(--color-accent);
+}
+
+.mobileActive {
+  background: rgba(13, 59, 102, 0.08);
+  color: var(--color-accent);
 }

@@ -1,0 +1,120 @@
+/* FULL PAGE SPLIT */
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: white;
+}
+
+/* LEFT SIDE */
+.login-left {
+  flex: 1;
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0e2a52;
+}
+
+/* HEADINGS */
+.welcome {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* INPUTS */
+.input-label {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+.input-box {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #c9d2e0;
+  padding: 12px;
+  border-radius: 6px;
+  background: white;
+}
+
+.input-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+.input-icon {
+  width: 18px;
+  opacity: 0.6;
+}
+
+/* BUTTON */
+.login-btn {
+  margin-top: 25px;
+  width: 100%;
+  padding: 14px;
+  background: #0e2a52;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background: #13376d;
+}
+
+/* SIGN UP */
+.signup-text {
+  margin-top: 15px;
+  color: #444;
+}
+
+.signup-text span {
+  color: #0e2a52;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* RIGHT SIDE */
+.login-right {
+  flex: 1;
+  background: #f8f1c9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-img {
+  width: 60%;
+  border-radius: 10px;
+}
