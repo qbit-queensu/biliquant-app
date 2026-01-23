@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './mission.css';
+import image1 from '../assets/image1.jpg';
+import image2 from '../assets/image2.jpg';
+import designElectricalLayout from '../assets/design-electrical-layout.jpeg';
+import image3 from '../assets/image3.jpg';
+import image4 from '../assets/image4.png';
+import preliminarySketch from '../assets/preliminary-sketch.jpeg';
 
 export default function BilliQuantMission() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
   return (
     <div className="page">
       {/* MISSION SECTION */}
@@ -20,12 +29,12 @@ export default function BilliQuantMission() {
       {/* IMAGE GALLERY */}
       <section className="gallery-section">
         <div className="gallery-grid">
-          <div className="gallery-item"><div className="image-placeholder"></div></div>
-          <div className="gallery-item"><div className="image-placeholder"></div></div>
-          <div className="gallery-item"><div className="image-placeholder"></div></div>
-          <div className="gallery-item"><div className="image-placeholder"></div></div>
-          <div className="gallery-item"><div className="image-placeholder"></div></div>
-          <div className="gallery-item"><div className="image-placeholder"></div></div>
+          <div className="gallery-item"><img src={image1} alt="Project Image 1" className="gallery-image" onClick={() => { setSelectedImage(image1); setIsModalOpen(true); }} /></div>
+          <div className="gallery-item"><img src={image2} alt="Project Image 2" className="gallery-image" onClick={() => { setSelectedImage(image2); setIsModalOpen(true); }} /></div>
+          <div className="gallery-item"><img src={designElectricalLayout} alt="Design with Electrical Layout" className="gallery-image" onClick={() => { setSelectedImage(designElectricalLayout); setIsModalOpen(true); }} /></div>
+          <div className="gallery-item"><img src={image3} alt="Project Image 3" className="gallery-image" onClick={() => { setSelectedImage(image3); setIsModalOpen(true); }} /></div>
+          <div className="gallery-item"><img src={image4} alt="Project Image 4" className="gallery-image" onClick={() => { setSelectedImage(image4); setIsModalOpen(true); }} /></div>
+          <div className="gallery-item"><img src={preliminarySketch} alt="Preliminary Sketch" className="gallery-image" onClick={() => { setSelectedImage(preliminarySketch); setIsModalOpen(true); }} /></div>
         </div>
       </section>
 
@@ -41,6 +50,15 @@ export default function BilliQuantMission() {
           </p>
         </div>
       </section>
+
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setIsModalOpen(false)}>×</button>
+            <img src={selectedImage} alt="Enlarged view" className="modal-image" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
