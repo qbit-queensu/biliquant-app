@@ -16,13 +16,13 @@ export default function Dashboard() {
         <div className="dashboard-actions">
           <button
             className="primary-btn"
-            onClick={() => navigate("/add-patient")}
+            onClick={() => navigate("/home/profile")}
           >
             + Add Patient
           </button>
           <button
             className="primary-btn"
-            onClick={() => navigate("/new-test")}
+            onClick={() => navigate("/home/test_entry")}
           >
             + New Test
           </button>

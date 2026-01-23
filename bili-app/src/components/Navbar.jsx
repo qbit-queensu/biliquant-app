@@ -19,13 +19,13 @@ function Navbar() {
     { to: "/home/mission", label: "Mission" },
     { to: "/home/contact", label: "Contact" },
     { to: "/home/patient_analytics", label: "Patient Analytics" },
-    { to: "/home/profile", label: "Profile" },
+    { to: "/home/profile", label: "Add Patient" },
   ];
 
   return (
     <header className={styles.navbar}>
       <div className={styles.inner}>
-        <Link to="/home" className={styles.logo} aria-label="Go to home">
+        <Link to="/home/dashboard" className={styles.logo} aria-label="Go to dashboard">
           <img src={logoImg} alt="" className={styles.logoImg} />
           <span className={styles.brandName}>BiliQuant</span>
         </Link>
