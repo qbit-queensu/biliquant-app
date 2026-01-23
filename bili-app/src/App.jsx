@@ -10,6 +10,7 @@ import "./App.css";
 import PatientAnalytics from "./pages/PatientAnalytics";
 import ChildProfile from "./pages/ChildProfile";
 import LogIn from "./pages/LogIn";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
       <Route path="/home" element={<MainLayout />}>
         <Route index element={<JaundiceGuide />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="about_qbit" element={<AboutQBiT />} />
         <Route path="contact" element={<ContactUs />} />
         <Route path="jaundice" element={<JaundiceGuide />} />

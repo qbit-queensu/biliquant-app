@@ -24,17 +24,19 @@
 .logo {
   width: 40px;
   margin-right: 10px;
+  margin-top: -75px;
 }
 
 .logo-text {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 35px;
+  font-weight: 500;
   color: #0e2a52;
+  margin-top: -61px;
 }
 
 /* HEADINGS */
 .welcome {
-  font-size: 32px;
+  font-size: 40px;
   font-weight: 600;
   color: #000;
   margin-bottom: 5px;
@@ -115,6 +117,6 @@
 }
 
 .right-img {
-  width: 60%;
+  width: 75%;
   border-radius: 10px;
 }
