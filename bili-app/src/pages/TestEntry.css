@@ -1,5 +1,5 @@
 .test-entry-container {
-  background: #faf7e8;
+  background: #FAF0CA;
   min-height: 100vh;
   padding: 40px 160px;   /* reduced so center works */
   text-align: center;
@@ -11,6 +11,7 @@
   align-items: center;        /* <-- center the card and title */
   justify-content: flex-start;
   box-sizing: border-box;
+  width: 100vw;
 }
 
 /* Page title */
@@ -25,7 +26,7 @@
 .form-card {
   background: #fff;
   width: 100%;          /* let it fill available space */
-  max-width: 5000px;    /* choose how wide you want it */
+  max-width: 540px;    /* choose how wide you want it */
   margin: 0 auto;       /* centers the card */
   padding: 40px;
   border-radius: 12px;
