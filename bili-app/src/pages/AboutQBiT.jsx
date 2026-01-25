@@ -9,7 +9,7 @@ function AboutQBiT() {
         <section className={styles.heroSection}>
           <div>
             <h1 className={styles.heroTitle}>
-              Queen's Biomedical Innovation Team (QBiT)
+              About Us
             </h1>
             <p className={styles.heroSubtitle}>
               Fostering biomedical innovation through interdisciplinary
@@ -35,7 +35,7 @@ function AboutQBiT() {
           <div>
             <h2 className={styles.sectionTitle}>Our Mission & Vision</h2>
             <p className={styles.sectionDescription}>
-              QBiT is a student-run team dedicated to developing innovative
+              Queen's Biomedical Innovation Team (QBiT) is a student-run team dedicated to developing innovative
               solutions for today's healthcare challenges. Our 'education
               through application' philosophy empowers students to lead projects
               from conception to real-world impact.
