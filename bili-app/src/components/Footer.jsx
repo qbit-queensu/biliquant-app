@@ -16,13 +16,18 @@ function Footer() {
               <p className={styles.columnTitle}>Explore</p>
               <ul className={styles.linkList}>
                 <li>
-                  <a className={styles.link} href="#">
-                    About Us
+                  <a className={styles.link} href="https://www.linkedin.com/company/qbitqueensu/">
+                    LinkedIn
                   </a>
                 </li>
                 <li>
-                  <a className={styles.link} href="#">
-                    Projects
+                  <a className={styles.link} href="https://www.instagram.com/Qbit_queensu">
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a className={styles.link} href="https://www.facebook.com/engsocqbit">
+                    Facebook
                   </a>
                 </li>
               </ul>
@@ -31,12 +36,9 @@ function Footer() {
               <p className={styles.columnTitle}>Contact</p>
               <ul className={styles.linkList}>
                 <li>
-                  <a className={styles.link} href="mailto:contact@qbit.ca">
-                    contact@qbit.ca
+                  <a className={styles.link} href="mailto:qbit@engsoc.queensu.ca">
+                    qbit@engsoc.queensu.ca
                   </a>
-                </li>
-                <li>
-                  <p className={styles.link}>Kingston, ON, Canada</p>
                 </li>
               </ul>
             </div>
@@ -44,8 +46,13 @@ function Footer() {
               <p className={styles.columnTitle}>Affiliations</p>
               <ul className={styles.linkList}>
                 <li>
-                  <a className={styles.link} href="#">
+                  <a className={styles.link} href="https://www.queensu.ca/">
                     Queen's University
+                  </a>
+                </li>
+                <li>
+                  <a className={styles.subtitle}>
+                    Kingston, ON, Canada
                   </a>
                 </li>
               </ul>
