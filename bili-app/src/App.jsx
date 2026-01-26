@@ -11,11 +11,13 @@ import PatientAnalytics from "./pages/PatientAnalytics";
 import ChildProfile from "./pages/ChildProfile";
 import LogIn from "./pages/LogIn";
 import Dashboard from "./pages/Dashboard";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<LogIn />} />
+      <Route path="/signup" element={<SignUp />} />
 
       <Route path="/home" element={<MainLayout />}>
         <Route index element={<JaundiceGuide />} />
