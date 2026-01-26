@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import AboutQBiT from "./pages/AboutQBiT";
@@ -12,6 +12,7 @@ import ChildProfile from "./pages/ChildProfile";
 import LogIn from "./pages/LogIn";
 import Dashboard from "./pages/Dashboard";
 import SignUp from "./pages/SignUp";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
 
       <Route path="/home" element={<MainLayout />}>
         <Route index element={<JaundiceGuide />} />
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="about_qbit" element={<AboutQBiT />} />
         <Route path="contact" element={<ContactUs />} />
         <Route path="jaundice" element={<JaundiceGuide />} />

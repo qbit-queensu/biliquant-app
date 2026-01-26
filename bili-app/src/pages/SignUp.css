@@ -87,13 +87,10 @@
   background: #2b4a7f;
 }
 
-.login-link {
+.login-link .link{
+  color: #2b4a7f;
+  font-weight: 500;
   margin-top: 20px;
   font-size: 0.9rem;
-}
-
-.login-link a {
-  color: #6c63ff;
-  text-decoration: none;
-  font-weight: 500;
+  text-decoration: underline;
 }

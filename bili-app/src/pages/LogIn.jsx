@@ -2,14 +2,38 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/loginImage.jpg";
 import "./LogIn.css";
+import { supabase } from "../lib/supabaseClient";
 
 function LogIn() {
   const navigate = useNavigate();
 
-  //text
-  
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setError(error.message);
+      return;
+    }
+    if (data.user) {
+      navigate("/home/dashboard");//change to dashboard adress
+    }
+  };
+
 
 
   return (
@@ -29,6 +53,7 @@ function LogIn() {
         <h2 className="welcome">Welcome back</h2>
         <p className="subtitle">Please sign in to see your records</p>
 
+        <form onSubmit={handleLogin}>
         <div className="input-label">Email</div>
         <div className="input-box">
           <img
@@ -58,10 +83,15 @@ function LogIn() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {error && <p className="error-text">{error}</p>}
 
-        <button className="login-btn" onClick={() => navigate("/home/dashboard")}>
-          Sign in
+        <button 
+          type="submit" 
+          className="login-btn"
+          disabled={loading}>
+          {loading ? "Logging in..." : "Sign In"}
         </button>
+        </form>
 
         <p className="signup-text">
           Don't have an account?{" "}

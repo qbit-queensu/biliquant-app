@@ -123,3 +123,11 @@
   width: 75%;
   border-radius: 10px;
 }
+
+.error-text {
+  color: #ff4d4f;       
+  font-size: 0.9rem;    
+  margin-top: 10px;     /* Space above the message */
+  font-weight: 500;   
+  
+}
