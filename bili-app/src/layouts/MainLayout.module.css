@@ -4,6 +4,7 @@
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  position: relative;
 }
 
 .main {
@@ -11,4 +12,34 @@
   display: flex;
   justify-content: center;
   padding: 1.25rem 0;
+}
+
+.dashboardButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transition: all 0.3s ease;
+  z-index: 999;
+  font-size: 1.5rem;
+}
+
+.dashboardButton:hover {
+  background-color: #007bff;
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.dashboardButton:active {
+  transform: scale(0.95);
 }
