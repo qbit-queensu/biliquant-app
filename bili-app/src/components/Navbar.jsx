@@ -14,8 +14,6 @@ function Navbar() {
 
   const navItems = [
     { to: "/home/patient_analytics", label: "Patient Analytics" },
-    { to: "/home/test_entry", label: "Test Entry" },
-    { to: "/home/profile", label: "Add Patient" },
     { to: "/home/jaundice", label: "Jaundice Guide" },
     { to: "/home/mission", label: "Mission" },
     { to: "/home/about_qbit", label: "About" },
