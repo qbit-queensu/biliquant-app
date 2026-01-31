@@ -13,6 +13,7 @@ import LogIn from "./pages/LogIn";
 import Dashboard from "./pages/Dashboard";
 import SignUp from "./pages/SignUp";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UpdateProfile from "./pages/UpdateProfile";
 
 function App() {
   return (
@@ -22,7 +23,14 @@ function App() {
 
       <Route path="/home" element={<MainLayout />}>
         <Route index element={<JaundiceGuide />} />
-        <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="about_qbit" element={<AboutQBiT />} />
         <Route path="contact" element={<ContactUs />} />
         <Route path="jaundice" element={<JaundiceGuide />} />
@@ -30,6 +38,7 @@ function App() {
         <Route path="test_entry" element={<TestEntry />} />
         <Route path="patient_analytics" element={<PatientAnalytics />} />
         <Route path="profile" element={<ChildProfile />} />
+        <Route path="update-profile" element={<UpdateProfile />} />
       </Route>
     </Routes>
   );
