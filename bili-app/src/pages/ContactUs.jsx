@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "./ContactUs.module.css";
-import { supabase } from "../lib/supabaseClient";
 
 function ContactUs() {
   const [formData, setFormData] = useState({
@@ -63,26 +62,52 @@ function ContactUs() {
       return;
     }
 
+    const endpoint = "https://formspree.io/f/mgvanwlb";
+
+    if (!endpoint) {
+      console.error(
+        "Missing VITE_FORMSPREE_ENDPOINT. Add it to your Vite .env and restart the dev server."
+      );
+      setSubmitStatus("error");
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      const { error } = await supabase.from("contact_messages").insert([
-        {
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          message: formData.message.trim(),
-        },
-      ]);
+      const payload = new FormData();
+      payload.append("name", formData.name.trim());
+      payload.append("email", formData.email.trim());
+      // Helpful for some Formspree setups:
+      payload.append("_replyto", formData.email.trim());
+      payload.append("message", formData.message.trim());
 
-      if (error) {
-        console.error("Supabase insert error:", error);
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: payload,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "");
+        console.error("Formspree submission failed:", res.status, errText);
         setSubmitStatus("error");
         return;
       }
 
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", message: "" });
+      const data = await res.json().catch(() => ({}));
+
+      // Formspree typically returns { ok: true } on success for AJAX.
+      if (data && data.ok) {
+        setSubmitStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        console.error("Unexpected Formspree response:", data);
+        setSubmitStatus("error");
+      }
     } catch (error) {
       console.error("Form submission error:", error);
       setSubmitStatus("error");
