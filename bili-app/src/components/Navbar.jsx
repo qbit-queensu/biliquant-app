@@ -16,9 +16,11 @@ function Navbar() {
     setDropdownOpen(false);
   }, [location.pathname]);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    // Navigate immediately for faster UX
     navigate("/");
+    // Sign out in background
+    supabase.auth.signOut();
   };
 
   const navItems = [
