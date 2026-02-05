@@ -209,3 +209,134 @@
   background: rgba(13, 59, 102, 0.08);
   color: var(--color-accent);
 }
+
+/* Desktop Dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropdownToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
+}
+
+.dropdownIcon {
+  transition: transform 0.2s ease;
+}
+
+.dropdownIconOpen {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 140px;
+  background: #ffffff;
+  border: 1px solid rgba(13, 59, 102, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(13, 59, 102, 0.15);
+  padding: 0.5rem;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+/* Invisible bridge to prevent dropdown from closing */
+.dropdownMenu::before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: block;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.dropdownItem:hover {
+  background: rgba(13, 59, 102, 0.06);
+  color: var(--color-accent);
+}
+
+.dropdownItemActive {
+  background: rgba(13, 59, 102, 0.08);
+  color: var(--color-accent);
+}
+
+/* Mobile Dropdown */
+.mobileDropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileDropdownToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+}
+
+.mobileDropdownMenu {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.mobileDropdownItem {
+  display: block;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mobileDropdownItem:hover {
+  background: rgba(13, 59, 102, 0.06);
+  color: var(--color-accent);
+}
+
+/* Logout button */
+.logoutBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0.35rem 0.2rem;
+}
+
+.logoutBtn:hover {
+  color: #dc2626;
+}
