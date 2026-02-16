@@ -1,65 +1,212 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./UpdateProfile.css";
+import { supabase } from "../lib/supabaseClient";
 
-export default function UpdateProfile() {
-  const profilePhotoUrl = useMemo(
-    () =>
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBlf6OZ2nPJdzVwKTcsQhy0YhLT9LGlKXYGKWnoYuTAAygp0W9JmKcsXuor9qUcI_whjed1G5ALWtsNfglIJxAWi7tfBl8WhuS9JxI5qxluxO9l6xyKNXuguMD73rSKMrJPVk_403uHp3Vm9dbA1QjUrhSbZNeihDDeXyLrcbuTagqUbkQ90O_RkRvRAu1AFRNXxTA_mANmxIoNY-d5g4zEKcmQG8yluwyYwP9Ymcv_VClR-IR3nZ3GTpweBj1nxyioy2srrfGUq8o",
-    [],
-  );
+const DEFAULT_PROFILE_PHOTO =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuBlf6OZ2nPJdzVwKTcsQhy0YhLT9LGlKXYGKWnoYuTAAygp0W9JmKcsXuor9qUcI_whjed1G5ALWtsNfglIJxAWi7tfBl8WhuS9JxI5qxluxO9l6xyKNXuguMD73rSKMrJPVk_403uHp3Vm9dbA1QjUrhSbZNeihDDeXyLrcbuTagqUbkQ90O_RkRvRAu1AFRNXxTA_mANmxIoNY-d5g4zEKcmQG8yluwyYwP9Ymcv_VClR-IR3nZ3GTpweBj1nxyioy2srrfGUq8o";
 
-  const [form, setForm] = useState({
-    fullName: "Sarah Jenkins",
-    email: "sarah.j@biliquant.org",
-    gender: "female",
-    phone: "",
-    dateOfBirth: "",
-    allergies: "",
-    medicalHistory:
-      "Brief summary of relevant medical history, previous diagnoses, or perinatal events.",
+const EMPTY_FORM = {
+  fullName: "",
+  email: "",
+  gender: "unknown",
+  phone: "",
+  dateOfBirth: "",
+  allergies: "",
+  medicalHistory: "",
+  currentPassword: "",
+  newPassword: "",
+  confirmPassword: "",
+};
+
+function mapUserToForm(user) {
+  const metadata = user?.user_metadata ?? {};
+
+  return {
+    fullName: metadata.full_name ?? "",
+    email: user?.email ?? "",
+    gender: metadata.gender ?? "unknown",
+    phone: metadata.phone ?? "",
+    dateOfBirth: metadata.date_of_birth ?? "",
+    allergies: metadata.allergies ?? "",
+    medicalHistory: metadata.medical_history ?? "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
-  });
+  };
+}
+
+function metadataFromForm(form) {
+  return {
+    full_name: form.fullName.trim(),
+    gender: form.gender,
+    phone: form.phone.trim(),
+    date_of_birth: form.dateOfBirth,
+    allergies: form.allergies.trim(),
+    medical_history: form.medicalHistory.trim(),
+  };
+}
+
+export default function UpdateProfile() {
+  const fallbackPhotoUrl = useMemo(() => DEFAULT_PROFILE_PHOTO, []);
+
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [savedForm, setSavedForm] = useState(EMPTY_FORM);
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState(fallbackPhotoUrl);
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    const loadProfile = async () => {
+      setLoading(true);
+      setError("");
+
+      const { data, error: getUserError } = await supabase.auth.getUser();
+
+      if (getUserError || !data?.user) {
+        setError(getUserError?.message ?? "Unable to load user profile.");
+        setLoading(false);
+        return;
+      }
+
+      const loadedForm = mapUserToForm(data.user);
+      setForm(loadedForm);
+      setSavedForm(loadedForm);
+      setProfilePhotoUrl(data.user.user_metadata?.avatar_url || fallbackPhotoUrl);
+      setLoading(false);
+    };
+
+    loadProfile();
+  }, [fallbackPhotoUrl]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
+    setError("");
+    setSuccess("");
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const safeForm = { ...form };
-    delete safeForm.currentPassword;
-    delete safeForm.newPassword;
-    delete safeForm.confirmPassword;
-    console.log("UpdateProfile submitted:", safeForm);
-    alert("Saved (demo). Wire this to your backend when ready.");
+    setError("");
+    setSuccess("");
+
+    const hasPasswordInput =
+      form.currentPassword || form.newPassword || form.confirmPassword;
+
+    if (form.medicalHistory.trim().length > 250) {
+      setError("Patient background must be 250 characters or less.");
+      return;
+    }
+
+    if (hasPasswordInput) {
+      if (!form.currentPassword || !form.newPassword || !form.confirmPassword) {
+        setError("Fill all password fields to change your password.");
+        return;
+      }
+
+      if (form.newPassword !== form.confirmPassword) {
+        setError("New password and confirmation do not match.");
+        return;
+      }
+
+      if (form.newPassword.length < 6) {
+        setError("New password must be at least 6 characters.");
+        return;
+      }
+    }
+
+    setSaving(true);
+
+    try {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData?.user) {
+        throw new Error(userError?.message ?? "Unable to identify current user.");
+      }
+
+      const currentUser = userData.user;
+      const isEmailChanged =
+        form.email.trim() &&
+        form.email.trim().toLowerCase() !== (currentUser.email ?? "").toLowerCase();
+
+      if (hasPasswordInput || isEmailChanged) {
+        if (!form.currentPassword) {
+          throw new Error("Current password is required to change email or password.");
+        }
+
+        const { error: reauthError } = await supabase.auth.signInWithPassword({
+          email: currentUser.email,
+          password: form.currentPassword,
+        });
+
+        if (reauthError) {
+          throw new Error("Current password is incorrect.");
+        }
+      }
+
+      const profilePayload = {
+        data: metadataFromForm(form),
+      };
+
+      if (isEmailChanged) {
+        profilePayload.email = form.email.trim();
+      }
+
+      const { error: profileUpdateError } = await supabase.auth.updateUser(profilePayload);
+
+      if (profileUpdateError) {
+        throw new Error(profileUpdateError.message);
+      }
+
+      if (hasPasswordInput) {
+        const { error: passwordUpdateError } = await supabase.auth.updateUser({
+          password: form.newPassword,
+        });
+
+        if (passwordUpdateError) {
+          throw new Error(passwordUpdateError.message);
+        }
+      }
+
+      const { data: refreshedData, error: refreshedError } = await supabase.auth.getUser();
+      if (refreshedError || !refreshedData?.user) {
+        throw new Error(refreshedError?.message ?? "Profile updated but reload failed.");
+      }
+
+      const refreshedForm = mapUserToForm(refreshedData.user);
+      setForm(refreshedForm);
+      setSavedForm(refreshedForm);
+      setProfilePhotoUrl(
+        refreshedData.user.user_metadata?.avatar_url || fallbackPhotoUrl,
+      );
+
+      if (isEmailChanged) {
+        setSuccess(
+          "Profile updated. Check your inbox to confirm the new email address.",
+        );
+      } else {
+        setSuccess("Profile updated successfully.");
+      }
+    } catch (submitError) {
+      setError(submitError.message || "Failed to update profile.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const onCancel = () => {
-    setForm({
-      fullName: "Sarah Jenkins",
-      email: "sarah.j@biliquant.org",
-      gender: "female",
-      phone: "",
-      dateOfBirth: "",
-      allergies: "",
-      medicalHistory:
-        "Brief summary of relevant medical history, previous diagnoses, or perinatal events.",
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+    setForm(savedForm);
+    setError("");
+    setSuccess("");
   };
 
   return (
     <main className="update-profile">
       <div className="up-main">
         <div className="up-layout">
-          <aside className="up-sidebar">
-            
-          </aside>
+          <aside className="up-sidebar"></aside>
 
           <section className="up-card" aria-label="Profile settings">
             <div className="up-card-head">
@@ -118,6 +265,12 @@ export default function UpdateProfile() {
               <div className="up-divider" role="separator" />
 
               <form className="up-form" onSubmit={onSubmit}>
+                {loading && <p className="up-status">Loading profile...</p>}
+                {error && <p className="up-status up-status-error">{error}</p>}
+                {success && (
+                  <p className="up-status up-status-success">{success}</p>
+                )}
+
                 <div className="up-grid">
                   <div className="up-field">
                     <label className="up-label" htmlFor="fullName">
@@ -131,6 +284,7 @@ export default function UpdateProfile() {
                       placeholder="e.g. Sarah Jenkins"
                       value={form.fullName}
                       onChange={onChange}
+                      disabled={loading || saving}
                     />
                   </div>
 
@@ -146,6 +300,7 @@ export default function UpdateProfile() {
                       placeholder="sarah.j@biliquant.org"
                       value={form.email}
                       onChange={onChange}
+                      disabled={loading || saving}
                     />
                   </div>
 
@@ -160,6 +315,7 @@ export default function UpdateProfile() {
                         className="up-select"
                         value={form.gender}
                         onChange={onChange}
+                        disabled={loading || saving}
                       >
                         <option value="female">Female</option>
                         <option value="male">Male</option>
@@ -184,6 +340,7 @@ export default function UpdateProfile() {
                       placeholder="+1 (555) 000-0000"
                       value={form.phone}
                       onChange={onChange}
+                      disabled={loading || saving}
                     />
                   </div>
 
@@ -198,6 +355,7 @@ export default function UpdateProfile() {
                       type="date"
                       value={form.dateOfBirth}
                       onChange={onChange}
+                      disabled={loading || saving}
                     />
                   </div>
 
@@ -213,6 +371,7 @@ export default function UpdateProfile() {
                       placeholder="e.g. Penicillin, peanuts"
                       value={form.allergies}
                       onChange={onChange}
+                      disabled={loading || saving}
                     />
                   </div>
 
@@ -229,6 +388,7 @@ export default function UpdateProfile() {
                         type="password"
                         value={form.currentPassword}
                         onChange={onChange}
+                        disabled={loading || saving}
                       />
                     </div>
 
@@ -243,6 +403,7 @@ export default function UpdateProfile() {
                         type="password"
                         value={form.newPassword}
                         onChange={onChange}
+                        disabled={loading || saving}
                       />
                     </div>
 
@@ -257,11 +418,12 @@ export default function UpdateProfile() {
                         type="password"
                         value={form.confirmPassword}
                         onChange={onChange}
+                        disabled={loading || saving}
                       />
                     </div>
 
                     <p className="up-help">
-                      Leave blank to keep current password.
+                      Enter current password to change email or password.
                     </p>
                   </div>
 
@@ -277,6 +439,8 @@ export default function UpdateProfile() {
                       placeholder="Summarize relevant medical history, perinatal events, or other notes for the care team..."
                       value={form.medicalHistory}
                       onChange={onChange}
+                      maxLength={250}
+                      disabled={loading || saving}
                     />
                     <p className="up-help">
                       Brief medical notes for the patient record. Max 250
@@ -293,6 +457,7 @@ export default function UpdateProfile() {
                       confirm("This is a demo. Confirm delete?") &&
                       alert("Wire delete flow later.")
                     }
+                    disabled={loading || saving}
                   >
                     Delete Account
                   </button>
@@ -302,14 +467,19 @@ export default function UpdateProfile() {
                       type="button"
                       className="up-btn up-btn-outline"
                       onClick={onCancel}
+                      disabled={loading || saving}
                     >
                       Cancel
                     </button>
-                    <button type="submit" className="up-btn up-btn-primary">
+                    <button
+                      type="submit"
+                      className="up-btn up-btn-primary"
+                      disabled={loading || saving}
+                    >
                       <span className="material-symbols-outlined">
                         check_circle
                       </span>
-                      Save Changes
+                      {saving ? "Saving..." : "Save Changes"}
                     </button>
                   </div>
                 </div>
