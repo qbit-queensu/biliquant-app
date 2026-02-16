@@ -8,9 +8,7 @@ function AboutQBiT() {
         {/* Hero Section */}
         <section className={styles.heroSection}>
           <div>
-            <h1 className={styles.heroTitle}>
-              About Us
-            </h1>
+            <h1 className={styles.heroTitle}>About Us</h1>
             <p className={styles.heroSubtitle}>
               Fostering biomedical innovation through interdisciplinary
               collaboration at Queen's University. We believe in education
@@ -29,53 +27,6 @@ function AboutQBiT() {
           role="img"
           aria-label="A diverse group of students collaborating in a modern lab setting, focused on a biomedical device."
         />
-
-        {/* Mission & Vision Section */}
-        <section className={styles.section}>
-          <div>
-            <h2 className={styles.sectionTitle}>Our Mission & Vision</h2>
-            <p className={styles.sectionDescription}>
-              Queen's Biomedical Innovation Team (QBiT) is a student-run team dedicated to developing innovative
-              solutions for today's healthcare challenges. Our 'education
-              through application' philosophy empowers students to lead projects
-              from conception to real-world impact.
-            </p>
-          </div>
-          <div className={styles.cardGrid}>
-            <div className={styles.card}>
-              <span className="material-symbols-outlined">groups</span>
-              <div>
-                <h3 className={styles.cardTitle}>
-                  Interdisciplinary Collaboration
-                </h3>
-                <p className={styles.cardText}>
-                  Bringing together students from engineering, life sciences,
-                  and business.
-                </p>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <span className="material-symbols-outlined">model_training</span>
-              <div>
-                <h3 className={styles.cardTitle}>Hands-On Learning</h3>
-                <p className={styles.cardText}>
-                  Gain practical experience by working on real-world biomedical
-                  projects.
-                </p>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <span className="material-symbols-outlined">school</span>
-              <div>
-                <h3 className={styles.cardTitle}>Professional Development</h3>
-                <p className={styles.cardText}>
-                  Participate in conferences, workshops, and build a
-                  professional network.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Projects Section */}
         <section className={styles.projectsSection}>
