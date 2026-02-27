@@ -21,13 +21,6 @@ export default function PatientAnalytics() {
       timeKey: 'time',
       valueKey: 'bilirubin_concentration',
     },
-    {
-      table: 'bilirubin_measurements',
-      childKey: 'child_id',
-      dateKey: 'date',
-      timeKey: 'time',
-      valueKey: 'bilirubin_concentration',
-    },
   ];
 
   const buildMeasurementTimestamp = (entry) => {
