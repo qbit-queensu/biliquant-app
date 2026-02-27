@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import styles from './ChildProfile.module.css';
+import { supabase } from '../lib/supabaseClient';
 
 export default function ChildProfile() {
   const [formData, setFormData] = useState({
     childName: '',
     childGender: '',
     childDateOfBirth: '',
+    childBirthTime: '',
     childWeight: '',
     doctorName: '',
     doctorEmail: '',
     doctorPlaceOfWork: '',
     doctorPhoneNumber: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,6 +24,64 @@ export default function ChildProfile() {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        setError('You must be logged in');
+        setLoading(false);
+        return;
+      }
+
+      // Insert child profile
+      const { data, error: dbError } = await supabase
+        .from('children')
+        .insert([
+          {
+            user_id: user.id,
+            child_name: formData.childName,
+            child_gender: formData.childGender,
+            child_date_of_birth: formData.childDateOfBirth,
+            child_birth_time: formData.childBirthTime,
+            child_weight: formData.childWeight,
+            doctor_name: formData.doctorName,
+            doctor_email: formData.doctorEmail,
+            doctor_place_of_work: formData.doctorPlaceOfWork,
+            doctor_phone_number: formData.doctorPhoneNumber
+          }
+        ])
+        .select();
+
+      if (dbError) throw dbError;
+      
+      setSuccess('Profile saved successfully!');
+      // Reset form
+      setFormData({
+        childName: '',
+        childGender: '',
+        childDateOfBirth: '',
+        childBirthTime: '',
+        childWeight: '',
+        doctorName: '',
+        doctorEmail: '',
+        doctorPlaceOfWork: '',
+        doctorPhoneNumber: ''
+      });
+    } catch (err) {
+      setError(err.message);
+      console.error('Error saving profile:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -41,7 +104,10 @@ export default function ChildProfile() {
             <h1 className={styles.profileTitle}>Child A</h1>
           </div>
 
-          <form className={styles.form}>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            {error && <div className={styles.errorMessage}>{error}</div>}
+            {success && <div className={styles.successMessage}>{success}</div>}
+            
             <section className={styles.formSection}>
               <h2 className={styles.sectionTitle}>Basic Information</h2>
               
@@ -82,6 +148,18 @@ export default function ChildProfile() {
                     id="childDateOfBirth"
                     name="childDateOfBirth"
                     value={formData.childDateOfBirth}
+                    onChange={handleInputChange}
+                    className={styles.input}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="childBirthTime" className={styles.label}>Birth Time:</label>
+                  <input
+                    type="time"
+                    id="childBirthTime"
+                    name="childBirthTime"
+                    value={formData.childBirthTime}
                     onChange={handleInputChange}
                     className={styles.input}
                   />
@@ -159,6 +237,12 @@ export default function ChildProfile() {
                 </div>
               </div>
             </section>
+
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.submitButton} disabled={loading}>
+                {loading ? 'Saving...' : 'Save Profile'}
+              </button>
+            </div>
           </form>
         </div>
       </div>
