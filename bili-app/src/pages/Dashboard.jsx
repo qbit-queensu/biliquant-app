@@ -67,7 +67,7 @@ export default function Dashboard() {
                 <span>Age</span>
                 <button
                   className="link-btn"
-                  onClick={() => navigate(`/patient/${id}`)}
+                  onClick={() => navigate(`/home/patient_analytics?childId=${id}`)}
                 >
                   See Details
                 </button>

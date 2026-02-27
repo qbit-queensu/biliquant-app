@@ -24,7 +24,6 @@ function Navbar() {
   };
 
   const navItems = [
-    { to: "/home/patient_analytics", label: "Patient Analytics" },
     { to: "/home/jaundice", label: "Jaundice Guide" },
     { to: "/home/update-profile", label: "Profile" },
   ];
