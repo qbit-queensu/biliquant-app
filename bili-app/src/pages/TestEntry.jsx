@@ -6,6 +6,7 @@ export default function TestEntry() {
   const [formData, setFormData] = useState({
     patientId: "",
     date: "",
+    time: "",
     bilirubinConcentration: "",
     notes: "",
   });
@@ -31,6 +32,7 @@ export default function TestEntry() {
         {
           patient_id: formData.patientId,
           date: formData.date,
+          time: formData.time,
           bilirubin_concentration: parseFloat(formData.bilirubinConcentration),
           notes: formData.notes,
         },
@@ -46,6 +48,7 @@ export default function TestEntry() {
       setFormData({
         patientId: "",
         date: "",
+        time: "",
         bilirubinConcentration: "",
         notes: "",
       });
@@ -88,6 +91,15 @@ export default function TestEntry() {
             type="date"
             name="date"
             value={formData.date}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Time of Test</label>
+          <input
+            type="time"
+            name="time"
+            value={formData.time}
             onChange={handleChange}
             required
           />
