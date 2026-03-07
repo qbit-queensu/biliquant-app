@@ -209,10 +209,10 @@ export default function Dashboard() {
             ) : (
               filteredPatients.map((patient) => (
                 <div key={patient.id} className="table-row three-col">
-                  <span>{patient.childName || 'Unnamed Patient'}</span>
+                  <span>{patient.child_name || 'Unknown Patient'}</span>
                   <span>
-                    {patient.childDateOfBirth 
-                      ? calculateAge(patient.childDateOfBirth) + ' years' 
+                    {patient.child_gender
+                      ? patient.child_gender.charAt(0).toUpperCase() + patient.child_gender.slice(1)
                       : 'N/A'}
                   </span>
                   <button
