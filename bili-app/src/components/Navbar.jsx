@@ -26,9 +26,14 @@ function Navbar() {
   };
 
   const navItems = [
+<<<<<<< HEAD
     { to: "/home/patient_analytics", label: t("nav.patientAnalytics") },
     { to: "/home/jaundice", label: t("nav.jaundiceGuide") },
     { to: "/home/update-profile", label: t("nav.profile") },
+=======
+    { to: "/home/jaundice", label: "Jaundice Guide" },
+    { to: "/home/update-profile", label: "Profile" },
+>>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
   ];
 
   const dropdownItems = [
