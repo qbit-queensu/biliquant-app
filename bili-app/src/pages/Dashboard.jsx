@@ -184,24 +184,13 @@ export default function Dashboard() {
             ) : (
               filteredPatients.map((patient) => (
                 <div key={patient.id} className="table-row three-col">
-<<<<<<< HEAD
                   <span>{patient.child_name || t("dashboard.unknownPatient")}</span>
                   <span>{translateGender(patient.child_gender)}</span>
-                  <button className="link-btn" onClick={() => navigate(`/patient/${patient.id}`)}>
-                    {t("dashboard.seeDetails")}
-=======
-                  <span>{patient.child_name || 'Unknown Patient'}</span>
-                  <span>
-                    {patient.child_gender
-                      ? patient.child_gender.charAt(0).toUpperCase() + patient.child_gender.slice(1)
-                      : 'N/A'}
-                  </span>
                   <button
                     className="link-btn"
                     onClick={() => navigate(`/home/patient_analytics?childId=${patient.id}`)}
                   >
-                    See Details
->>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
+                    {t("dashboard.seeDetails")}
                   </button>
                 </div>
               ))

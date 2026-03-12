@@ -1,17 +1,40 @@
-<<<<<<< HEAD
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import styles from "./PatientAnalytics.module.css";
 import { useLanguage } from "../context/LanguageContext";
+import { supabase } from "../lib/supabaseClient";
+
+const measurementSources = [
+  {
+    table: "test_entries",
+    childKey: "patient_id",
+    dateKey: "date",
+    timeKey: "time",
+    valueKey: "bilirubin_concentration",
+  },
+];
+
+function buildMeasurementTimestamp(entry) {
+  const dateValue = entry.date || null;
+  const timeValue = entry.time || null;
+
+  if (dateValue && timeValue) {
+    return new Date(`${dateValue}T${timeValue}`);
+  }
+
+  if (dateValue) {
+    return new Date(`${dateValue}T00:00:00`);
+  }
+
+  if (entry.created_at) {
+    return new Date(entry.created_at);
+  }
+
+  return null;
+}
 
 export default function PatientAnalytics() {
   const { t } = useLanguage();
-=======
-import React, { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import styles from './PatientAnalytics.module.css';
-import { supabase } from "../lib/supabaseClient";
-
-export default function PatientAnalytics() {
   const [searchParams] = useSearchParams();
   const [childId, setChildId] = useState(null);
   const [childBirthDate, setChildBirthDate] = useState(null);
@@ -19,40 +42,11 @@ export default function PatientAnalytics() {
   const [measurements, setMeasurements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const requestedChildId = searchParams.get('childId');
-
-  const measurementSources = [
-    {
-      table: 'test_entries',
-      childKey: 'patient_id',
-      dateKey: 'date',
-      timeKey: 'time',
-      valueKey: 'bilirubin_concentration',
-    },
-  ];
-
-  const buildMeasurementTimestamp = (entry) => {
-    const dateValue = entry.date || null;
-    const timeValue = entry.time || null;
-
-    if (dateValue && timeValue) {
-      return new Date(`${dateValue}T${timeValue}`);
-    }
-
-    if (dateValue) {
-      return new Date(`${dateValue}T00:00:00`);
-    }
-
-    if (entry.created_at) {
-      return new Date(entry.created_at);
-    }
-
-    return null;
-  };
+  const requestedChildId = searchParams.get("childId");
 
   const buildBirthTimestamp = () => {
     if (!childBirthDate) return null;
-    const timePart = childBirthTime || '00:00:00';
+    const timePart = childBirthTime || "00:00:00";
     const timestamp = new Date(`${childBirthDate}T${timePart}`);
     return Number.isNaN(timestamp.getTime()) ? null : timestamp;
   };
@@ -85,7 +79,7 @@ export default function PatientAnalytics() {
         continue;
       }
 
-      const normalized = (data || [])
+      return (data || [])
         .map((item) => ({
           id: item.id,
           value: Number(item[valueKey]),
@@ -94,8 +88,6 @@ export default function PatientAnalytics() {
           created_at: item.created_at || null,
         }))
         .filter((item) => Number.isFinite(item.value));
-
-      return normalized;
     }
 
     return [];
@@ -114,17 +106,17 @@ export default function PatientAnalytics() {
         }
 
         if (!authData?.user) {
-          throw new Error('You must be logged in to view analytics.');
+          throw new Error(t("patientAnalytics.loginRequired"));
         }
 
         let childData = null;
 
         if (requestedChildId) {
           const { data: selectedChild, error: selectedChildError } = await supabase
-            .from('children')
-            .select('id, child_date_of_birth, child_birth_time')
-            .eq('user_id', authData.user.id)
-            .eq('id', requestedChildId)
+            .from("children")
+            .select("id, child_date_of_birth, child_birth_time")
+            .eq("user_id", authData.user.id)
+            .eq("id", requestedChildId)
             .maybeSingle();
 
           if (selectedChildError) {
@@ -136,10 +128,10 @@ export default function PatientAnalytics() {
 
         if (!childData) {
           const { data: latestChild, error: childError } = await supabase
-            .from('children')
-            .select('id, child_date_of_birth, child_birth_time')
-            .eq('user_id', authData.user.id)
-            .order('updated_at', { ascending: false })
+            .from("children")
+            .select("id, child_date_of_birth, child_birth_time")
+            .eq("user_id", authData.user.id)
+            .order("updated_at", { ascending: false })
             .limit(1)
             .maybeSingle();
 
@@ -151,15 +143,14 @@ export default function PatientAnalytics() {
         }
 
         if (!childData?.id) {
-          throw new Error('No child profile found for this account.');
+          throw new Error(t("patientAnalytics.noChildProfile"));
         }
 
         setChildId(childData.id);
-  setChildBirthDate(childData.child_date_of_birth || null);
-  setChildBirthTime(childData.child_birth_time || null);
+        setChildBirthDate(childData.child_date_of_birth || null);
+        setChildBirthTime(childData.child_birth_time || null);
 
         const measurementData = await fetchMeasurements(childData.id);
-
         measurementData.sort((a, b) => {
           const aTime = buildMeasurementTimestamp(a)?.getTime() || 0;
           const bTime = buildMeasurementTimestamp(b)?.getTime() || 0;
@@ -168,20 +159,20 @@ export default function PatientAnalytics() {
 
         setMeasurements(measurementData);
       } catch (loadError) {
-        setError(loadError.message || 'Unable to load analytics.');
+        setError(loadError.message || t("patientAnalytics.loadError"));
       } finally {
         setLoading(false);
       }
     };
 
     loadPatientAnalytics();
-  }, [requestedChildId]);
+  }, [requestedChildId, t]);
 
   const latestMeasurement = measurements[0] || null;
 
   const trendSummary = useMemo(() => {
     if (measurements.length < 2) {
-      return 'Not enough entries yet to determine a trend.';
+      return t("patientAnalytics.trendInsufficient");
     }
 
     const latest = measurements[0].value;
@@ -189,15 +180,15 @@ export default function PatientAnalytics() {
     const diff = Number((latest - previous).toFixed(2));
 
     if (diff > 0) {
-      return `Up by ${diff} mg/dl from the previous test.`;
+      return t("patientAnalytics.trendUp", { diff });
     }
 
     if (diff < 0) {
-      return `Down by ${Math.abs(diff)} mg/dl from the previous test.`;
+      return t("patientAnalytics.trendDown", { diff: Math.abs(diff) });
     }
 
-    return 'Stable compared with the previous test.';
-  }, [measurements]);
+    return t("patientAnalytics.trendStable");
+  }, [measurements, t]);
 
   const chartData = useMemo(() => {
     const birthTimestamp = buildBirthTimestamp();
@@ -211,14 +202,14 @@ export default function PatientAnalytics() {
 
     if (!sorted.length) {
       return {
-        points: '',
+        points: "",
         circles: [],
-        yTicks: [0, 1, 2, 3, 4].map((i) => ({ y: 50 + i * 50, label: '' })),
+        yTicks: [0, 1, 2, 3, 4].map((i) => ({ y: 50 + i * 50, label: "" })),
       };
     }
 
-    const minValue = Math.min(...sorted.map((d) => d.value));
-    const maxValue = Math.max(...sorted.map((d) => d.value));
+    const minValue = Math.min(...sorted.map((item) => item.value));
+    const maxValue = Math.max(...sorted.map((item) => item.value));
     const range = Math.max(maxValue - minValue, 1);
 
     const xStart = 100;
@@ -227,17 +218,22 @@ export default function PatientAnalytics() {
     const yBottom = 230;
 
     const points = sorted.map((item, index) => {
-      const x = sorted.length === 1
-        ? (xStart + xEnd) / 2
-        : xStart + (index * (xEnd - xStart)) / (sorted.length - 1);
+      const x =
+        sorted.length === 1
+          ? (xStart + xEnd) / 2
+          : xStart + (index * (xEnd - xStart)) / (sorted.length - 1);
       const y = yBottom - ((item.value - minValue) / range) * (yBottom - yTop);
       const measurementTimestamp = buildMeasurementTimestamp(item);
-      const postnatalHours = birthTimestamp && measurementTimestamp
-        ? Math.max(
-            0,
-            Math.round((measurementTimestamp.getTime() - birthTimestamp.getTime()) / (1000 * 60 * 60))
-          )
-        : null;
+      const postnatalHours =
+        birthTimestamp && measurementTimestamp
+          ? Math.max(
+              0,
+              Math.round(
+                (measurementTimestamp.getTime() - birthTimestamp.getTime()) / (1000 * 60 * 60),
+              ),
+            )
+          : null;
+
       return { ...item, x, y, postnatalHours };
     });
 
@@ -249,7 +245,7 @@ export default function PatientAnalytics() {
     });
 
     return {
-      points: points.map((p) => `${p.x},${p.y}`).join(' '),
+      points: points.map((point) => `${point.x},${point.y}`).join(" "),
       circles: points,
       yTicks,
     };
@@ -259,63 +255,58 @@ export default function PatientAnalytics() {
     ? (() => {
         const timestamp = buildMeasurementTimestamp(latestMeasurement);
         if (!timestamp || Number.isNaN(timestamp.getTime())) {
-          return 'Date/time unavailable';
+          return t("patientAnalytics.dateUnavailable");
         }
         return timestamp.toLocaleString();
       })()
-    : 'No measurements yet';
->>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
+    : t("patientAnalytics.noMeasurements");
 
   return (
     <div className={styles.page}>
       <div className={styles.pageContainer}>
         <div className={styles.headerSection}>
-<<<<<<< HEAD
           <h1 className={styles.pageTitle}>{t("patientAnalytics.title")}</h1>
-          <button className={styles.editLink}>{t("patientAnalytics.editCharts")}</button>
-=======
-          <h1 className={styles.pageTitle}>{childId ? `Child ID: ${childId}` : 'Child ID unavailable'}</h1>
->>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
+          <span className={styles.editLink}>
+            {childId
+              ? t("patientAnalytics.childIdLabel", { childId })
+              : t("patientAnalytics.childIdUnavailable")}
+          </span>
         </div>
 
         <div className={styles.cardsGrid}>
           <div className={styles.card}>
             <div className={styles.cardContent}>
-<<<<<<< HEAD
               <p className={styles.cardLabel}>{t("patientAnalytics.bilirubinLabel")}</p>
-              <p className={styles.bilirubinValue}>8 mg/dl</p>
-              <p className={styles.riskZone}>{t("patientAnalytics.riskZone")}</p>
-              <p className={styles.measurementDate}>{t("patientAnalytics.measuredOn")}</p>
-=======
-              <p className={styles.cardLabel}>Your child's bilirubin level is</p>
               <p className={styles.bilirubinValue}>
-                {loading ? 'Loading...' : latestMeasurement ? `${latestMeasurement.value} mg/dl` : '--'}
+                {loading
+                  ? t("common.loading")
+                  : latestMeasurement
+                    ? `${latestMeasurement.value} mg/dl`
+                    : "--"}
               </p>
               <p className={styles.riskZone}>{trendSummary}</p>
-              <p className={styles.measurementDate}>Measured on {formattedTimestamp}</p>
-              {error && <p className={styles.errorText}>{error}</p>}
->>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
+              <p className={styles.measurementDate}>
+                {t("patientAnalytics.measuredOnWithDate", { date: formattedTimestamp })}
+              </p>
+              {error ? <p className={styles.errorText}>{error}</p> : null}
             </div>
-            <button className={styles.actionButton}>{t("patientAnalytics.learnMore")}</button>
+            <button type="button" className={styles.actionButton}>
+              {t("patientAnalytics.learnMore")}
+            </button>
           </div>
 
           <div className={styles.card}>
             <h3 className={styles.trendTitle}>{t("patientAnalytics.trendTitle")}</h3>
             <div className={styles.chartContainer}>
               <svg className={styles.chart} viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet">
-<<<<<<< HEAD
-                {[0, 1, 2, 3, 4].map((i) => (
-=======
                 <text x="24" y="150" transform="rotate(-90 24 150)" fill="#0D3B66" fontSize="12" fontWeight="600">
-                  Bilirubin (mg/dl)
+                  {t("patientAnalytics.axisBilirubin")}
                 </text>
                 <text x="300" y="292" textAnchor="middle" fill="#0D3B66" fontSize="12" fontWeight="600">
-                  Postnatal age (hours)
+                  {t("patientAnalytics.axisPostnatalAge")}
                 </text>
 
-                {/* Grid lines */}
                 {chartData.yTicks.map((tick, idx) => (
->>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
                   <line
                     key={`h-${idx}`}
                     x1="50"
@@ -326,26 +317,14 @@ export default function PatientAnalytics() {
                     strokeWidth="1"
                   />
                 ))}
-<<<<<<< HEAD
-                {[0, 1, 2, 3, 4].map((i) => (
-=======
 
                 {chartData.yTicks.map((tick, idx) => (
-                  <text
-                    key={`yl-${idx}`}
-                    x="44"
-                    y={tick.y + 4}
-                    textAnchor="end"
-                    fill="#666"
-                    fontSize="10"
-                  >
+                  <text key={`yl-${idx}`} x="44" y={tick.y + 4} textAnchor="end" fill="#666" fontSize="10">
                     {tick.label}
                   </text>
                 ))}
-                
-                {/* Vertical grid lines */}
-                {[0, 1, 2, 3, 4].map(i => (
->>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
+
+                {[0, 1, 2, 3, 4].map((i) => (
                   <line
                     key={`v-${i}`}
                     x1={50 + i * 125}
@@ -356,23 +335,8 @@ export default function PatientAnalytics() {
                     strokeWidth="1"
                   />
                 ))}
-<<<<<<< HEAD
-                <polyline
-                  points="100,200 250,140 400,180 550,80"
-                  fill="none"
-                  stroke="#E88BA8"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx="100" cy="200" r="8" fill="#E88BA8" />
-                <circle cx="250" cy="140" r="8" fill="#E88BA8" />
-                <circle cx="400" cy="180" r="8" fill="#E88BA8" />
-                <circle cx="550" cy="80" r="10" fill="#E88BA8" />
-=======
-                
-                {/* Trend line */}
-                {chartData.points && (
+
+                {chartData.points ? (
                   <polyline
                     points={chartData.points}
                     fill="none"
@@ -381,9 +345,8 @@ export default function PatientAnalytics() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                )}
-                
-                {/* Data points */}
+                ) : null}
+
                 {chartData.circles.map((point, index) => (
                   <circle
                     key={point.id || index}
@@ -403,13 +366,14 @@ export default function PatientAnalytics() {
                     fill="#666"
                     fontSize="10"
                   >
-                    {point.postnatalHours !== null ? point.postnatalHours : '-'}h
+                    {point.postnatalHours !== null ? `${point.postnatalHours}h` : "-"}
                   </text>
                 ))}
->>>>>>> c3fee384068465b38da85525a9522bfeb4efb720
               </svg>
             </div>
-            <button className={styles.actionButton}>{t("patientAnalytics.shareWithDoctor")}</button>
+            <button type="button" className={styles.actionButton}>
+              {t("patientAnalytics.shareWithDoctor")}
+            </button>
           </div>
         </div>
       </div>
