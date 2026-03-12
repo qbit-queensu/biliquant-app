@@ -8,7 +8,7 @@ import { useLanguage } from "../context/LanguageContext";
 
 function LogIn() {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -39,6 +39,23 @@ function LogIn() {
   return (
     <div className="login-wrapper">
       <div className="login-left">
+        <div className="login-language-switch" aria-label={t("common.language")}>
+          <button
+            type="button"
+            className={`login-language-button ${language === "en" ? "login-language-button-active" : ""}`}
+            onClick={() => setLanguage("en")}
+          >
+            EN
+          </button>
+          <button
+            type="button"
+            className={`login-language-button ${language === "fr" ? "login-language-button-active" : ""}`}
+            onClick={() => setLanguage("fr")}
+          >
+            FR
+          </button>
+        </div>
+
         <div className="logo-row">
           <img src={blueLogo} className="logo" alt="BiliQuant logo" />
           <h1 className="logo-text">BiliQuant</h1>
