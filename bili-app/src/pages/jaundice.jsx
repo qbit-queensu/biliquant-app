@@ -1,75 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import './jaundice.css';
-import CountUp from '../components/CountUp';
-import { calculateJaundiceCases } from '../utils/jaundiceCalculator';
+import React, { useState, useEffect } from "react";
+import "./jaundice.css";
+import CountUp from "../components/CountUp";
+import { calculateJaundiceCases } from "../utils/jaundiceCalculator";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function JaundiceGuide() {
+  const { t, getTranslation } = useLanguage();
   const [birthCount, setBirthCount] = useState(25000);
 
-  // Increment birth count at random intervals (1-4 seconds) to simulate live births
   useEffect(() => {
     const scheduleNextIncrement = () => {
-      const delay = Math.random() * 3000 + 1000; // 1-4 seconds
+      const delay = Math.random() * 3000 + 1000;
       setTimeout(() => {
-        setBirthCount(prev => prev + 1);
-        scheduleNextIncrement(); // Schedule next increment
+        setBirthCount((prev) => prev + 1);
+        scheduleNextIncrement();
       }, delay);
     };
     scheduleNextIncrement();
-    return () => {}; // Cleanup handled by not scheduling next
+    return () => {};
   }, []);
 
   const results = calculateJaundiceCases(birthCount);
+  const signs = getTranslation("jaundice.signs");
+  const causes = getTranslation("jaundice.causes");
+  const diagnosis = getTranslation("jaundice.diagnosis");
+  const treatment = getTranslation("jaundice.treatment");
+  const resources = getTranslation("jaundice.resources");
+  const professional = getTranslation("jaundice.professional");
 
   return (
     <div className="page">
-      {/* HERO SECTION */}
       <section className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">Understanding Newborn Jaundice</h1>
+          <h1 className="hero-title">{t("jaundice.heroTitle")}</h1>
           <div className="hero-accent"></div>
-          <p className="hero-subtitle">
-            Neonatal jaundice affects 60% of term infants and 80% of preterm infants.
-            This comprehensive guide provides evidence-based information for parents and caregivers.
-          </p>
-          <button className="hero-button" onClick={() => window.open('/jaundice-guide.pdf', '_blank')}>
-            Download Guide →
+          <p className="hero-subtitle">{t("jaundice.heroSubtitle")}</p>
+          <button className="hero-button" onClick={() => window.open("/jaundice-guide.pdf", "_blank")}>
+            {t("jaundice.downloadGuide")}
           </button>
         </div>
       </section>
 
-      {/* JAUNDICE ESTIMATOR */}
       <section className="estimator-section">
         <div className="estimator-content">
           <div className="estimator-header">
-            <h1 className="estimator-title">Jaundice Case Estimator</h1>
+            <h1 className="estimator-title">{t("jaundice.estimatorTitle")}</h1>
             <div className="title-accent"></div>
           </div>
-          <p className="estimator-text">
-            Using the latest live births data from Statistics Canada to estimate jaundice cases.
-            Based on 60% prevalence for term babies and 80% for preterm babies (assuming 15% preterm).
-          </p>
+          <p className="estimator-text">{t("jaundice.estimatorText")}</p>
 
           <div className="birth-data">
-            <h3>Live Birth Counter - Canada</h3>
+            <h3>{t("jaundice.liveBirthCounter")}</h3>
             <div className="birth-count">
               <CountUp to={birthCount} separator="," className="count-up-text large" />
-              <span className="period"> (Since January 1, 2026)</span>
+              <span className="period"> {t("jaundice.period")}</span>
             </div>
           </div>
           {results.total > 0 && (
             <div className="results">
-              <h3>Neonatal Jaundice Cases (In Canada)</h3>
+              <h3>{t("jaundice.casesTitle")}</h3>
               <div className="result-item total-emphasis">
-                <span>Total Cases: </span>
+                <span>{t("jaundice.totalCases")} </span>
                 <CountUp to={results.total} separator="," className="count-up-text large" />
               </div>
               <div className="result-item">
-                <span>Term Babies: </span>
+                <span>{t("jaundice.termBabies")} </span>
                 <CountUp to={results.term} separator="," className="count-up-text" />
               </div>
               <div className="result-item">
-                <span>Preterm Babies: </span>
+                <span>{t("jaundice.pretermBabies")} </span>
                 <CountUp to={results.preterm} separator="," className="count-up-text" />
               </div>
             </div>
@@ -77,140 +76,108 @@ export default function JaundiceGuide() {
         </div>
       </section>
 
-      {/* WHAT IS JAUNDICE */}
       <section className="jaundice-section">
         <div className="jaundice-content">
           <div className="jaundice-header">
-            <h1 className="jaundice-title">What is Jaundice?</h1>
+            <h1 className="jaundice-title">{t("jaundice.whatIsTitle")}</h1>
             <div className="title-accent"></div>
           </div>
-          <p className="jaundice-text">
-            Bilirubin is produced from the breakdown of hemoglobin when red blood cells reach the end of their lifespan.
-            Newborns produce approximately twice as much bilirubin as adults due to increased red blood cell turnover,
-            immature liver function, and increased enterohepatic circulation. This natural process leads to the visible
-            yellowing of skin and eyes known as jaundice. While most cases resolve naturally, understanding bilirubin
-            metabolism helps parents recognize when medical attention is needed.
-          </p>
+          <p className="jaundice-text">{t("jaundice.whatIsText")}</p>
         </div>
       </section>
 
-      {/* SIGNS TO WATCH FOR */}
       <section className="signs-section">
         <div className="signs-content">
           <div className="signs-header">
-            <h1 className="signs-title">Signs to Watch For</h1>
+            <h1 className="signs-title">{t("jaundice.signsTitle")}</h1>
             <div className="title-accent"></div>
           </div>
           <div className="signs-grid">
-            <div className="sign-card">
-              <div className="sign-icon">👁️</div>
-              <div className="sign-content">
-                <h3>Yellow Skin/Eyes</h3>
-                <p>The most common sign, usually starting on the face and moving down the body.</p>
+            {signs.map((sign, index) => (
+              <div key={sign.title} className="sign-card">
+                <div className="sign-icon">{["👁️", "😴", "🍼"][index]}</div>
+                <div className="sign-content">
+                  <h3>{sign.title}</h3>
+                  <p>{sign.description}</p>
+                </div>
               </div>
-            </div>
-            <div className="sign-card">
-              <div className="sign-icon">😴</div>
-              <div className="sign-content">
-                <h3>Drowsiness</h3>
-                <p>Your baby may be unusually sleepy or difficult to wake for feedings.</p>
-              </div>
-            </div>
-            <div className="sign-card">
-              <div className="sign-icon">🍼</div>
-              <div className="sign-content">
-                <h3>Poor Feeding</h3>
-                <p>Difficulty with breastfeeding or bottle-feeding is a key sign to monitor.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CAUSES AND TYPES */}
       <section className="info-section">
         <div className="info-content">
           <div className="info-header">
-            <h1 className="info-title">Causes and Types</h1>
+            <h1 className="info-title">{t("jaundice.causesTitle")}</h1>
             <div className="title-accent"></div>
           </div>
           <div className="info-text">
-            <h3>Physiological Jaundice</h3>
-            <p>The normal process of RBC breakdown combined with an immature hepatic system. Appears day 2-3 of life, peaks day 5-7, resolves by day 10-14 in term infants.</p>
-
-            <h3>Pathological Jaundice</h3>
-            <p>Results from underlying disease or exceeds age-specific treatment thresholds. Red flags include jaundice within first 24 hours, rapidly rising bilirubin (&gt;8.5 μmol/L/hour), or persistence beyond expected timeframe.</p>
-
-            <h3>Risk Factors</h3>
-            <p>Prematurity, blood group incompatibility, bruising/cephalohematoma, family history of hemolytic disease, exclusive breastfeeding, and gestational age under 38 weeks.</p>
+            {causes.map((item) => (
+              <React.Fragment key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* DIAGNOSIS AND MONITORING */}
       <section className="diagnosis-section">
         <div className="diagnosis-content">
           <div className="diagnosis-header">
-            <h1 className="diagnosis-title">Diagnosis and Monitoring</h1>
+            <h1 className="diagnosis-title">{t("jaundice.diagnosisTitle")}</h1>
             <div className="title-accent"></div>
           </div>
           <div className="diagnosis-text">
-            <h3>Clinical Assessment</h3>
-            <p>Visual inspection in bright light, blanching test, and examination of key areas (sclera, gums, blanched skin).</p>
-
-            <h3>Measurement Methods</h3>
-            <p>Transcutaneous bilirubin (TcB) provides rapid screening, while serum bilirubin (SBR) remains the gold standard for quantification. TcB is excellent for screening when &gt;50 μmol/L below phototherapy threshold.</p>
-
-            <h3>Monitoring Guidelines</h3>
-            <p>All babies &lt;35 weeks gestation require SBR measurement. Term infants with visible jaundice need measurement before discharge, with risk-based follow-up at 24-72 hours.</p>
+            {diagnosis.map((item) => (
+              <React.Fragment key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* TREATMENT OPTIONS */}
       <section className="treatment-section">
         <div className="treatment-content">
           <div className="treatment-header">
-            <h1 className="treatment-title">Treatment Options</h1>
+            <h1 className="treatment-title">{t("jaundice.treatmentTitle")}</h1>
             <div className="title-accent"></div>
           </div>
           <div className="treatment-text">
-            <h3>Phototherapy</h3>
-            <p>Uses visible light (430-490 nm) to convert unconjugated bilirubin into water-soluble isomers. Standard phototherapy reduces bilirubin by 17-34 μmol/L within 4-6 hours. Intensive phototherapy (doubled intensity) reduces levels by 20-40% within 4-6 hours.</p>
-
-            <h3>Exchange Transfusion</h3>
-            <p>Reserved for severe hyperbilirubinemia above exchange thresholds or rapidly rising bilirubin despite intensive phototherapy. Removes ~80 mL/kg of infant's blood, replacing with donor RBCs and plasma.</p>
-
-            <h3>Feeding Support</h3>
-            <p>Adequate feeding is fundamental - promotes bilirubin excretion via stool and prevents dehydration. Lactation consultation recommended for breastfeeding difficulties. Continue breastfeeding during phototherapy.</p>
+            {treatment.map((item) => (
+              <React.Fragment key={item.title}>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* GET SUPPORT */}
       <section className="support-section">
         <div className="support-content">
           <div className="support-header">
-            <h1 className="support-title">Get Support</h1>
+            <h1 className="support-title">{t("jaundice.supportTitle")}</h1>
             <div className="title-accent"></div>
           </div>
           <div className="support-grid">
             <div className="support-card">
-              <h3>📚 Educational Resources</h3>
+              <h3>📚 {t("jaundice.resourcesTitle")}</h3>
               <ul>
-                <li>Understanding Bilirubin Metabolism</li>
-                <li>Phototherapy: What Parents Need to Know</li>
-                <li>Feeding Support for Jaundiced Infants</li>
-                <li>Recognizing Warning Signs</li>
+                {resources.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </div>
             <div className="support-card">
-              <h3>🏥 Professional Support</h3>
+              <h3>🏥 {t("jaundice.professionalTitle")}</h3>
               <ul>
-                <li>24/7 Neonatal Helpline</li>
-                <li>Lactation Consultant Services</li>
-                <li>Follow-up Care Coordination</li>
-                <li>Multidisciplinary Care Team</li>
+                {professional.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </div>
           </div>

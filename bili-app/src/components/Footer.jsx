@@ -1,19 +1,20 @@
 import styles from "./Footer.module.css";
+import { useLanguage } from "../context/LanguageContext";
 
 function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.topSection}>
           <div>
             <h3 className={styles.title}>QBiT</h3>
-            <p className={styles.subtitle}>
-              Queen's Biomedical Innovation Team
-            </p>
+            <p className={styles.subtitle}>{t("footer.subtitle")}</p>
           </div>
           <div className={styles.linksSection}>
             <div className={styles.linkColumn}>
-              <p className={styles.columnTitle}>Explore</p>
+              <p className={styles.columnTitle}>{t("footer.explore")}</p>
               <ul className={styles.linkList}>
                 <li>
                   <a className={styles.link} href="https://www.linkedin.com/company/qbitqueensu/">
@@ -33,7 +34,7 @@ function Footer() {
               </ul>
             </div>
             <div className={styles.linkColumn}>
-              <p className={styles.columnTitle}>Contact</p>
+              <p className={styles.columnTitle}>{t("footer.contact")}</p>
               <ul className={styles.linkList}>
                 <li>
                   <a className={styles.link} href="mailto:qbit@engsoc.queensu.ca">
@@ -43,7 +44,7 @@ function Footer() {
               </ul>
             </div>
             <div className={styles.linkColumn}>
-              <p className={styles.columnTitle}>Affiliations</p>
+              <p className={styles.columnTitle}>{t("footer.affiliations")}</p>
               <ul className={styles.linkList}>
                 <li>
                   <a className={styles.link} href="https://www.queensu.ca/">
@@ -51,17 +52,13 @@ function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a className={styles.subtitle}>
-                    Kingston, ON, Canada
-                  </a>
+                  <a className={styles.subtitle}>{t("footer.location")}</a>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <div className={styles.copyright}>
-          © 2025 Queen's Biomedical Innovation Team. All Rights Reserved.
-        </div>
+        <div className={styles.copyright}>{t("footer.copyright")}</div>
       </div>
     </footer>
   );

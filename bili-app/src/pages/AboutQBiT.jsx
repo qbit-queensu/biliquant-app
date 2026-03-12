@@ -1,23 +1,21 @@
 import styles from "./AboutQBiT.module.css";
 import bilirubenImg from "../assets/bilirubenometer_cartoon.png";
+import { useLanguage } from "../context/LanguageContext";
 
 function AboutQBiT() {
+  const { t, getTranslation } = useLanguage();
+  const projects = getTranslation("about.projects");
+
   return (
     <div className={styles.aboutPage}>
       <div className={styles.container}>
-        {/* Hero Section */}
         <section className={styles.heroSection}>
           <div>
-            <h1 className={styles.heroTitle}>About Us</h1>
-            <p className={styles.heroSubtitle}>
-              Fostering biomedical innovation through interdisciplinary
-              collaboration at Queen's University. We believe in education
-              through application.
-            </p>
+            <h1 className={styles.heroTitle}>{t("about.title")}</h1>
+            <p className={styles.heroSubtitle}>{t("about.subtitle")}</p>
           </div>
         </section>
 
-        {/* Hero Image */}
         <div
           className={styles.heroImage}
           style={{
@@ -25,13 +23,12 @@ function AboutQBiT() {
               'url("https://www.inside.unsw.edu.au/sites/default/files/article/ASB.jpg")',
           }}
           role="img"
-          aria-label="A diverse group of students collaborating in a modern lab setting, focused on a biomedical device."
+          aria-label={t("about.heroImageAlt")}
         />
 
-        {/* Projects Section */}
         <section className={styles.projectsSection}>
           <div>
-            <h2 className={styles.sectionTitle}>Our Innovative Projects</h2>
+            <h2 className={styles.sectionTitle}>{t("about.sectionTitle")}</h2>
             <div className={styles.cardGrid}>
               <div className={styles.projectCard}>
                 <div
@@ -41,40 +38,33 @@ function AboutQBiT() {
                       'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUjFmEaLWWOmUmxj_dZLmjKsMcW7hi2_WXiD9iqozZjIj6fQ_rRPZwt-_4uagk2sYLJJNNn6kxBcCcp_OYDsLa2hlrdDlW9fcJBdtu17aZ_1Km6mWZjFxv7M54u8-IHWyoQ2q788uFlOqmLTc2NvpC8wqeQYobUzfTG1o__iCD4tQSIM8ppHaaNvJxominVG1pBp1X3LrUgg6W8IyKY3CqcZjEYxqbSYm1MXVT9fDDZY6fOYIQNWGnWCvuMYH5RYaaJSCf1-L42GM")',
                   }}
                   role="img"
-                  aria-label="A close-up of a handheld diagnostic device being used in a clinical setting."
+                  aria-label={projects[0].imageAlt}
                 />
                 <div className={styles.projectContent}>
-                  <h3 className={styles.projectTitle}>IODETECT</h3>
-                  <p className={styles.projectDescription}>
-                    A novel device for early detection of iodine deficiency,
-                    aiming to prevent cognitive impairments in developing
-                    regions.
-                  </p>
+                  <h3 className={styles.projectTitle}>{projects[0].title}</h3>
+                  <p className={styles.projectDescription}>{projects[0].description}</p>
                   <a href="#" className={styles.projectLink}>
-                    Learn More →
+                    {t("about.learnMore")}
                   </a>
                 </div>
               </div>
+
               <div className={styles.projectCard}>
                 <div
                   className={styles.projectImage}
-                  style={{
-                    backgroundImage: `url(${bilirubenImg})`,
-                  }}
+                  style={{ backgroundImage: `url(${bilirubenImg})` }}
                   role="img"
-                  aria-label="A medical professional holding a small, portable bilirubinometer near a newborn's forehead."
+                  aria-label={projects[1].imageAlt}
                 />
                 <div className={styles.projectContent}>
-                  <h3 className={styles.projectTitle}>BILIQUANT</h3>
-                  <p className={styles.projectDescription}>
-                    A low-cost, non-invasive bilirubinometer for under-resourced
-                    settings to combat neonatal jaundice.
-                  </p>
+                  <h3 className={styles.projectTitle}>{projects[1].title}</h3>
+                  <p className={styles.projectDescription}>{projects[1].description}</p>
                   <a href="#" className={styles.projectLink}>
-                    Learn More →
+                    {t("about.learnMore")}
                   </a>
                 </div>
               </div>
+
               <div className={styles.projectCard}>
                 <div
                   className={styles.projectImage}
@@ -83,16 +73,13 @@ function AboutQBiT() {
                       'url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_z95mDfv_LjmOLbq-xm99xCZpMruTeGjSJqGBT9gkh1CACaITKGRDw0dQmjq07gk-hVen8JJFlsPc6JWbZ_shIbmE0YmPKfbvol_T2yarmp2yy__hq5fsjz6HWLdGeN6-Uy3bwlpbD5hT1G-31t3cS6Cjzd8NEBkjgpb1dSMS3gQydf99CTzJvFuAbnA1rg66fjGWTRxWf6FPCEERMxZoz33HrYqNf_rfJdsOuj3TrOtiaX6fswptEStV3yFoFiyhguca8Csg6n4")',
                   }}
                   role="img"
-                  aria-label="A person with limited mobility using a sleek, modern robotic arm to grasp a water bottle."
+                  aria-label={projects[2].imageAlt}
                 />
                 <div className={styles.projectContent}>
-                  <h3 className={styles.projectTitle}>A.R.M.</h3>
-                  <p className={styles.projectDescription}>
-                    An assistive robotic arm for individuals with limited
-                    mobility, enhancing independence and quality of life.
-                  </p>
+                  <h3 className={styles.projectTitle}>{projects[2].title}</h3>
+                  <p className={styles.projectDescription}>{projects[2].description}</p>
                   <a href="#" className={styles.projectLink}>
-                    Learn More →
+                    {t("about.learnMore")}
                   </a>
                 </div>
               </div>

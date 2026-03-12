@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./UpdateProfile.css";
 import { supabase } from "../lib/supabaseClient";
+import { useLanguage } from "../context/LanguageContext";
 
 const DEFAULT_PROFILE_PHOTO =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBlf6OZ2nPJdzVwKTcsQhy0YhLT9LGlKXYGKWnoYuTAAygp0W9JmKcsXuor9qUcI_whjed1G5ALWtsNfglIJxAWi7tfBl8WhuS9JxI5qxluxO9l6xyKNXuguMD73rSKMrJPVk_403uHp3Vm9dbA1QjUrhSbZNeihDDeXyLrcbuTagqUbkQ90O_RkRvRAu1AFRNXxTA_mANmxIoNY-d5g4zEKcmQG8yluwyYwP9Ymcv_VClR-IR3nZ3GTpweBj1nxyioy2srrfGUq8o";
@@ -48,6 +49,7 @@ function metadataFromForm(form) {
 
 export default function UpdateProfile() {
   const fallbackPhotoUrl = useMemo(() => DEFAULT_PROFILE_PHOTO, []);
+  const { t } = useLanguage();
 
   const [form, setForm] = useState(EMPTY_FORM);
   const [savedForm, setSavedForm] = useState(EMPTY_FORM);
@@ -66,7 +68,7 @@ export default function UpdateProfile() {
       const { data, error: getUserError } = await supabase.auth.getUser();
 
       if (getUserError || !data?.user) {
-        setError(getUserError?.message ?? "Unable to load user profile.");
+        setError(getUserError?.message ?? t("updateProfile.loadError"));
         setLoading(false);
         return;
       }
@@ -79,7 +81,7 @@ export default function UpdateProfile() {
     };
 
     loadProfile();
-  }, [fallbackPhotoUrl]);
+  }, [fallbackPhotoUrl, t]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -97,23 +99,23 @@ export default function UpdateProfile() {
       form.currentPassword || form.newPassword || form.confirmPassword;
 
     if (form.medicalHistory.trim().length > 250) {
-      setError("Patient background must be 250 characters or less.");
+      setError(t("updateProfile.patientBackgroundTooLong"));
       return;
     }
 
     if (hasPasswordInput) {
       if (!form.currentPassword || !form.newPassword || !form.confirmPassword) {
-        setError("Fill all password fields to change your password.");
+        setError(t("updateProfile.fillAllPasswordFields"));
         return;
       }
 
       if (form.newPassword !== form.confirmPassword) {
-        setError("New password and confirmation do not match.");
+        setError(t("updateProfile.passwordMismatch"));
         return;
       }
 
       if (form.newPassword.length < 6) {
-        setError("New password must be at least 6 characters.");
+        setError(t("updateProfile.passwordTooShort"));
         return;
       }
     }
@@ -123,7 +125,7 @@ export default function UpdateProfile() {
     try {
       const { data: userData, error: userError } = await supabase.auth.getUser();
       if (userError || !userData?.user) {
-        throw new Error(userError?.message ?? "Unable to identify current user.");
+        throw new Error(userError?.message ?? t("updateProfile.identifyUserError"));
       }
 
       const currentUser = userData.user;
@@ -133,7 +135,7 @@ export default function UpdateProfile() {
 
       if (hasPasswordInput || isEmailChanged) {
         if (!form.currentPassword) {
-          throw new Error("Current password is required to change email or password.");
+          throw new Error(t("updateProfile.currentPasswordRequired"));
         }
 
         const { error: reauthError } = await supabase.auth.signInWithPassword({
@@ -142,7 +144,7 @@ export default function UpdateProfile() {
         });
 
         if (reauthError) {
-          throw new Error("Current password is incorrect.");
+          throw new Error(t("updateProfile.currentPasswordIncorrect"));
         }
       }
 
@@ -172,7 +174,7 @@ export default function UpdateProfile() {
 
       const { data: refreshedData, error: refreshedError } = await supabase.auth.getUser();
       if (refreshedError || !refreshedData?.user) {
-        throw new Error(refreshedError?.message ?? "Profile updated but reload failed.");
+        throw new Error(refreshedError?.message ?? t("updateProfile.refreshFailed"));
       }
 
       const refreshedForm = mapUserToForm(refreshedData.user);
@@ -183,14 +185,12 @@ export default function UpdateProfile() {
       );
 
       if (isEmailChanged) {
-        setSuccess(
-          "Profile updated. Check your inbox to confirm the new email address.",
-        );
+        setSuccess(t("updateProfile.emailConfirmSuccess"));
       } else {
-        setSuccess("Profile updated successfully.");
+        setSuccess(t("updateProfile.success"));
       }
     } catch (submitError) {
-      setError(submitError.message || "Failed to update profile.");
+      setError(submitError.message || t("updateProfile.genericError"));
     } finally {
       setSaving(false);
     }
@@ -208,13 +208,10 @@ export default function UpdateProfile() {
         <div className="up-layout">
           <aside className="up-sidebar"></aside>
 
-          <section className="up-card" aria-label="Profile settings">
+          <section className="up-card" aria-label={t("updateProfile.ariaProfileSettings")}>
             <div className="up-card-head">
-              <h1 className="up-title">Profile Settings</h1>
-              <p className="up-subtitle">
-                Keep your patient information up to date to ensure timely and
-                safe care.
-              </p>
+              <h1 className="up-title">{t("updateProfile.settingsTitle")}</h1>
+              <p className="up-subtitle">{t("updateProfile.settingsSubtitle")}</p>
             </div>
 
             <div className="up-card-body">
@@ -223,14 +220,14 @@ export default function UpdateProfile() {
                   <div
                     className="up-photo-img"
                     role="img"
-                    aria-label="Profile photo"
+                    aria-label={t("updateProfile.ariaProfilePhoto")}
                     style={{ backgroundImage: `url(${profilePhotoUrl})` }}
                   />
                   <button
                     type="button"
                     className="up-photo-overlay"
-                    aria-label="Change profile photo"
-                    onClick={() => alert("Connect this to an upload flow.")}
+                    aria-label={t("updateProfile.ariaChangePhoto")}
+                    onClick={() => alert(t("updateProfile.uploadFlowAlert"))}
                   >
                     <span className="material-symbols-outlined">
                       photo_camera
@@ -239,24 +236,22 @@ export default function UpdateProfile() {
                 </div>
 
                 <div className="up-photo-meta">
-                  <h4 className="up-photo-title">Upload Profile Photo</h4>
-                  <p className="up-photo-help">
-                    JPG, GIF or PNG. Maximum size 800KB.
-                  </p>
+                  <h4 className="up-photo-title">{t("updateProfile.uploadTitle")}</h4>
+                  <p className="up-photo-help">{t("updateProfile.uploadHelp")}</p>
                   <div className="up-photo-actions">
                     <button
                       type="button"
                       className="up-btn up-btn-secondary"
-                      onClick={() => alert("Connect this to an upload flow.")}
+                      onClick={() => alert(t("updateProfile.uploadFlowAlert"))}
                     >
-                      Change Photo
+                      {t("updateProfile.changePhoto")}
                     </button>
                     <button
                       type="button"
                       className="up-btn up-btn-outline"
-                      onClick={() => alert("Connect this to remove photo.")}
+                      onClick={() => alert(t("updateProfile.removePhotoAlert"))}
                     >
-                      Remove
+                      {t("common.remove")}
                     </button>
                   </div>
                 </div>
@@ -265,7 +260,7 @@ export default function UpdateProfile() {
               <div className="up-divider" role="separator" />
 
               <form className="up-form" onSubmit={onSubmit}>
-                {loading && <p className="up-status">Loading profile...</p>}
+                {loading && <p className="up-status">{t("updateProfile.loadingProfile")}</p>}
                 {error && <p className="up-status up-status-error">{error}</p>}
                 {success && (
                   <p className="up-status up-status-success">{success}</p>
@@ -274,14 +269,14 @@ export default function UpdateProfile() {
                 <div className="up-grid">
                   <div className="up-field">
                     <label className="up-label" htmlFor="fullName">
-                      Full Name
+                      {t("updateProfile.fullName")}
                     </label>
                     <input
                       id="fullName"
                       name="fullName"
                       className="up-input"
                       type="text"
-                      placeholder="e.g. Sarah Jenkins"
+                      placeholder={t("updateProfile.fullNamePlaceholder")}
                       value={form.fullName}
                       onChange={onChange}
                       disabled={loading || saving}
@@ -290,14 +285,14 @@ export default function UpdateProfile() {
 
                   <div className="up-field">
                     <label className="up-label" htmlFor="email">
-                      Email Address
+                      {t("updateProfile.email")}
                     </label>
                     <input
                       id="email"
                       name="email"
                       className="up-input"
                       type="email"
-                      placeholder="sarah.j@biliquant.org"
+                      placeholder={t("updateProfile.emailPlaceholder")}
                       value={form.email}
                       onChange={onChange}
                       disabled={loading || saving}
@@ -306,7 +301,7 @@ export default function UpdateProfile() {
 
                   <div className="up-field">
                     <label className="up-label" htmlFor="gender">
-                      Gender
+                      {t("updateProfile.gender")}
                     </label>
                     <div className="up-select-wrap">
                       <select
@@ -317,10 +312,10 @@ export default function UpdateProfile() {
                         onChange={onChange}
                         disabled={loading || saving}
                       >
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                        <option value="other">Other</option>
-                        <option value="unknown">Prefer not to say</option>
+                        <option value="female">{t("dashboard.female")}</option>
+                        <option value="male">{t("dashboard.male")}</option>
+                        <option value="other">{t("dashboard.other")}</option>
+                        <option value="unknown">{t("updateProfile.preferNotToSay")}</option>
                       </select>
                       <span className="material-symbols-outlined up-select-icon">
                         expand_more
@@ -330,14 +325,14 @@ export default function UpdateProfile() {
 
                   <div className="up-field">
                     <label className="up-label" htmlFor="phone">
-                      Phone Number (Optional)
+                      {t("updateProfile.phone")}
                     </label>
                     <input
                       id="phone"
                       name="phone"
                       className="up-input"
                       type="tel"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder={t("updateProfile.phonePlaceholder")}
                       value={form.phone}
                       onChange={onChange}
                       disabled={loading || saving}
@@ -346,7 +341,7 @@ export default function UpdateProfile() {
 
                   <div className="up-field">
                     <label className="up-label" htmlFor="dateOfBirth">
-                      Date of Birth
+                      {t("updateProfile.dateOfBirth")}
                     </label>
                     <input
                       id="dateOfBirth"
@@ -361,14 +356,14 @@ export default function UpdateProfile() {
 
                   <div className="up-field">
                     <label className="up-label" htmlFor="allergies">
-                      Allergies (Optional)
+                      {t("updateProfile.allergies")}
                     </label>
                     <input
                       id="allergies"
                       name="allergies"
                       className="up-input"
                       type="text"
-                      placeholder="e.g. Penicillin, peanuts"
+                      placeholder={t("updateProfile.allergiesPlaceholder")}
                       value={form.allergies}
                       onChange={onChange}
                       disabled={loading || saving}
@@ -376,10 +371,10 @@ export default function UpdateProfile() {
                   </div>
 
                   <div className="up-field span-2 up-password-section">
-                    <h3 className="up-subsection-title">Change Password</h3>
+                    <h3 className="up-subsection-title">{t("updateProfile.changePassword")}</h3>
                     <div className="up-field">
                       <label className="up-label" htmlFor="currentPassword">
-                        Current Password
+                        {t("updateProfile.currentPassword")}
                       </label>
                       <input
                         id="currentPassword"
@@ -394,7 +389,7 @@ export default function UpdateProfile() {
 
                     <div className="up-field">
                       <label className="up-label" htmlFor="newPassword">
-                        New Password
+                        {t("updateProfile.newPassword")}
                       </label>
                       <input
                         id="newPassword"
@@ -409,7 +404,7 @@ export default function UpdateProfile() {
 
                     <div className="up-field">
                       <label className="up-label" htmlFor="confirmPassword">
-                        Confirm New Password
+                        {t("updateProfile.confirmPassword")}
                       </label>
                       <input
                         id="confirmPassword"
@@ -422,30 +417,25 @@ export default function UpdateProfile() {
                       />
                     </div>
 
-                    <p className="up-help">
-                      Enter current password to change email or password.
-                    </p>
+                    <p className="up-help">{t("updateProfile.passwordHelp")}</p>
                   </div>
 
                   <div className="up-field span-2">
                     <label className="up-label" htmlFor="medicalHistory">
-                      Patient Background
+                      {t("updateProfile.patientBackground")}
                     </label>
                     <textarea
                       id="medicalHistory"
                       name="medicalHistory"
                       className="up-textarea"
                       rows={4}
-                      placeholder="Summarize relevant medical history, perinatal events, or other notes for the care team..."
+                      placeholder={t("updateProfile.patientBackgroundPlaceholder")}
                       value={form.medicalHistory}
                       onChange={onChange}
                       maxLength={250}
                       disabled={loading || saving}
                     />
-                    <p className="up-help">
-                      Brief medical notes for the patient record. Max 250
-                      characters.
-                    </p>
+                    <p className="up-help">{t("updateProfile.patientBackgroundHelp")}</p>
                   </div>
                 </div>
 
@@ -454,12 +444,12 @@ export default function UpdateProfile() {
                     type="button"
                     className="up-delete"
                     onClick={() =>
-                      confirm("This is a demo. Confirm delete?") &&
-                      alert("Wire delete flow later.")
+                      confirm(t("updateProfile.deleteConfirm")) &&
+                      alert(t("updateProfile.deleteAlert"))
                     }
                     disabled={loading || saving}
                   >
-                    Delete Account
+                    {t("updateProfile.deleteAccount")}
                   </button>
 
                   <div className="up-footer-actions">
@@ -469,7 +459,7 @@ export default function UpdateProfile() {
                       onClick={onCancel}
                       disabled={loading || saving}
                     >
-                      Cancel
+                      {t("common.cancel")}
                     </button>
                     <button
                       type="submit"
@@ -479,7 +469,7 @@ export default function UpdateProfile() {
                       <span className="material-symbols-outlined">
                         check_circle
                       </span>
-                      {saving ? "Saving..." : "Save Changes"}
+                      {saving ? t("updateProfile.saving") : t("updateProfile.saveChanges")}
                     </button>
                   </div>
                 </div>

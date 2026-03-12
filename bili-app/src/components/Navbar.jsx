@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import styles from "./Navbar.module.css";
 import logoImg from "../assets/vite.svg";
 import { supabase } from "../lib/supabaseClient";
+import { useLanguage } from "../context/LanguageContext";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { language, setLanguage, t } = useLanguage();
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -24,15 +26,15 @@ function Navbar() {
   };
 
   const navItems = [
-    { to: "/home/patient_analytics", label: "Patient Analytics" },
-    { to: "/home/jaundice", label: "Jaundice Guide" },
-    { to: "/home/update-profile", label: "Profile" },
+    { to: "/home/patient_analytics", label: t("nav.patientAnalytics") },
+    { to: "/home/jaundice", label: t("nav.jaundiceGuide") },
+    { to: "/home/update-profile", label: t("nav.profile") },
   ];
 
   const dropdownItems = [
-    { to: "/home/mission", label: "Mission" },
-    { to: "/home/about_qbit", label: "About Us" },
-    { to: "/home/contact", label: "Contact" },
+    { to: "/home/mission", label: t("nav.mission") },
+    { to: "/home/about_qbit", label: t("nav.aboutUs") },
+    { to: "/home/contact", label: t("nav.contact") },
   ];
 
   return (
@@ -40,7 +42,7 @@ function Navbar() {
       <div className={styles.inner}>
         <Link to="/home/dashboard" className={styles.logo} aria-label="Go to dashboard">
           <img src={logoImg} alt="" className={styles.logoImg} />
-          <span className={styles.brandName}>BiliQuant</span>
+          <span className={styles.brandName}>{t("common.brand")}</span>
         </Link>
 
         {/* Desktop links */}
@@ -56,6 +58,27 @@ function Navbar() {
               {item.label}
             </NavLink>
           ))}
+
+          <div className={styles.languageSwitch} aria-label={t("common.language")}>
+            <button
+              type="button"
+              className={`${styles.languageButton} ${
+                language === "en" ? styles.languageButtonActive : ""
+              }`}
+              onClick={() => setLanguage("en")}
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              className={`${styles.languageButton} ${
+                language === "fr" ? styles.languageButtonActive : ""
+              }`}
+              onClick={() => setLanguage("fr")}
+            >
+              FR
+            </button>
+          </div>
           
           {/* Dropdown for Company */}
           <div 
@@ -71,7 +94,7 @@ function Navbar() {
               aria-expanded={dropdownOpen}
               aria-haspopup="true"
             >
-              QBiT
+              {t("nav.qbit")}
               <svg 
                 className={`${styles.dropdownIcon} ${dropdownOpen ? styles.dropdownIconOpen : ""}`}
                 width="12" 
@@ -106,7 +129,7 @@ function Navbar() {
             onClick={handleLogout}
             className={`${styles.navLink} ${styles.logoutBtn}`}
           >
-            Logout
+            {t("nav.logout")}
           </button>
         </nav>
 
@@ -114,7 +137,7 @@ function Navbar() {
         <button
           type="button"
           className={styles.hamburger}
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
@@ -166,7 +189,7 @@ function Navbar() {
               onClick={() => setDropdownOpen(v => !v)}
               aria-expanded={dropdownOpen}
             >
-              Company
+              {t("nav.company")}
               <svg 
                 className={`${styles.dropdownIcon} ${dropdownOpen ? styles.dropdownIconOpen : ""}`}
                 width="16" 
@@ -194,6 +217,27 @@ function Navbar() {
               </div>
             )}
           </div>
+
+          <div className={styles.mobileLanguageSwitch} aria-label={t("common.language")}>
+            <button
+              type="button"
+              className={`${styles.mobileLanguageButton} ${
+                language === "en" ? styles.mobileLanguageButtonActive : ""
+              }`}
+              onClick={() => setLanguage("en")}
+            >
+              {t("common.english")}
+            </button>
+            <button
+              type="button"
+              className={`${styles.mobileLanguageButton} ${
+                language === "fr" ? styles.mobileLanguageButtonActive : ""
+              }`}
+              onClick={() => setLanguage("fr")}
+            >
+              {t("common.french")}
+            </button>
+          </div>
           
           {/* Mobile Logout button */}
           <button
@@ -201,7 +245,7 @@ function Navbar() {
             onClick={handleLogout}
             className={`${styles.mobileLink} ${styles.logoutBtn}`}
           >
-            Logout
+            {t("nav.logout")}
           </button>
         </nav>
       </div>

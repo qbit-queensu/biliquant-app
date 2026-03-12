@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./TestEntry.css";
 import { supabase } from "../lib/supabaseClient";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function TestEntry() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     patientId: "",
     date: "",
@@ -86,19 +88,19 @@ export default function TestEntry() {
 
   return (
     <div className="test-entry-container">
-      <h1 className="page-title">Test Entry</h1>
+      <h1 className="page-title">{t("testEntry.title")}</h1>
 
       <div className="form-card">
-        <h2 className="form-title">Please enter your test results</h2>
+        <h2 className="form-title">{t("testEntry.subtitle")}</h2>
 
         <div className="device-btn-container">
           <button type="button" className="device-btn">
-            Connect to Device
+            {t("testEntry.connectDevice")}
           </button>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <label>Select Patient</label>
+          <label>{t("testEntry.selectPatient")}</label>
           <select
             name="patientId"
             value={formData.patientId}
@@ -107,7 +109,9 @@ export default function TestEntry() {
             disabled={isLoadingPatients}
           >
             <option value="">
-              {isLoadingPatients ? "Loading patients..." : "Select a patient"}
+              {isLoadingPatients
+                ? t("testEntry.loadingPatients")
+                : t("testEntry.selectPatientPlaceholder")}
             </option>
             {patients.map((patient) => (
               <option key={patient.id} value={patient.id}>
@@ -116,7 +120,7 @@ export default function TestEntry() {
             ))}
           </select>
 
-          <label>Date</label>
+          <label>{t("testEntry.date")}</label>
           <input
             type="date"
             name="date"
@@ -125,7 +129,7 @@ export default function TestEntry() {
             required
           />
 
-          <label>Time of Test</label>
+          <label>{t("testEntry.time")}</label>
           <input
             type="time"
             name="time"
@@ -134,39 +138,35 @@ export default function TestEntry() {
             required
           />
 
-          <label>Bilirubin Concentration (mg/dl)</label>
+          <label>{t("testEntry.bilirubin")}</label>
           <input
             type="number"
             name="bilirubinConcentration"
             step="0.01"
-            placeholder="Enter bilirubin concentration"
+            placeholder={t("testEntry.bilirubinPlaceholder")}
             value={formData.bilirubinConcentration}
             onChange={handleChange}
             required
           />
 
-          <label>Notes/Comments</label>
+          <label>{t("testEntry.notes")}</label>
           <textarea
             name="notes"
-            placeholder="Enter any notes or comments"
+            placeholder={t("testEntry.notesPlaceholder")}
             value={formData.notes}
             onChange={handleChange}
           />
 
           <button type="submit" className="submit-btn" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
+            {isSubmitting ? t("testEntry.submitting") : t("testEntry.submit")}
           </button>
         </form>
 
         {submitStatus === "success" && (
-          <div style={{ color: "green", marginTop: "1rem" }}>
-            Test entry submitted successfully!
-          </div>
+          <div style={{ color: "green", marginTop: "1rem" }}>{t("testEntry.success")}</div>
         )}
         {submitStatus === "error" && (
-          <div style={{ color: "red", marginTop: "1rem" }}>
-            Error submitting form. Please try again.
-          </div>
+          <div style={{ color: "red", marginTop: "1rem" }}>{t("testEntry.error")}</div>
         )}
       </div>
     </div>

@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import blueLogo from "../assets/blueLogo.png";
 import "./SignUp.css";
 import { supabase } from "../lib/supabaseClient";
+import { useLanguage } from "../context/LanguageContext";
 
 const SignUp = () => {
   const navigate = useNavigate();
-
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,93 +20,86 @@ const SignUp = () => {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("signup.passwordMismatch"));
       return;
     }
 
     setLoading(true);
-
-    const { data, error } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
-          full_name: name, // stored in user metadata
+          full_name: name,
         },
       },
     });
-
     setLoading(false);
 
-    if (error) {
-      setError(error.message);
+    if (signUpError) {
+      setError(signUpError.message);
       return;
     }
-    // signup success
+
     navigate("/");
   };
+
   return (
     <div className="signup-page">
-      {/* Top-left logo */}
       <div className="logo-container">
-        <img
-          src={blueLogo}
-          alt="Logo"
-          className="logo"
-        />
+        <img src={blueLogo} alt="Logo" className="logo" />
         <span className="logo-text">BiliQuant</span>
       </div>
 
-      {/* Signup card */}
       <div className="signup-card">
-        <h1>Sign Up</h1>
-        <p className="subtitle">Create an account</p>
+        <h1>{t("signup.title")}</h1>
+        <p className="subtitle">{t("signup.subtitle")}</p>
 
         <form className="signup-form" onSubmit={handleSignUp}>
-  <input
-    type="text"
-    placeholder="Name"
-    value={name}
-    onChange={(e) => setName(e.target.value)}
-    required
-  />
+          <input
+            type="text"
+            placeholder={t("signup.namePlaceholder")}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
-  <input
-    type="email"
-    placeholder="Email address"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    required
-  />
+          <input
+            type="email"
+            placeholder={t("signup.emailPlaceholder")}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-  <input
-    type="password"
-    placeholder="Password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    required
-  />
+          <input
+            type="password"
+            placeholder={t("signup.passwordPlaceholder")}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-  <input
-    type="password"
-    placeholder="Confirm Password"
-    value={confirmPassword}
-    onChange={(e) => setConfirmPassword(e.target.value)}
-    required
-  />
+          <input
+            type="password"
+            placeholder={t("signup.confirmPasswordPlaceholder")}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
 
-  {error && <p className="error-text">{error}</p>}
+          {error && <p className="error-text">{error}</p>}
 
-  <button type="submit" disabled={loading}>
-    {loading ? "Creating account..." : "Sign Up"}
-  </button>
-</form>
+          <button type="submit" disabled={loading}>
+            {loading ? t("signup.loading") : t("signup.submit")}
+          </button>
+        </form>
 
-
-  <p className="login-link">Already have an account? <span className="link" onClick={() => navigate("/")}>
-    Log in
-</span>
-
+        <p className="login-link">
+          {t("signup.hasAccount")}{" "}
+          <span className="link" onClick={() => navigate("/")}>
+            {t("signup.login")}
+          </span>
         </p>
       </div>
     </div>

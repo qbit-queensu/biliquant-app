@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
+import { useLanguage } from "../context/LanguageContext";
 
 function Home() {
+  const { t } = useLanguage();
+
   return (
     <div className={styles.home}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Welcome to BiliQuant</h1>
-        <p className={styles.subtitle}>Queen's Biomedical Innovation Team</p>
+        <h1 className={styles.title}>{t("home.title")}</h1>
+        <p className={styles.subtitle}>{t("home.subtitle")}</p>
         <div className={styles.links}>
           <Link to="/home/about_qbit" className={styles.link}>
-            Learn About QBiT →
+            {t("home.learnAbout")}
           </Link>
         </div>
       </div>

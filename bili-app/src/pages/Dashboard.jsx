@@ -2,10 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import "./Dashboard.css";
-
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [patients, setPatients] = useState([]);
   const [recentTests, setRecentTests] = useState([]);
   const [analytics, setAnalytics] = useState([]);
@@ -23,203 +24,170 @@ export default function Dashboard() {
   const fetchPatients = async () => {
     try {
       setLoadingPatients(true);
-      
-      const { data, error } = await supabase
-        .from('children')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error: patientsError } = await supabase
+        .from("children")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      
+      if (patientsError) throw patientsError;
       setPatients(data || []);
-    } catch (error) {
-      console.error('Error fetching patients:', error.message);
-      setError('Failed to load patients');
+    } catch (fetchError) {
+      setError(fetchError.message);
     } finally {
       setLoadingPatients(false);
     }
   };
 
   const fetchRecentTests = async () => {
-  try {
-    setLoadingTests(true);
-
-    
-
-    const { data, error } = await supabase
-      .from("test_entries")
-      .select("*")
-      .order("date", { ascending: false })
-      .limit(25);
-
-    console.log("Recent tests:", data);
-
-    if (error) throw error;
-
-    setRecentTests(data || []);
-  } catch (error) {
-    console.error("Error fetching recent tests:", error.message);
-  } finally {
-    setLoadingTests(false);
-  }
-};
-
-  const fetchPatientAnalytics = async () => {
     try {
-      const { data, error } = await supabase
-        .from('patient_analytics') // Adjust to analytics table name
-        .select('*')
-        .order('created_at', { ascending: false });
+      setLoadingTests(true);
+      const { data, error: testsError } = await supabase
+        .from("test_entries")
+        .select("*")
+        .order("date", { ascending: false })
+        .limit(25);
 
-      if (error) throw error;
-      setAnalytics(data || []);
-    } catch (error) {
-      console.error('Error fetching patient analytics:', error.message);
+      if (testsError) throw testsError;
+      setRecentTests(data || []);
+    } finally {
+      setLoadingTests(false);
     }
   };
 
-  // Helper function to get analytics for a specific test
-  const getAnalyticsForTest = (test) => {
-    if (!test || !test.id) return null;
-    
-    // Find analytics entry for this test
-    // Adjust this logic based on how your analytics table is structured
-    return analytics.find(a => a.test_entry_id === test.id) || null;
+  const fetchPatientAnalytics = async () => {
+    try {
+      const { data, error: analyticsError } = await supabase
+        .from("patient_analytics")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (analyticsError) throw analyticsError;
+      setAnalytics(data || []);
+    } catch {
+      setAnalytics([]);
+    }
   };
 
-  
+  const getAnalyticsForTest = (test) =>
+    analytics.find((entry) => entry.test_entry_id === test?.id) || null;
 
-  // Filter patients based on search term
-  const filteredPatients = patients.filter(patient => {
-    const name = patient.childName?.toLowerCase() || '';
-    const id = patient.id?.toLowerCase() || '';
+  const filteredPatients = patients.filter((patient) => {
+    const name = patient.child_name?.toLowerCase() || "";
+    const id = patient.id?.toLowerCase() || "";
     const search = searchTerm.toLowerCase();
     return name.includes(search) || id.includes(search);
   });
 
+  const highRiskCount = analytics.filter(
+    (item) =>
+      item.risk_level?.toLowerCase() === "high" ||
+      item.risk_level?.toLowerCase() === "critical",
+  ).length;
+
+  const translateGender = (gender) => {
+    if (!gender) return t("common.notAvailable");
+    const normalized = gender.toLowerCase();
+    if (normalized === "male") return t("dashboard.male");
+    if (normalized === "female") return t("dashboard.female");
+    if (normalized === "other") return t("dashboard.other");
+    return gender;
+  };
+
   return (
     <div className="dashboard">
-      {/* Header */}
       <div className="dashboard-header">
         <div>
-          <h1>Welcome!</h1>
-          <p className="subtitle">Recent Tests</p>
+          <h1>{t("dashboard.welcome")}</h1>
+          <p className="subtitle">{t("dashboard.subtitle")}</p>
         </div>
 
         <div className="dashboard-actions">
-          <button
-            className="primary-btn"
-            onClick={() => navigate("/home/profile")}
-          >
-            + Add Patient
+          <button className="primary-btn" onClick={() => navigate("/home/profile")}>
+            {t("dashboard.addPatient")}
           </button>
-          <button
-            className="primary-btn"
-            onClick={() => navigate("/home/test_entry")}
-          >
-            + New Test
+          <button className="primary-btn" onClick={() => navigate("/home/test_entry")}>
+            {t("dashboard.newTest")}
           </button>
         </div>
       </div>
 
       <div className="dashboard-content">
-        {/* LEFT COLUMN */}
         <div className="left-column">
-          {/* Recent Tests */}
           <div className="card">
             <div className="table-header five-col">
-              <span>Patient Name</span>
-              <span>Time</span>
-              <span>Date</span>
-              <span>Bili levels</span>
-              <span>Risk Level</span>
+              <span>{t("dashboard.patientName")}</span>
+              <span>{t("dashboard.time")}</span>
+              <span>{t("dashboard.date")}</span>
+              <span>{t("dashboard.bilirubinLevels")}</span>
+              <span>{t("dashboard.riskLevel")}</span>
             </div>
 
             {loadingTests ? (
-              <div className="loading-state">Loading recent tests...</div>
+              <div className="loading-state">{t("dashboard.loadingRecentTests")}</div>
             ) : recentTests.length === 0 ? (
-              <div className="empty-state">
-                No recent tests yet. Click "New Test" to add one.
-              </div>
+              <div className="empty-state">{t("dashboard.noRecentTests")}</div>
             ) : (
               recentTests.map((test) => {
-  const testAnalytics = getAnalyticsForTest(test);
+                const testAnalytics = getAnalyticsForTest(test);
 
-  return (
-    <div key={test.id} className="table-row five-col">
-      <span>
-        {test.children?.childName || "Unknown Patient"}
-      </span>
-
-      <span>{test.time || "N/A"}</span>
-
-      <span>{test.date || "N/A"}</span>
-
-      <span>
-        {test.bilirubin_concentration
-          ? `${test.bilirubin_concentration} mg/dL`
-          : "N/A"}
-      </span>
-
-      <span
-        className={`risk-badge risk-${
-          testAnalytics?.risk_level?.toLowerCase() || "unknown"
-        }`}
-      >
-        {testAnalytics?.risk_level || "Pending"}
-      </span>
-    </div>
-  );
-})
+                return (
+                  <div key={test.id} className="table-row five-col">
+                    <span>{test.children?.childName || t("dashboard.unknownPatient")}</span>
+                    <span>{test.time || t("common.notAvailable")}</span>
+                    <span>{test.date || t("common.notAvailable")}</span>
+                    <span>
+                      {test.bilirubin_concentration
+                        ? `${test.bilirubin_concentration} mg/dL`
+                        : t("common.notAvailable")}
+                    </span>
+                    <span
+                      className={`risk-badge risk-${
+                        testAnalytics?.risk_level?.toLowerCase() || "unknown"
+                      }`}
+                    >
+                      {testAnalytics?.risk_level || t("dashboard.pending")}
+                    </span>
+                  </div>
+                );
+              })
             )}
           </div>
 
-          {/* Patient Records */}
-          <h2 className="section-title">Patient Records</h2>
+          <h2 className="section-title">{t("dashboard.patientRecords")}</h2>
           <div className="card">
-            {/* Search Bar */}
             <div className="search-container">
               <input
                 type="text"
-                placeholder="Search patients by name or ID..."
+                placeholder={t("dashboard.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="search-input"
               />
             </div>
 
-            {/* Fixed Header */}
             <div className="table-row three-col header">
-              <span>Patient Name</span>
-              <span>Gender</span>
-              <span>See Details</span>
+              <span>{t("dashboard.patientName")}</span>
+              <span>{t("dashboard.gender")}</span>
+              <span>{t("dashboard.seeDetails")}</span>
             </div>
 
-            {/* Patient List */}
             {loadingPatients ? (
-              <div className="loading-state">Loading patients...</div>
+              <div className="loading-state">{t("dashboard.loadingPatients")}</div>
             ) : error ? (
               <div className="error-state">{error}</div>
             ) : filteredPatients.length === 0 ? (
               <div className="empty-state">
-                {searchTerm 
-                  ? `No patients matching "${searchTerm}"` 
-                  : 'No patients yet. Click "Add Patient" to get started.'}
+                {searchTerm
+                  ? t("dashboard.noPatientsFound", { searchTerm })
+                  : t("dashboard.noPatients")}
               </div>
             ) : (
               filteredPatients.map((patient) => (
                 <div key={patient.id} className="table-row three-col">
-                  <span>{patient.child_name || 'Unknown Patient'}</span>
-                  <span>
-                    {patient.child_gender
-                      ? patient.child_gender.charAt(0).toUpperCase() + patient.child_gender.slice(1)
-                      : 'N/A'}
-                  </span>
-                  <button
-                    className="link-btn"
-                    onClick={() => navigate(`/patient/${patient.id}`)}
-                  >
-                    See Details
+                  <span>{patient.child_name || t("dashboard.unknownPatient")}</span>
+                  <span>{translateGender(patient.child_gender)}</span>
+                  <button className="link-btn" onClick={() => navigate(`/patient/${patient.id}`)}>
+                    {t("dashboard.seeDetails")}
                   </button>
                 </div>
               ))
@@ -227,16 +195,12 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN */}
         <div className="alerts-card">
-          <div className="alerts-header">
-            🔔 Alerts
-          </div>
+          <div className="alerts-header">🔔 {t("dashboard.alerts")}</div>
           <div className="alerts-body">
-            {analytics.filter(a => a.risk_level?.toLowerCase() === 'high' || a.risk_level?.toLowerCase() === 'critical').length > 0 
-              ? `${analytics.filter(a => a.risk_level?.toLowerCase() === 'high' || a.risk_level?.toLowerCase() === 'critical').length} patient(s) with high/critical risk levels` 
-              : "No alerts ready to be sent yet."
-            }
+            {highRiskCount > 0
+              ? t("dashboard.alertsReady", { count: highRiskCount })
+              : t("dashboard.noAlerts")}
           </div>
         </div>
       </div>
