@@ -43,7 +43,13 @@ export default function Dashboard() {
       setLoadingTests(true);
       const { data, error: testsError } = await supabase
         .from("test_entries")
-        .select("*")
+        .select(`
+          *,
+          children:patient_id (
+            id,
+            child_name
+          )
+        `)
         .order("date", { ascending: false })
         .limit(25);
 
@@ -132,7 +138,7 @@ export default function Dashboard() {
 
                 return (
                   <div key={test.id} className="table-row five-col">
-                    <span>{test.children?.childName || t("dashboard.unknownPatient")}</span>
+                    <span>{test.children?.child_name || t("dashboard.unknownPatient")}</span>
                     <span>{test.time || t("common.notAvailable")}</span>
                     <span>{test.date || t("common.notAvailable")}</span>
                     <span>
