@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./TestEntry.css";
 import { supabase } from "../lib/supabaseClient";
 
@@ -13,6 +13,30 @@ export default function TestEntry() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  const [patients, setPatients] = useState([]);
+  const [isLoadingPatients, setIsLoadingPatients] = useState(true);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        setIsLoadingPatients(true);
+        const { data, error } = await supabase
+          .from("children")
+          .select("id, child_name, user_id")
+          .order("child_name", { ascending: true });
+
+        if (error) throw error;
+        setPatients(data || []);
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      } finally {
+        setIsLoadingPatients(false);
+      }
+    };
+
+    fetchPatients();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,10 +104,16 @@ export default function TestEntry() {
             value={formData.patientId}
             onChange={handleChange}
             required
+            disabled={isLoadingPatients}
           >
-            <option value="">Select a patient</option>
-            <option value="1">Patient 1</option>
-            <option value="2">Patient 2</option>
+            <option value="">
+              {isLoadingPatients ? "Loading patients..." : "Select a patient"}
+            </option>
+            {patients.map((patient) => (
+              <option key={patient.id} value={patient.id}>
+                {patient.child_name}
+              </option>
+            ))}
           </select>
 
           <label>Date</label>
