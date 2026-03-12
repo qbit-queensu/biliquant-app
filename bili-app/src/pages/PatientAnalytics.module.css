@@ -44,6 +44,13 @@
   letter-spacing: -0.02em;
 }
 
+.childMeta {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #0D3B66;
+  opacity: 0.75;
+}
+
 .editLink {
   background: none;
   border: none;
@@ -201,6 +208,13 @@
 
 .actionButton:active {
   transform: translateY(0);
+}
+
+.actionButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Large desktop adjustments */

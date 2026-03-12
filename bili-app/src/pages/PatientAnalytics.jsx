@@ -37,12 +37,16 @@ export default function PatientAnalytics() {
   const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const [childId, setChildId] = useState(null);
+  const [childName, setChildName] = useState("");
+  const [doctorName, setDoctorName] = useState("");
+  const [doctorEmail, setDoctorEmail] = useState("");
   const [childBirthDate, setChildBirthDate] = useState(null);
   const [childBirthTime, setChildBirthTime] = useState(null);
   const [measurements, setMeasurements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const requestedChildId = searchParams.get("childId");
+  const requestedChildName = searchParams.get("childName");
 
   const buildBirthTimestamp = () => {
     if (!childBirthDate) return null;
@@ -114,7 +118,7 @@ export default function PatientAnalytics() {
         if (requestedChildId) {
           const { data: selectedChild, error: selectedChildError } = await supabase
             .from("children")
-            .select("id, child_date_of_birth, child_birth_time")
+            .select("id, child_name, doctor_name, doctor_email, child_date_of_birth, child_birth_time")
             .eq("user_id", authData.user.id)
             .eq("id", requestedChildId)
             .maybeSingle();
@@ -129,7 +133,7 @@ export default function PatientAnalytics() {
         if (!childData) {
           const { data: latestChild, error: childError } = await supabase
             .from("children")
-            .select("id, child_date_of_birth, child_birth_time")
+            .select("id, child_name, doctor_name, doctor_email, child_date_of_birth, child_birth_time")
             .eq("user_id", authData.user.id)
             .order("updated_at", { ascending: false })
             .limit(1)
@@ -147,6 +151,9 @@ export default function PatientAnalytics() {
         }
 
         setChildId(childData.id);
+        setChildName(childData.child_name || "");
+        setDoctorName(childData.doctor_name || "");
+        setDoctorEmail(childData.doctor_email || "");
         setChildBirthDate(childData.child_date_of_birth || null);
         setChildBirthTime(childData.child_birth_time || null);
 
@@ -261,16 +268,51 @@ export default function PatientAnalytics() {
       })()
     : t("patientAnalytics.noMeasurements");
 
+  const resolvedChildName = childName || requestedChildName || "Unknown Child";
+  const resolvedDoctorName = doctorName || "Doctor";
+
+  const handleShareWithDoctor = () => {
+    if (!doctorEmail) return;
+
+    const recentMeasurements = measurements.slice(0, 5);
+    const measurementLines = recentMeasurements.length
+      ? recentMeasurements
+          .map((entry, index) => {
+            const timestamp = buildMeasurementTimestamp(entry);
+            const formatted = timestamp && !Number.isNaN(timestamp.getTime())
+              ? timestamp.toLocaleString()
+              : "Date/time unavailable";
+            return `${index + 1}. ${entry.value} mg/dl at ${formatted}`;
+          })
+          .join("\n")
+      : "No recent measurements available";
+
+    const subject = `${resolvedChildName} bilirubin update`;
+    const body = `Hello ${resolvedDoctorName},\n\nPlease see the bilirubin summary for ${resolvedChildName}.\nPatient ID: ${childId || "Unavailable"}\n\nLatest reading: ${latestMeasurement ? `${latestMeasurement.value} mg/dl` : "No measurements yet"}\nMeasured on: ${formattedTimestamp}\n\nRecent measurements (up to 5):\n${measurementLines}\n\nThank you.`;
+
+    window.location.href = `mailto:${doctorEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
     <div className={styles.page}>
       <div className={styles.pageContainer}>
         <div className={styles.headerSection}>
-          <h1 className={styles.pageTitle}>{t("patientAnalytics.title")}</h1>
-          <span className={styles.editLink}>
-            {childId
-              ? t("patientAnalytics.childIdLabel", { childId })
-              : t("patientAnalytics.childIdUnavailable")}
-          </span>
+          <div>
+            <h1 className={styles.pageTitle}>{resolvedChildName}</h1>
+            <p className={styles.childMeta}>
+              {childId
+                ? t("patientAnalytics.childIdLabel", { childId })
+                : t("patientAnalytics.childIdUnavailable")}
+            </p>
+          </div>
+          <button
+            type="button"
+            className={styles.actionButton}
+            onClick={handleShareWithDoctor}
+            disabled={!doctorEmail}
+          >
+            {t("patientAnalytics.shareWithDoctor")}
+          </button>
         </div>
 
         <div className={styles.cardsGrid}>
@@ -333,7 +375,7 @@ export default function PatientAnalytics() {
                   />
                 ))}
 
-                {chartData.points ? (
+                {chartData.points && (
                   <polyline
                     points={chartData.points}
                     fill="none"
@@ -342,7 +384,7 @@ export default function PatientAnalytics() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                ) : null}
+                )}
 
                 {chartData.circles.map((point, index) => (
                   <circle
