@@ -290,9 +290,6 @@ export default function PatientAnalytics() {
               </p>
               {error ? <p className={styles.errorText}>{error}</p> : null}
             </div>
-            <button type="button" className={styles.actionButton}>
-              {t("patientAnalytics.learnMore")}
-            </button>
           </div>
 
           <div className={styles.card}>
@@ -371,9 +368,6 @@ export default function PatientAnalytics() {
                 ))}
               </svg>
             </div>
-            <button type="button" className={styles.actionButton}>
-              {t("patientAnalytics.shareWithDoctor")}
-            </button>
           </div>
         </div>
       </div>
