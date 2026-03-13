@@ -12,6 +12,30 @@
   position: relative;
 }
 
+.language-toggle {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+}
+
+.language-btn {
+  padding: 8px 14px;
+  border: 1px solid #2b4a7f;
+  border-radius: 999px;
+  background: white;
+  color: #2b4a7f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.language-btn.active {
+  background: #2b4a7f;
+  color: white;
+}
+
 /* Logo top-left */
 .logo-container {
   position: absolute;
