@@ -640,7 +640,7 @@ const translations = {
       ],
     },
     dashboard: {
-      welcome: "Bienvenue !",
+      welcome: "Bienvenue!",
       subtitle: "Tests récents",
       addPatient: "+ Ajouter un patient",
       newTest: "+ Nouveau test",
