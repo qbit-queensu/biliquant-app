@@ -3,6 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import styles from "./PatientAnalytics.module.css";
 import { useLanguage } from "../context/LanguageContext";
 import { supabase } from "../lib/supabaseClient";
+import {
+  classifyBhutaniRisk,
+  getPostnatalHours,
+} from "../utils/bhutaniRiskModel";
 
 const measurementSources = [
   {
@@ -197,6 +201,23 @@ export default function PatientAnalytics() {
     return t("patientAnalytics.trendStable");
   }, [measurements, t]);
 
+  const latestRisk = useMemo(() => {
+    if (!latestMeasurement) return null;
+
+    const postnatalHours = getPostnatalHours({
+      birthDate: childBirthDate,
+      birthTime: childBirthTime,
+      measurementDate: latestMeasurement.date,
+      measurementTime: latestMeasurement.time,
+      measurementCreatedAt: latestMeasurement.created_at,
+    });
+
+    return classifyBhutaniRisk({
+      bilirubinMgDl: latestMeasurement.value,
+      postnatalHours,
+    });
+  }, [latestMeasurement, childBirthDate, childBirthTime]);
+
   const chartData = useMemo(() => {
     const birthTimestamp = buildBirthTimestamp();
     const sorted = [...measurements]
@@ -326,7 +347,12 @@ export default function PatientAnalytics() {
                     ? `${latestMeasurement.value} mg/dl`
                     : "--"}
               </p>
-              <p className={styles.riskZone}>{trendSummary}</p>
+              <p className={styles.riskZone}>
+                {latestRisk?.isWithinModelRange
+                  ? `Risk zone: ${latestRisk.riskLabel} (${latestRisk.percentileBand}, ${latestRisk.probability}%)`
+                  : "Risk zone unavailable (requires age 18-168 hours and valid birth/test time)."}
+              </p>
+              <p className={styles.measurementDate}>{trendSummary}</p>
               <p className={styles.measurementDate}>
                 {t("patientAnalytics.measuredOnWithDate", { date: formattedTimestamp })}
               </p>
