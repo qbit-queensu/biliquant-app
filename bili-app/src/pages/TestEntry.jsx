@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./TestEntry.css";
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../context/LanguageContext";
@@ -20,6 +20,13 @@ export default function TestEntry() {
 
   const [patients, setPatients] = useState([]);
   const [isLoadingPatients, setIsLoadingPatients] = useState(true);
+  const [patientSearch, setPatientSearch] = useState("");
+  const [isPatientDropdownOpen, setIsPatientDropdownOpen] = useState(false);
+  const patientComboboxRef = useRef(null);
+
+  const filteredPatients = patients.filter((patient) =>
+    patient.child_name.toLowerCase().includes(patientSearch.trim().toLowerCase())
+  );
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -42,6 +49,25 @@ export default function TestEntry() {
     fetchPatients();
   }, []);
 
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        patientComboboxRef.current &&
+        !patientComboboxRef.current.contains(event.target)
+      ) {
+        setIsPatientDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("touchstart", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -50,8 +76,37 @@ export default function TestEntry() {
     }));
   };
 
+  const handlePatientSearchChange = (value) => {
+    setPatientSearch(value);
+    setIsPatientDropdownOpen(true);
+
+    const matchedPatient = patients.find(
+      (patient) => patient.child_name.toLowerCase() === value.trim().toLowerCase()
+    );
+
+    setFormData((prev) => ({
+      ...prev,
+      patientId: matchedPatient ? matchedPatient.id : "",
+    }));
+  };
+
+  const handlePatientSelect = (patient) => {
+    setPatientSearch(patient.child_name);
+    setFormData((prev) => ({
+      ...prev,
+      patientId: patient.id,
+    }));
+    setIsPatientDropdownOpen(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.patientId) {
+      setSubmitStatus("error");
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus(null);
     setLatestRiskResult(null);
@@ -122,6 +177,8 @@ export default function TestEntry() {
         bilirubinConcentration: "",
         notes: "",
       });
+      setPatientSearch("");
+      setIsPatientDropdownOpen(false);
     } catch (error) {
       console.error("Form submission error:", error);
       setSubmitStatus("error");
@@ -138,32 +195,53 @@ export default function TestEntry() {
       <div className="form-card">
         <h2 className="form-title">{t("testEntry.subtitle")}</h2>
 
-        <div className="device-btn-container">
+        {/* <div className="device-btn-container">
           <button type="button" className="device-btn">
             {t("testEntry.connectDevice")}
           </button>
-        </div>
+        </div> */}
 
         <form onSubmit={handleSubmit}>
           <label>{t("testEntry.selectPatient")}</label>
-          <select
-            name="patientId"
-            value={formData.patientId}
-            onChange={handleChange}
-            required
-            disabled={isLoadingPatients}
-          >
-            <option value="">
-              {isLoadingPatients
-                ? t("testEntry.loadingPatients")
-                : t("testEntry.selectPatientPlaceholder")}
-            </option>
-            {patients.map((patient) => (
-              <option key={patient.id} value={patient.id}>
-                {patient.child_name}
-              </option>
-            ))}
-          </select>
+          <div className="patient-combobox" ref={patientComboboxRef}>
+            <input
+              type="text"
+              className="patient-search-input"
+              placeholder="Search patient"
+              value={patientSearch}
+              onChange={(e) => handlePatientSearchChange(e.target.value)}
+              onFocus={() => setIsPatientDropdownOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setIsPatientDropdownOpen(false);
+                }
+              }}
+              required
+              disabled={isLoadingPatients}
+            />
+
+            {isPatientDropdownOpen && !isLoadingPatients && (
+              <div className="patient-dropdown" role="listbox">
+                {filteredPatients.length > 0 ? (
+                  filteredPatients.map((patient) => (
+                    <button
+                      key={patient.id}
+                      type="button"
+                      className="patient-dropdown-option"
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        handlePatientSelect(patient);
+                      }}
+                    >
+                      {patient.child_name}
+                    </button>
+                  ))
+                ) : (
+                  <div className="patient-dropdown-empty">No matching patients</div>
+                )}
+              </div>
+            )}
+          </div>
 
           <label>{t("testEntry.date")}</label>
           <input

@@ -83,6 +83,54 @@ textarea {
   font-size: 15px;
 }
 
+.patient-search-input {
+  margin-bottom: 10px;
+}
+
+.patient-combobox {
+  position: relative;
+}
+
+.patient-dropdown {
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.patient-dropdown-option {
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 12px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.patient-dropdown-option:last-child {
+  border-bottom: none;
+}
+
+.patient-dropdown-option:hover {
+  background: #f9f9f9;
+}
+
+.patient-dropdown-empty {
+  padding: 12px;
+  text-align: left;
+  color: #666;
+  font-size: 14px;
+}
+
 textarea {
   min-height: 150px;
 }
