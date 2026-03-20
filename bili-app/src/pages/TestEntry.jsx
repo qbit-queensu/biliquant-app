@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./TestEntry.css";
 import { supabase } from "../lib/supabaseClient";
 import { useLanguage } from "../context/LanguageContext";
+import { classifyBhutaniRisk, getPostnatalHours } from "../utils/bhutaniRiskModel";
 
 export default function TestEntry() {
   const { t } = useLanguage();
@@ -15,6 +16,7 @@ export default function TestEntry() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [latestRiskResult, setLatestRiskResult] = useState(null);
 
   const [patients, setPatients] = useState([]);
   const [isLoadingPatients, setIsLoadingPatients] = useState(true);
@@ -25,7 +27,7 @@ export default function TestEntry() {
         setIsLoadingPatients(true);
         const { data, error } = await supabase
           .from("children")
-          .select("id, child_name, user_id")
+          .select("id, child_name, user_id, child_date_of_birth, child_birth_time")
           .order("child_name", { ascending: true });
 
         if (error) throw error;
@@ -52,17 +54,35 @@ export default function TestEntry() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
+    setLatestRiskResult(null);
 
     try {
-      const { error } = await supabase.from("test_entries").insert([
-        {
-          patient_id: formData.patientId,
-          date: formData.date,
-          time: formData.time,
-          bilirubin_concentration: parseFloat(formData.bilirubinConcentration),
-          notes: formData.notes,
-        },
-      ]);
+      const selectedPatient = patients.find((patient) => patient.id === formData.patientId) || null;
+      const postnatalHours = getPostnatalHours({
+        birthDate: selectedPatient?.child_date_of_birth || null,
+        birthTime: selectedPatient?.child_birth_time || null,
+        measurementDate: formData.date,
+        measurementTime: formData.time,
+      });
+
+      const riskResult = classifyBhutaniRisk({
+        bilirubinMgDl: Number(formData.bilirubinConcentration),
+        postnatalHours,
+      });
+
+      const { data: insertedEntry, error } = await supabase
+        .from("test_entries")
+        .insert([
+          {
+            patient_id: formData.patientId,
+            date: formData.date,
+            time: formData.time,
+            bilirubin_concentration: parseFloat(formData.bilirubinConcentration),
+            notes: formData.notes,
+          },
+        ])
+        .select("id")
+        .single();
 
       if (error) {
         console.error("Supabase insert error:", error);
@@ -70,7 +90,31 @@ export default function TestEntry() {
         return;
       }
 
+      if (insertedEntry?.id && riskResult?.isWithinModelRange && riskResult.riskLevel) {
+        const payloadWithExtendedFields = {
+          test_entry_id: insertedEntry.id,
+          risk_level: riskResult.riskLevel,
+          percentile_band: riskResult.percentileBand,
+          risk_probability: riskResult.probability,
+          postnatal_age_hours: riskResult.postnatalHours,
+        };
+
+        const { error: analyticsError } = await supabase
+          .from("patient_analytics")
+          .insert([payloadWithExtendedFields]);
+
+        if (analyticsError) {
+          const fallbackPayload = {
+            test_entry_id: insertedEntry.id,
+            risk_level: riskResult.riskLevel,
+          };
+
+          await supabase.from("patient_analytics").insert([fallbackPayload]);
+        }
+      }
+
       setSubmitStatus("success");
+      setLatestRiskResult(riskResult);
       setFormData({
         patientId: "",
         date: "",
@@ -81,6 +125,7 @@ export default function TestEntry() {
     } catch (error) {
       console.error("Form submission error:", error);
       setSubmitStatus("error");
+      setLatestRiskResult(null);
     } finally {
       setIsSubmitting(false);
     }
@@ -163,7 +208,15 @@ export default function TestEntry() {
         </form>
 
         {submitStatus === "success" && (
-          <div style={{ color: "green", marginTop: "1rem" }}>{t("testEntry.success")}</div>
+          <div style={{ color: "green", marginTop: "1rem" }}>
+            {t("testEntry.success")}
+            {latestRiskResult?.isWithinModelRange && latestRiskResult?.riskLabel ? (
+              <div style={{ marginTop: "0.5rem" }}>
+                Risk classification: {latestRiskResult.riskLabel} ({latestRiskResult.percentileBand},{" "}
+                {latestRiskResult.probability}%)
+              </div>
+            ) : null}
+          </div>
         )}
         {submitStatus === "error" && (
           <div style={{ color: "red", marginTop: "1rem" }}>{t("testEntry.error")}</div>

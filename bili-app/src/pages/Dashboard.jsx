@@ -3,6 +3,12 @@ import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import "./Dashboard.css";
 import { useLanguage } from "../context/LanguageContext";
+import {
+  classifyBhutaniRisk,
+  formatRiskLabel,
+  getPostnatalHours,
+  normalizeRiskLevel,
+} from "../utils/bhutaniRiskModel";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -47,7 +53,9 @@ export default function Dashboard() {
           *,
           children:patient_id (
             id,
-            child_name
+            child_name,
+            child_date_of_birth,
+            child_birth_time
           )
         `)
         .order("date", { ascending: false })
@@ -77,6 +85,46 @@ export default function Dashboard() {
   const getAnalyticsForTest = (test) =>
     analytics.find((entry) => entry.test_entry_id === test?.id) || null;
 
+  const getComputedRiskForTest = (test) => {
+    const postnatalHours = getPostnatalHours({
+      birthDate: test?.children?.child_date_of_birth || null,
+      birthTime: test?.children?.child_birth_time || null,
+      measurementDate: test?.date || null,
+      measurementTime: test?.time || null,
+      measurementCreatedAt: test?.created_at || null,
+    });
+
+    return classifyBhutaniRisk({
+      bilirubinMgDl: Number(test?.bilirubin_concentration),
+      postnatalHours,
+    });
+  };
+
+  const resolveRiskForTest = (test) => {
+    const persisted = normalizeRiskLevel(getAnalyticsForTest(test)?.risk_level);
+    if (persisted) {
+      return {
+        level: persisted,
+        label: formatRiskLabel(persisted),
+      };
+    }
+
+    const computed = getComputedRiskForTest(test);
+    const computedLevel = normalizeRiskLevel(computed?.riskLevel);
+
+    if (computedLevel) {
+      return {
+        level: computedLevel,
+        label: formatRiskLabel(computedLevel),
+      };
+    }
+
+    return {
+      level: null,
+      label: t("dashboard.pending"),
+    };
+  };
+
   const filteredPatients = patients.filter((patient) => {
     const name = patient.child_name?.toLowerCase() || "";
     const id = patient.id?.toLowerCase() || "";
@@ -84,11 +132,10 @@ export default function Dashboard() {
     return name.includes(search) || id.includes(search);
   });
 
-  const highRiskCount = analytics.filter(
-    (item) =>
-      item.risk_level?.toLowerCase() === "high" ||
-      item.risk_level?.toLowerCase() === "critical",
-  ).length;
+  const highRiskCount = recentTests.filter((test) => {
+    const risk = resolveRiskForTest(test).level;
+    return risk === "high" || risk === "critical";
+  }).length;
 
   const translateGender = (gender) => {
     if (!gender) return t("common.notAvailable");
@@ -134,7 +181,7 @@ export default function Dashboard() {
               <div className="empty-state">{t("dashboard.noRecentTests")}</div>
             ) : (
               recentTests.map((test) => {
-                const testAnalytics = getAnalyticsForTest(test);
+                const resolvedRisk = resolveRiskForTest(test);
 
                 return (
                   <div key={test.id} className="table-row five-col">
@@ -148,10 +195,10 @@ export default function Dashboard() {
                     </span>
                     <span
                       className={`risk-badge risk-${
-                        testAnalytics?.risk_level?.toLowerCase() || "unknown"
+                        (resolvedRisk.level || "unknown").replace(/_/g, "-")
                       }`}
                     >
-                      {testAnalytics?.risk_level || t("dashboard.pending")}
+                      {resolvedRisk.label}
                     </span>
                   </div>
                 );
