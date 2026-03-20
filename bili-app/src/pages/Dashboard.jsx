@@ -147,41 +147,44 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-header">
-        <div>
-          <h1>{t("dashboard.welcome")}</h1>
-          <p className="subtitle">{t("dashboard.subtitle")}</p>
-        </div>
-
-        <div className="dashboard-actions">
-          <button className="primary-btn" onClick={() => navigate("/home/profile")}>
-            {t("dashboard.addPatient")}
-          </button>
-          <button className="primary-btn" onClick={() => navigate("/home/test_entry")}>
-            {t("dashboard.newTest")}
-          </button>
-        </div>
+  <div className="dashboard">
+    <div className="dashboard-header">
+      <div>
+        <h1>{t("dashboard.welcome")}</h1>
+        <p className="subtitle">{t("dashboard.subtitle")}</p>
       </div>
 
-      <div className="dashboard-content">
-        <div className="left-column">
-          <div className="card">
-            <div className="table-header five-col">
-              <span>{t("dashboard.patientName")}</span>
-              <span>{t("dashboard.time")}</span>
-              <span>{t("dashboard.date")}</span>
-              <span>{t("dashboard.bilirubinLevels")}</span>
-              <span>{t("dashboard.riskLevel")}</span>
-            </div>
+      <div className="dashboard-actions">
+        <button className="primary-btn" onClick={() => navigate("/home/profile")}>
+          {t("dashboard.addPatient")}
+        </button>
+        <button className="primary-btn" onClick={() => navigate("/home/test_entry")}>
+          {t("dashboard.newTest")}
+        </button>
+      </div>
+    </div>
 
+    <div className="dashboard-content">
+      <div className="left-column">
+
+        {/* RECENT TESTS */}
+        <div className="card">
+          <div className="table-header five-col">
+            <span>{t("dashboard.patientName")}</span>
+            <span>{t("dashboard.time")}</span>
+            <span>{t("dashboard.date")}</span>
+            <span>{t("dashboard.bilirubinLevels")}</span>
+            <span>{t("dashboard.riskLevel")}</span>
+          </div>
+
+          <div className="table-scroll">
             {loadingTests ? (
               <div className="loading-state">{t("dashboard.loadingRecentTests")}</div>
             ) : recentTests.length === 0 ? (
               <div className="empty-state">{t("dashboard.noRecentTests")}</div>
             ) : (
               recentTests.map((test) => {
-                const resolvedRisk = resolveRiskForTest(test);
+                const testAnalytics = getAnalyticsForTest(test);
 
                 return (
                   <div key={test.id} className="table-row five-col">
@@ -195,35 +198,38 @@ export default function Dashboard() {
                     </span>
                     <span
                       className={`risk-badge risk-${
-                        (resolvedRisk.level || "unknown").replace(/_/g, "-")
+                        testAnalytics?.risk_level?.toLowerCase() || "unknown"
                       }`}
                     >
-                      {resolvedRisk.label}
+                      {testAnalytics?.risk_level || t("dashboard.pending")}
                     </span>
                   </div>
                 );
               })
             )}
           </div>
+        </div>
 
-          <h2 className="section-title">{t("dashboard.patientRecords")}</h2>
-          <div className="card">
-            <div className="search-container">
-              <input
-                type="text"
-                placeholder={t("dashboard.searchPlaceholder")}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-            </div>
+        {/* PATIENT RECORDS */}
+        <h2 className="section-title">{t("dashboard.patientRecords")}</h2>
+        <div className="card">
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder={t("dashboard.searchPlaceholder")}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
 
-            <div className="table-row three-col header">
-              <span>{t("dashboard.patientName")}</span>
-              <span>{t("dashboard.gender")}</span>
-              <span>{t("dashboard.seeDetails")}</span>
-            </div>
+          <div className="table-row three-col header">
+            <span>{t("dashboard.patientName")}</span>
+            <span>{t("dashboard.gender")}</span>
+            <span>{t("dashboard.seeDetails")}</span>
+          </div>
 
+          <div className="table-scroll">
             {loadingPatients ? (
               <div className="loading-state">{t("dashboard.loadingPatients")}</div>
             ) : error ? (
@@ -241,7 +247,9 @@ export default function Dashboard() {
                   <span>{translateGender(patient.child_gender)}</span>
                   <button
                     className="link-btn"
-                    onClick={() => navigate(`/home/patient_analytics?childId=${patient.id}`)}
+                    onClick={() =>
+                      navigate(`/home/patient_analytics?childId=${patient.id}`)
+                    }
                   >
                     {t("dashboard.seeDetails")}
                   </button>
@@ -250,16 +258,18 @@ export default function Dashboard() {
             )}
           </div>
         </div>
+      </div>
 
-        <div className="alerts-card">
-          <div className="alerts-header">🔔 {t("dashboard.alerts")}</div>
-          <div className="alerts-body">
-            {highRiskCount > 0
-              ? t("dashboard.alertsReady", { count: highRiskCount })
-              : t("dashboard.noAlerts")}
-          </div>
+      {/* ALERTS */}
+      <div className="alerts-card">
+        <div className="alerts-header">🔔 {t("dashboard.alerts")}</div>
+        <div className="alerts-body">
+          {highRiskCount > 0
+            ? t("dashboard.alertsReady", { count: highRiskCount })
+            : t("dashboard.noAlerts")}
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }

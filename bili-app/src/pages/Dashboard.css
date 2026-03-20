@@ -290,3 +290,20 @@
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 }
+
+.table-scroll {
+  max-height: 500px;
+  height: 500px;          /* fixed height */
+  overflow-y: scroll;     /* always show scrollbar */
+  overflow-x: hidden;
+  display: block;
+}
+
+.table-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
