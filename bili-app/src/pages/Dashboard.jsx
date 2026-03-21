@@ -18,6 +18,8 @@ export default function Dashboard() {
   const [analytics, setAnalytics] = useState([]);
   const [loadingPatients, setLoadingPatients] = useState(true);
   const [loadingTests, setLoadingTests] = useState(true);
+  const [deletingTestId, setDeletingTestId] = useState(null);
+  const [testsError, setTestsError] = useState(null);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -47,6 +49,7 @@ export default function Dashboard() {
   const fetchRecentTests = async () => {
     try {
       setLoadingTests(true);
+      setTestsError(null);
       const { data, error: testsError } = await supabase
         .from("test_entries")
         .select(`
@@ -63,8 +66,48 @@ export default function Dashboard() {
 
       if (testsError) throw testsError;
       setRecentTests(data || []);
+    } catch (fetchError) {
+      setTestsError(fetchError.message);
     } finally {
       setLoadingTests(false);
+    }
+  };
+
+  const handleDeleteTest = async (testId) => {
+    const confirmed = window.confirm(t("dashboard.deleteTestConfirm"));
+    if (!confirmed) return;
+
+    try {
+      setDeletingTestId(testId);
+      setTestsError(null);
+
+      const { error: analyticsDeleteError } = await supabase
+        .from("patient_analytics")
+        .delete()
+        .eq("test_entry_id", testId);
+
+      const isMissingAnalyticsTable =
+        analyticsDeleteError?.code === "42P01" ||
+        analyticsDeleteError?.message?.includes("schema cache") ||
+        analyticsDeleteError?.message?.includes("patient_analytics");
+
+      if (analyticsDeleteError && !isMissingAnalyticsTable) {
+        throw analyticsDeleteError;
+      }
+
+      const { error: testDeleteError } = await supabase
+        .from("test_entries")
+        .delete()
+        .eq("id", testId);
+
+      if (testDeleteError) throw testDeleteError;
+
+      setRecentTests((current) => current.filter((test) => test.id !== testId));
+      setAnalytics((current) => current.filter((entry) => entry.test_entry_id !== testId));
+    } catch (deleteError) {
+      setTestsError(deleteError.message || t("dashboard.deleteTestError"));
+    } finally {
+      setDeletingTestId(null);
     }
   };
 
@@ -169,17 +212,20 @@ export default function Dashboard() {
 
         {/* RECENT TESTS */}
         <div className="card">
-          <div className="table-header five-col">
+          <div className="table-header six-col">
             <span>{t("dashboard.patientName")}</span>
             <span>{t("dashboard.time")}</span>
             <span>{t("dashboard.date")}</span>
             <span>{t("dashboard.bilirubinLevels")}</span>
             <span>{t("dashboard.riskLevel")}</span>
+            <span>{t("dashboard.actions")}</span>
           </div>
 
           <div className="table-scroll">
             {loadingTests ? (
               <div className="loading-state">{t("dashboard.loadingRecentTests")}</div>
+            ) : testsError ? (
+              <div className="error-state">{testsError}</div>
             ) : recentTests.length === 0 ? (
               <div className="empty-state">{t("dashboard.noRecentTests")}</div>
             ) : (
@@ -187,7 +233,7 @@ export default function Dashboard() {
                 const testAnalytics = getAnalyticsForTest(test);
 
                 return (
-                  <div key={test.id} className="table-row five-col">
+                  <div key={test.id} className="table-row six-col">
                     <span>{test.children?.child_name || t("dashboard.unknownPatient")}</span>
                     <span>{test.time || t("common.notAvailable")}</span>
                     <span>{test.date || t("common.notAvailable")}</span>
@@ -203,6 +249,16 @@ export default function Dashboard() {
                     >
                       {testAnalytics?.risk_level || t("dashboard.pending")}
                     </span>
+                    <button
+                      type="button"
+                      className="delete-test-btn"
+                      onClick={() => handleDeleteTest(test.id)}
+                      disabled={deletingTestId === test.id}
+                    >
+                      {deletingTestId === test.id
+                        ? t("dashboard.deletingTest")
+                        : t("common.remove")}
+                    </button>
                   </div>
                 );
               })
