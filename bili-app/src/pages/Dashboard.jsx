@@ -83,7 +83,7 @@ export default function Dashboard() {
   };
 
   const getAnalyticsForTest = (test) =>
-    analytics.find((entry) => entry.test_entry_id === test?.id) || null;
+    analytics.find((entry) => String(entry.test_entry_id) === String(test?.id)) || null;
 
   const getComputedRiskForTest = (test) => {
     const postnatalHours = getPostnatalHours({
@@ -101,7 +101,10 @@ export default function Dashboard() {
   };
 
   const resolveRiskForTest = (test) => {
-    const persisted = normalizeRiskLevel(getAnalyticsForTest(test)?.risk_level);
+    const analyticsEntry = getAnalyticsForTest(test);
+    const persisted = normalizeRiskLevel(
+      analyticsEntry?.risk_level ?? analyticsEntry?.riskLevel ?? analyticsEntry?.risk,
+    );
     if (persisted) {
       return {
         level: persisted,
