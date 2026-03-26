@@ -90,6 +90,10 @@
   grid-template-columns: 2fr 1fr 1.5fr 1.5fr 1.5fr;
 }
 
+.six-col {
+  grid-template-columns: 1.8fr 0.9fr 1.1fr 1.2fr 1.2fr 0.9fr;
+}
+
 .three-col {
   grid-template-columns: 2fr 1fr 1fr;
 }
@@ -133,6 +137,25 @@
 
 .link-btn:hover {
   text-decoration: underline;
+}
+
+.delete-test-btn {
+  border: 1px solid #c0392b;
+  background: #fff;
+  color: #c0392b;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-test-btn:hover:not(:disabled) {
+  background: #fff1ef;
+}
+
+.delete-test-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 /* Empty state */
@@ -240,6 +263,15 @@
   min-width: 0;
 }
 
+.table-header.six-col,
+.table-row.six-col {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr 0.9fr 0.9fr 1fr 0.9fr;
+  padding: 1rem;
+  align-items: center;
+  min-width: 0;
+}
+
 .table-header.five-col {
   background-color: #f8f9fa;
   font-weight: 600;
@@ -332,4 +364,21 @@
   .table-row.three-col {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   }
+}
+
+.table-scroll {
+  max-height: 500px;
+  height: 500px;          /* fixed height */
+  overflow-y: scroll;     /* always show scrollbar */
+  overflow-x: hidden;
+  display: block;
+}
+
+.table-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
 }

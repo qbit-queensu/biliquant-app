@@ -18,6 +18,8 @@ export default function Dashboard() {
   const [analytics, setAnalytics] = useState([]);
   const [loadingPatients, setLoadingPatients] = useState(true);
   const [loadingTests, setLoadingTests] = useState(true);
+  const [deletingTestId, setDeletingTestId] = useState(null);
+  const [testsError, setTestsError] = useState(null);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -47,6 +49,7 @@ export default function Dashboard() {
   const fetchRecentTests = async () => {
     try {
       setLoadingTests(true);
+      setTestsError(null);
       const { data, error: testsError } = await supabase
         .from("test_entries")
         .select(`
@@ -63,8 +66,48 @@ export default function Dashboard() {
 
       if (testsError) throw testsError;
       setRecentTests(data || []);
+    } catch (fetchError) {
+      setTestsError(fetchError.message);
     } finally {
       setLoadingTests(false);
+    }
+  };
+
+  const handleDeleteTest = async (testId) => {
+    const confirmed = window.confirm(t("dashboard.deleteTestConfirm"));
+    if (!confirmed) return;
+
+    try {
+      setDeletingTestId(testId);
+      setTestsError(null);
+
+      const { error: analyticsDeleteError } = await supabase
+        .from("patient_analytics")
+        .delete()
+        .eq("test_entry_id", testId);
+
+      const isMissingAnalyticsTable =
+        analyticsDeleteError?.code === "42P01" ||
+        analyticsDeleteError?.message?.includes("schema cache") ||
+        analyticsDeleteError?.message?.includes("patient_analytics");
+
+      if (analyticsDeleteError && !isMissingAnalyticsTable) {
+        throw analyticsDeleteError;
+      }
+
+      const { error: testDeleteError } = await supabase
+        .from("test_entries")
+        .delete()
+        .eq("id", testId);
+
+      if (testDeleteError) throw testDeleteError;
+
+      setRecentTests((current) => current.filter((test) => test.id !== testId));
+      setAnalytics((current) => current.filter((entry) => entry.test_entry_id !== testId));
+    } catch (deleteError) {
+      setTestsError(deleteError.message || t("dashboard.deleteTestError"));
+    } finally {
+      setDeletingTestId(null);
     }
   };
 
@@ -150,44 +193,50 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-header">
-        <div>
-          <h1>{t("dashboard.welcome")}</h1>
-          <p className="subtitle">{t("dashboard.subtitle")}</p>
-        </div>
-
-        <div className="dashboard-actions">
-          <button className="primary-btn" onClick={() => navigate("/home/profile")}>
-            {t("dashboard.addPatient")}
-          </button>
-          <button className="primary-btn" onClick={() => navigate("/home/test_entry")}>
-            {t("dashboard.newTest")}
-          </button>
-        </div>
+  <div className="dashboard">
+    <div className="dashboard-header">
+      <div>
+        <h1>{t("dashboard.welcome")}</h1>
+        <p className="subtitle">{t("dashboard.subtitle")}</p>
       </div>
 
-      <div className="dashboard-content">
-        <div className="left-column">
-          <div className="card">
-            <div className="table-header five-col">
-              <span>{t("dashboard.patientName")}</span>
-              <span>{t("dashboard.time")}</span>
-              <span>{t("dashboard.date")}</span>
-              <span>{t("dashboard.bilirubinLevels")}</span>
-              <span>{t("dashboard.riskLevel")}</span>
-            </div>
+      <div className="dashboard-actions">
+        <button className="primary-btn" onClick={() => navigate("/home/profile")}>
+          {t("dashboard.addPatient")}
+        </button>
+        <button className="primary-btn" onClick={() => navigate("/home/test_entry")}>
+          {t("dashboard.newTest")}
+        </button>
+      </div>
+    </div>
 
+    <div className="dashboard-content">
+      <div className="left-column">
+
+        {/* RECENT TESTS */}
+        <div className="card">
+          <div className="table-header six-col">
+            <span>{t("dashboard.patientName")}</span>
+            <span>{t("dashboard.time")}</span>
+            <span>{t("dashboard.date")}</span>
+            <span>{t("dashboard.bilirubinLevels")}</span>
+            <span>{t("dashboard.riskLevel")}</span>
+            <span>{t("dashboard.actions")}</span>
+          </div>
+
+          <div className="table-scroll">
             {loadingTests ? (
               <div className="loading-state">{t("dashboard.loadingRecentTests")}</div>
+            ) : testsError ? (
+              <div className="error-state">{testsError}</div>
             ) : recentTests.length === 0 ? (
               <div className="empty-state">{t("dashboard.noRecentTests")}</div>
             ) : (
               recentTests.map((test) => {
-                const resolvedRisk = resolveRiskForTest(test);
+                const testAnalytics = getAnalyticsForTest(test);
 
                 return (
-                  <div key={test.id} className="table-row five-col">
+                  <div key={test.id} className="table-row six-col">
                     <span>{test.children?.child_name || t("dashboard.unknownPatient")}</span>
                     <span>{test.time || t("common.notAvailable")}</span>
                     <span>{test.date || t("common.notAvailable")}</span>
@@ -198,35 +247,48 @@ export default function Dashboard() {
                     </span>
                     <span
                       className={`risk-badge risk-${
-                        (resolvedRisk.level || "unknown").replace(/_/g, "-")
+                        testAnalytics?.risk_level?.toLowerCase() || "unknown"
                       }`}
                     >
-                      {resolvedRisk.label}
+                      {testAnalytics?.risk_level || t("dashboard.pending")}
                     </span>
+                    <button
+                      type="button"
+                      className="delete-test-btn"
+                      onClick={() => handleDeleteTest(test.id)}
+                      disabled={deletingTestId === test.id}
+                    >
+                      {deletingTestId === test.id
+                        ? t("dashboard.deletingTest")
+                        : t("common.remove")}
+                    </button>
                   </div>
                 );
               })
             )}
           </div>
+        </div>
 
-          <h2 className="section-title">{t("dashboard.patientRecords")}</h2>
-          <div className="card">
-            <div className="search-container">
-              <input
-                type="text"
-                placeholder={t("dashboard.searchPlaceholder")}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-            </div>
+        {/* PATIENT RECORDS */}
+        <h2 className="section-title">{t("dashboard.patientRecords")}</h2>
+        <div className="card">
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder={t("dashboard.searchPlaceholder")}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
 
-            <div className="table-row three-col header">
-              <span>{t("dashboard.patientName")}</span>
-              <span>{t("dashboard.gender")}</span>
-              <span>{t("dashboard.seeDetails")}</span>
-            </div>
+          <div className="table-row three-col header">
+            <span>{t("dashboard.patientName")}</span>
+            <span>{t("dashboard.gender")}</span>
+            <span>{t("dashboard.seeDetails")}</span>
+          </div>
 
+          <div className="table-scroll">
             {loadingPatients ? (
               <div className="loading-state">{t("dashboard.loadingPatients")}</div>
             ) : error ? (
@@ -244,7 +306,9 @@ export default function Dashboard() {
                   <span>{translateGender(patient.child_gender)}</span>
                   <button
                     className="link-btn"
-                    onClick={() => navigate(`/home/patient_analytics?childId=${patient.id}`)}
+                    onClick={() =>
+                      navigate(`/home/patient_analytics?childId=${patient.id}`)
+                    }
                   >
                     {t("dashboard.seeDetails")}
                   </button>
@@ -253,16 +317,18 @@ export default function Dashboard() {
             )}
           </div>
         </div>
+      </div>
 
-        <div className="alerts-card">
-          <div className="alerts-header">🔔 {t("dashboard.alerts")}</div>
-          <div className="alerts-body">
-            {highRiskCount > 0
-              ? t("dashboard.alertsReady", { count: highRiskCount })
-              : t("dashboard.noAlerts")}
-          </div>
+      {/* ALERTS */}
+      <div className="alerts-card">
+        <div className="alerts-header">🔔 {t("dashboard.alerts")}</div>
+        <div className="alerts-body">
+          {highRiskCount > 0
+            ? t("dashboard.alertsReady", { count: highRiskCount })
+            : t("dashboard.noAlerts")}
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }

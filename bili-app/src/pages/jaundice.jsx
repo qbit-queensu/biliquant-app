@@ -1,26 +1,43 @@
 import React, { useState, useEffect } from "react";
 import "./jaundice.css";
 import CountUp from "../components/CountUp";
-import { calculateJaundiceCases } from "../utils/jaundiceCalculator";
+import { getLiveBirthData } from "../services/birthDataService";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function JaundiceGuide() {
   const { t, getTranslation } = useLanguage();
-  const [birthCount, setBirthCount] = useState(25000);
+  const [birthCount, setBirthCount] = useState(0);
+  const [jaundiceCases, setJaundiceCases] = useState({ total: 0, term: 0, preterm: 0 });
+  const [worldPopulation, setWorldPopulation] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [apiStatus, setApiStatus] = useState('connecting');
 
+  // Fetch live data from World Population API
   useEffect(() => {
-    const scheduleNextIncrement = () => {
-      const delay = Math.random() * 3000 + 1000;
-      setTimeout(() => {
-        setBirthCount((prev) => prev + 1);
-        scheduleNextIncrement();
-      }, delay);
+    const fetchLiveData = async () => {
+      try {
+        const data = await getLiveBirthData();
+        setBirthCount(data.birthCount);
+        setJaundiceCases(data.jaundiceCases);
+        setWorldPopulation(data.worldPopulation);
+        setApiStatus(data.fromAPI ? 'live' : 'fallback');
+      } catch (error) {
+        console.error('Error fetching live data:', error);
+        setApiStatus('error');
+      } finally {
+        setLoading(false);
+      }
     };
-    scheduleNextIncrement();
-    return () => {};
+
+    // Initial fetch
+    fetchLiveData();
+
+    // Refresh data every 10 seconds from the API
+    const intervalId = setInterval(fetchLiveData, 10000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
-  const results = calculateJaundiceCases(birthCount);
   const signs = getTranslation("jaundice.signs");
   const causes = getTranslation("jaundice.causes");
   const diagnosis = getTranslation("jaundice.diagnosis");
@@ -47,31 +64,46 @@ export default function JaundiceGuide() {
             <h1 className="estimator-title">{t("jaundice.estimatorTitle")}</h1>
             <div className="title-accent"></div>
           </div>
-          <p className="estimator-text">{t("jaundice.estimatorText")}</p>
+          <p className="estimator-text">
+            Using live data from World Population API to estimate worldwide births. 
+            Based on 60% prevalence for term babies and 80% for preterm babies (assuming 15% preterm).
+            {apiStatus === 'live' && <span className="api-status"> • Live API</span>}
+            {apiStatus === 'fallback' && <span className="api-status fallback"> • Using estimates</span>}
+          </p>
 
-          <div className="birth-data">
-            <h3>{t("jaundice.liveBirthCounter")}</h3>
-            <div className="birth-count">
-              <CountUp to={birthCount} separator="," className="count-up-text large" />
-              <span className="period"> {t("jaundice.period")}</span>
-            </div>
-          </div>
-          {results.total > 0 && (
-            <div className="results">
-              <h3>{t("jaundice.casesTitle")}</h3>
-              <div className="result-item total-emphasis">
-                <span>{t("jaundice.totalCases")} </span>
-                <CountUp to={results.total} separator="," className="count-up-text large" />
+          {loading ? (
+            <div className="loading-text">Loading live data...</div>
+          ) : (
+            <>
+              <div className="birth-data">
+                <h3>Live Birth Counter - Worldwide</h3>
+                <div className="birth-count">
+                  <CountUp to={birthCount} separator="," className="count-up-text large" />
+                  <span className="period"> (Since January 1, 2026)</span>
+                </div>
+                <div className="world-population">
+                  World Population: <CountUp to={worldPopulation} separator="," />
+                </div>
               </div>
-              <div className="result-item">
-                <span>{t("jaundice.termBabies")} </span>
-                <CountUp to={results.term} separator="," className="count-up-text" />
-              </div>
-              <div className="result-item">
-                <span>{t("jaundice.pretermBabies")} </span>
-                <CountUp to={results.preterm} separator="," className="count-up-text" />
-              </div>
-            </div>
+              
+              {jaundiceCases.total > 0 && (
+                <div className="results">
+                  <h3>Neonatal Jaundice Cases (Worldwide)</h3>
+                  <div className="result-item total-emphasis">
+                    <span>Total Cases: </span>
+                    <CountUp to={jaundiceCases.total} separator="," className="count-up-text large" />
+                  </div>
+                  <div className="result-item">
+                    <span>Term Babies: </span>
+                    <CountUp to={jaundiceCases.term} separator="," className="count-up-text" />
+                  </div>
+                  <div className="result-item">
+                    <span>Preterm Babies: </span>
+                    <CountUp to={jaundiceCases.preterm} separator="," className="count-up-text" />
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

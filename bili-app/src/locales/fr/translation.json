@@ -1,0 +1,155 @@
+{
+  "common": {
+    "appName": "BiliQuant",
+    "loading": "Chargement..."
+  },
+  "nav": {
+    "patientAnalytics": "Analyses des patients",
+    "jaundiceGuide": "Guide sur l'ictère",
+    "profile": "Profil",
+    "mission": "Mission",
+    "aboutUs": "À propos",
+    "contact": "Contact",
+    "logout": "Déconnexion",
+    "company": "QBiT"
+  },
+  "home": {
+    "welcome": "Bienvenue sur BiliQuant",
+    "subtitle": "Équipe d'innovation biomédicale de Queen's",
+    "learnMore": "En savoir plus sur QBiT →"
+  },
+  "login": {
+    "welcome": "Bon retour",
+    "subtitle": "Veuillez vous connecter pour voir vos dossiers",
+    "email": "Courriel",
+    "emailPlaceholder": "Entrez votre courriel",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "signIn": "Se connecter",
+    "loggingIn": "Connexion en cours...",
+    "dontHaveAccount": "Vous n'avez pas de compte?",
+    "signUp": "S'inscrire",
+    "loginError": "Échec de la connexion. Veuillez vérifier vos identifiants."
+  },
+  "signup": {
+    "createAccount": "Créer un compte",
+    "subtitle": "Rejoignez-nous pour aider à surveiller l'ictère néonatal",
+    "name": "Nom complet",
+    "namePlaceholder": "Entrez votre nom complet",
+    "email": "Courriel",
+    "emailPlaceholder": "Entrez votre courriel",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Créez un mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "signUp": "S'inscrire",
+    "signingUp": "Inscription en cours...",
+    "alreadyHaveAccount": "Vous avez déjà un compte?",
+    "signIn": "Se connecter",
+    "signUpError": "Échec de l'inscription. Veuillez réessayer.",
+    "passwordMismatch": "Les mots de passe ne correspondent pas"
+  },
+  "jaundice": {
+    "heroTitle": "Comprendre l'ictère du nouveau-né",
+    "heroSubtitle": "L'ictère néonatal touche 60% des nourrissons à terme et 80% des prématurés. Ce guide complet fournit des informations fondées sur des données probantes pour les parents et les soignants.",
+    "downloadGuide": "Télécharger le guide →",
+    "estimatorTitle": "Estimateur de cas d'ictère",
+    "estimatorText": "Utilisation des dernières données sur les naissances vivantes de Statistique Canada pour estimer les cas d'ictère. Basé sur une prévalence de 60% pour les bébés à terme et 80% pour les prématurés (en supposant 15% de prématurés).",
+    "liveBirthCounter": "Compteur de naissances vivantes - Canada",
+    "sinceJanuary": "(Depuis le 1er janvier 2026)",
+    "neonatalJaundiceCases": "Cas d'ictère néonatal (Au Canada)",
+    "totalCases": "Total des cas",
+    "termBabies": "Bébés à terme",
+    "pretermBabies": "Bébés prématurés",
+    "whatIsJaundice": "Qu'est-ce que l'ictère?",
+    "whatIsJaundiceText": "La bilirubine est produite lors de la dégradation de l'hémoglobine lorsque les globules rouges atteignent la fin de leur durée de vie. Les nouveau-nés produisent environ deux fois plus de bilirubine que les adultes en raison d'un renouvellement accru des globules rouges, d'une fonction hépatique immature et d'une circulation entérohépatique accrue. Ce processus naturel conduit au jaunissement visible de la peau et des yeux connu sous le nom d'ictère. Bien que la plupart des cas se résolvent naturellement, comprendre le métabolisme de la bilirubine aide les parents à reconnaître quand des soins médicaux sont nécessaires.",
+    "signsToWatchFor": "Signes à surveiller",
+    "yellowSkinEyes": "Peau/yeux jaunes",
+    "yellowSkinEyesDesc": "Le signe le plus courant, commençant généralement au visage et descendant le long du corps.",
+    "drowsiness": "Somnolence",
+    "drowsinessDesc": "Votre bébé peut être inhabituellement somnolent ou difficile à réveiller pour les tétées.",
+    "poorFeeding": "Alimentation insuffisante",
+    "poorFeedingDesc": "Des difficultés à allaiter ou à biberonner sont un signe clé à surveiller.",
+    "causesAndTypes": "Causes et types",
+    "physiologicalJaundice": "Ictère physiologique",
+    "physiologicalJaundiceText": "Le processus normal de dégradation des globules rouges combiné à un système hépatique immature. Apparaît au jour 2-3 de vie, atteint son maximum au jour 5-7, se résout au jour 10-14 chez les nourrissons à terme.",
+    "pathologicalJaundice": "Ictère pathologique",
+    "pathologicalJaundiceText": "Résulte d'une maladie sous-jacente ou dépasse les seuils de traitement spécifiques à l'âge. Les signaux d'alarme incluent un ictère dans les premières 24 heures, une bilirubine en hausse rapide (>8,5 μmol/L/heure) ou une persistance au-delà du délai attendu.",
+    "riskFactors": "Facteurs de risque",
+    "riskFactorsText": "Prématurité, incompatibilité группы sanguine, ecchymoses/céphalhématome, antécédents familiaux de maladie hémolytique, allaitement exclusif et âge gestationnel inférieur à 38 semaines.",
+    "diagnosisAndMonitoring": "Diagnostic et surveillance",
+    "clinicalAssessment": "Évaluation clinique",
+    "clinicalAssessmentText": "Inspection visuelle à la lumière vive, test de blanchiment et examen des zones clés (sclérotique, gencives, peau blanchie).",
+    "measurementMethods": "Méthodes de mesure",
+    "measurementMethodsText": "La bilirubine transcutanée (TcB) permet un dépistage rapide, tandis que la bilirubine sérique (SBR) reste la norme d'or pour la quantification. Le TcB est excellent pour le dépistage lorsqu'il est >50 μmol/L en dessous du seuil de photothérapie.",
+    "monitoringGuidelines": "Directives de surveillance",
+    "monitoringGuidelinesText": "Tous les babies <35 semaines de gestation nécessitent une mesure de SBR. Les nourrissons à terme avec un ictère visible ont besoin d'une mesure avant la sortie, avec un suivi basé sur le risque à 24-72 heures.",
+    "treatmentOptions": "Options de traitement",
+    "phototherapy": "Photothérapie",
+    "phototherapyText": "Utilise la lumière visible (430-490 nm) pour convertir la bilirubine non conjuguée en isomères solubles dans l'eau. La photothérapie standard réduit la bilirubine de 17-34 μmol/L en 4-6 heures. La photothérapie intensive (intensité doublée) réduit les niveaux de 20-40% en 4-6 heures.",
+    "exchangeTransfusion": "Exsanguinotransfusion",
+    "exchangeTransfusionText": "Réservée à l'hyperbilirubinémie sévère au-dessus des seuils d'échange ou à une bilirubine en hausse rapide malgré une photothérapie intensive. Retire ~80 mL/kg de sang du nourrisson, en le remplaçant par des GRD et du plasma de donneur.",
+    "feedingSupport": "Soutien à l'alimentation",
+    "feedingSupportText": "Une alimentation adéquate est fondamentale - favorise l'excrétion de la bilirubine par les selles et prévient la déshydration. Une consultation en lactation est recommandée pour les difficultés d'allaitement. Continuez à allaiter pendant la photothérapie.",
+    "getSupport": "Obtenir du soutien",
+    "educationalResources": "Ressources éducatives",
+    "educationalResourcesList": {
+      "1": "Comprendre le métabolisme de la bilirubine",
+      "2": "Photothérapie: Ce que les parents doivent savoir",
+      "3": "Soutien à l'alimentation pour les nourrissons ictériques",
+      "4": "Reconnaître les signes d'alarme"
+    },
+    "professionalSupport": "Soutien professionnel",
+    "professionalSupportList": {
+      "1": "Ligne d'aide néonatale 24/7",
+      "2": "Services de consultant en lactation",
+      "3": "Coordination des soins de suivi",
+      "4": "Équipe de soins multidisciplinaire"
+    }
+  },
+  "mission": {
+    "title": "Notre mission",
+    "subtitle": "Innover dans les soins de santé néonatals grâce à la technologie"
+  },
+  "about": {
+    "title": "À propos de QBiT",
+    "subtitle": "Équipe d'innovation biomédicale de Queen's"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Contactez notre équipe",
+    "name": "Nom",
+    "namePlaceholder": "Entrez votre nom",
+    "email": "Courriel",
+    "emailPlaceholder": "Entrez votre courriel",
+    "message": "Message",
+    "messagePlaceholder": "Entrez votre message",
+    "send": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "success": "Message envoyé avec succès!",
+    "error": "Échec de l'envoi du message. Veuillez réessayer."
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bon retour"
+  },
+  "patientAnalytics": {
+    "title": "Analyses des patients"
+  },
+  "childProfile": {
+    "title": "Profil de l'enfant",
+    "addChild": "Ajouter un enfant",
+    "name": "Nom",
+    "dob": "Date de naissance",
+    "gender": "Genre",
+    "male": "Masculin",
+    "female": "Féminin",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "noChildren": "Aucun enfant ajouté pour le moment."
+  },
+  "language": {
+    "en": "English",
+    "fr": "Français"
+  }
+}

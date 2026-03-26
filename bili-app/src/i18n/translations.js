@@ -249,10 +249,18 @@ const translations = {
       date: "Date",
       bilirubinLevels: "Bili levels",
       riskLevel: "Risk Level",
+      actions: "Actions",
       loadingRecentTests: "Loading recent tests...",
       noRecentTests: 'No recent tests yet. Click "New Test" to add one.',
       unknownPatient: "Unknown Patient",
+<<<<<<< HEAD
       pending: "Indeterminate",
+=======
+      pending: "Pending",
+      deletingTest: "Removing...",
+      deleteTestConfirm: "Delete this test entry permanently? This cannot be undone.",
+      deleteTestError: "Unable to delete this test entry.",
+>>>>>>> a657f6e93179fdd5d714be54d2c0c1010fe5efe5
       patientRecords: "Patient Records",
       searchPlaceholder: "Search patients by name or ID...",
       gender: "Gender",
@@ -649,10 +657,18 @@ const translations = {
       date: "Date",
       bilirubinLevels: "Taux de bili",
       riskLevel: "Niveau de risque",
+      actions: "Actions",
       loadingRecentTests: "Chargement des tests récents...",
       noRecentTests: 'Aucun test récent. Cliquez sur "Nouveau test" pour en ajouter un.',
       unknownPatient: "Patient inconnu",
+<<<<<<< HEAD
       pending: "Indetermine",
+=======
+      pending: "En attente",
+      deletingTest: "Suppression...",
+      deleteTestConfirm: "Supprimer ce test de façon permanente? Cette action est irréversible.",
+      deleteTestError: "Impossible de supprimer ce test.",
+>>>>>>> a657f6e93179fdd5d714be54d2c0c1010fe5efe5
       patientRecords: "Dossiers patients",
       searchPlaceholder: "Rechercher un patient par nom ou ID...",
       gender: "Genre",

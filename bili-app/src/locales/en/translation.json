@@ -1,0 +1,155 @@
+{
+  "common": {
+    "appName": "BiliQuant",
+    "loading": "Loading..."
+  },
+  "nav": {
+    "patientAnalytics": "Patient Analytics",
+    "jaundiceGuide": "Jaundice Guide",
+    "profile": "Profile",
+    "mission": "Mission",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "logout": "Logout",
+    "company": "QBiT"
+  },
+  "home": {
+    "welcome": "Welcome to BiliQuant",
+    "subtitle": "Queen's Biomedical Innovation Team",
+    "learnMore": "Learn About QBiT →"
+  },
+  "login": {
+    "welcome": "Welcome back",
+    "subtitle": "Please sign in to see your records",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign In",
+    "loggingIn": "Logging in...",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "loginError": "Login failed. Please check your credentials."
+  },
+  "signup": {
+    "createAccount": "Create an account",
+    "subtitle": "Join us to help monitor neonatal jaundice",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "signUp": "Sign Up",
+    "signingUp": "Signing up...",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "signUpError": "Sign up failed. Please try again.",
+    "passwordMismatch": "Passwords do not match"
+  },
+  "jaundice": {
+    "heroTitle": "Understanding Newborn Jaundice",
+    "heroSubtitle": "Neonatal jaundice affects 60% of term infants and 80% of preterm infants. This comprehensive guide provides evidence-based information for parents and caregivers.",
+    "downloadGuide": "Download Guide →",
+    "estimatorTitle": "Jaundice Case Estimator",
+    "estimatorText": "Using the latest live births data from Statistics Canada to estimate jaundice cases. Based on 60% prevalence for term babies and 80% for preterm babies (assuming 15% preterm).",
+    "liveBirthCounter": "Live Birth Counter - Canada",
+    "sinceJanuary": "(Since January 1, 2026)",
+    "neonatalJaundiceCases": "Neonatal Jaundice Cases (In Canada)",
+    "totalCases": "Total Cases",
+    "termBabies": "Term Babies",
+    "pretermBabies": "Preterm Babies",
+    "whatIsJaundice": "What is Jaundice?",
+    "whatIsJaundiceText": "Bilirubin is produced from the breakdown of hemoglobin when red blood cells reach the end of their lifespan. Newborns produce approximately twice as much bilirubin as adults due to increased red blood cell turnover, immature liver function, and increased enterohepatic circulation. This natural process leads to the visible yellowing of skin and eyes known as jaundice. While most cases resolve naturally, understanding bilirubin metabolism helps parents recognize when medical attention is needed.",
+    "signsToWatchFor": "Signs to Watch For",
+    "yellowSkinEyes": "Yellow Skin/Eyes",
+    "yellowSkinEyesDesc": "The most common sign, usually starting on the face and moving down the body.",
+    "drowsiness": "Drowsiness",
+    "drowsinessDesc": "Your baby may be unusually sleepy or difficult to wake for feedings.",
+    "poorFeeding": "Poor Feeding",
+    "poorFeedingDesc": "Difficulty with breastfeeding or bottle-feeding is a key sign to monitor.",
+    "causesAndTypes": "Causes and Types",
+    "physiologicalJaundice": "Physiological Jaundice",
+    "physiologicalJaundiceText": "The normal process of RBC breakdown combined with an immature hepatic system. Appears day 2-3 of life, peaks day 5-7, resolves by day 10-14 in term infants.",
+    "pathologicalJaundice": "Pathological Jaundice",
+    "pathologicalJaundiceText": "Results from underlying disease or exceeds age-specific treatment thresholds. Red flags include jaundice within first 24 hours, rapidly rising bilirubin (>8.5 μmol/L/hour), or persistence beyond expected timeframe.",
+    "riskFactors": "Risk Factors",
+    "riskFactorsText": "Prematurity, blood group incompatibility, bruising/cephalohematoma, family history of hemolytic disease, exclusive breastfeeding, and gestational age under 38 weeks.",
+    "diagnosisAndMonitoring": "Diagnosis and Monitoring",
+    "clinicalAssessment": "Clinical Assessment",
+    "clinicalAssessmentText": "Visual inspection in bright light, blanching test, and examination of key areas (sclera, gums, blanched skin).",
+    "measurementMethods": "Measurement Methods",
+    "measurementMethodsText": "Transcutaneous bilirubin (TcB) provides rapid screening, while serum bilirubin (SBR) remains the gold standard for quantification. TcB is excellent for screening when >50 μmol/L below phototherapy threshold.",
+    "monitoringGuidelines": "Monitoring Guidelines",
+    "monitoringGuidelinesText": "All babies <35 weeks gestation require SBR measurement. Term infants with visible jaundice need measurement before discharge, with risk-based follow-up at 24-72 hours.",
+    "treatmentOptions": "Treatment Options",
+    "phototherapy": "Phototherapy",
+    "phototherapyText": "Uses visible light (430-490 nm) to convert unconjugated bilirubin into water-soluble isomers. Standard phototherapy reduces bilirubin by 17-34 μmol/L within 4-6 hours. Intensive phototherapy (doubled intensity) reduces levels by 20-40% within 4-6 hours.",
+    "exchangeTransfusion": "Exchange Transfusion",
+    "exchangeTransfusionText": "Reserved for severe hyperbilirubinemia above exchange thresholds or rapidly rising bilirubin despite intensive phototherapy. Removes ~80 mL/kg of infant's blood, replacing with donor RBCs and plasma.",
+    "feedingSupport": "Feeding Support",
+    "feedingSupportText": "Adequate feeding is fundamental - promotes bilirubin excretion via stool and prevents dehydration. Lactation consultation recommended for breastfeeding difficulties. Continue breastfeeding during phototherapy.",
+    "getSupport": "Get Support",
+    "educationalResources": "Educational Resources",
+    "educationalResourcesList": {
+      "1": "Understanding Bilirubin Metabolism",
+      "2": "Phototherapy: What Parents Need to Know",
+      "3": "Feeding Support for Jaundiced Infants",
+      "4": "Recognizing Warning Signs"
+    },
+    "professionalSupport": "Professional Support",
+    "professionalSupportList": {
+      "1": "24/7 Neonatal Helpline",
+      "2": "Lactation Consultant Services",
+      "3": "Follow-up Care Coordination",
+      "4": "Multidisciplinary Care Team"
+    }
+  },
+  "mission": {
+    "title": "Our Mission",
+    "subtitle": "Innovating neonatal healthcare through technology"
+  },
+  "about": {
+    "title": "About QBiT",
+    "subtitle": "Queen's Biomedical Innovation Team"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our team",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "message": "Message",
+    "messagePlaceholder": "Enter your message",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "success": "Message sent successfully!",
+    "error": "Failed to send message. Please try again."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back"
+  },
+  "patientAnalytics": {
+    "title": "Patient Analytics"
+  },
+  "childProfile": {
+    "title": "Child Profile",
+    "addChild": "Add Child",
+    "name": "Name",
+    "dob": "Date of Birth",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "save": "Save",
+    "cancel": "Cancel",
+    "noChildren": "No children added yet."
+  },
+  "language": {
+    "en": "English",
+    "fr": "Français"
+  }
+}
