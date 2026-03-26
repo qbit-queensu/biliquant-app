@@ -154,10 +154,9 @@ export function normalizeRiskLevel(value) {
 
 export function formatRiskLabel(value) {
   const normalized = normalizeRiskLevel(value);
-  if (!normalized) return "Pending";
+  if (!normalized) return "Indeterminate";
   if (normalized === "critical") return "Critical";
   if (normalized === "high_intermediate") return "High-intermediate";
   if (normalized === "low_intermediate") return "Low-intermediate";
   return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 }
-
