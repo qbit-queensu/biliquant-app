@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [loadingPatients, setLoadingPatients] = useState(true);
   const [loadingTests, setLoadingTests] = useState(true);
   const [deletingTestId, setDeletingTestId] = useState(null);
+  const [deletingPatientId, setDeletingPatientId] = useState(null);
   const [testsError, setTestsError] = useState(null);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -108,6 +109,78 @@ export default function Dashboard() {
       setTestsError(deleteError.message || t("dashboard.deleteTestError"));
     } finally {
       setDeletingTestId(null);
+    }
+  };
+
+  const handleDeletePatient = async (patientId) => {
+    const confirmed = window.confirm(t("dashboard.deletePatientConfirm"));
+    if (!confirmed) return;
+
+    try {
+      setDeletingPatientId(patientId);
+      setError(null);
+
+      const { data: patientTests, error: patientTestsError } = await supabase
+        .from("test_entries")
+        .select("id")
+        .eq("patient_id", patientId);
+
+      const isMissingTestEntriesTable =
+        patientTestsError?.code === "42P01" ||
+        patientTestsError?.message?.includes("schema cache") ||
+        patientTestsError?.message?.includes("test_entries");
+
+      if (patientTestsError && !isMissingTestEntriesTable) {
+        throw patientTestsError;
+      }
+
+      const testIds = (patientTests || []).map((test) => test.id).filter(Boolean);
+
+      if (testIds.length > 0) {
+        const { error: analyticsDeleteError } = await supabase
+          .from("patient_analytics")
+          .delete()
+          .in("test_entry_id", testIds);
+
+        const isMissingAnalyticsTable =
+          analyticsDeleteError?.code === "42P01" ||
+          analyticsDeleteError?.message?.includes("schema cache") ||
+          analyticsDeleteError?.message?.includes("patient_analytics");
+
+        if (analyticsDeleteError && !isMissingAnalyticsTable) {
+          throw analyticsDeleteError;
+        }
+      }
+
+      const { error: testDeleteError } = await supabase
+        .from("test_entries")
+        .delete()
+        .eq("patient_id", patientId);
+
+      if (testDeleteError && !isMissingTestEntriesTable) {
+        throw testDeleteError;
+      }
+
+      const { error: patientDeleteError } = await supabase
+        .from("children")
+        .delete()
+        .eq("id", patientId);
+
+      if (patientDeleteError) throw patientDeleteError;
+
+      setPatients((current) => current.filter((patient) => patient.id !== patientId));
+      setRecentTests((current) =>
+        current.filter((test) => String(test.patient_id) !== String(patientId)),
+      );
+      if (testIds.length > 0) {
+        setAnalytics((current) =>
+          current.filter((entry) => !testIds.includes(entry.test_entry_id)),
+        );
+      }
+    } catch (deleteError) {
+      setError(deleteError.message || t("dashboard.deletePatientError"));
+    } finally {
+      setDeletingPatientId(null);
     }
   };
 
@@ -283,10 +356,11 @@ export default function Dashboard() {
             />
           </div>
 
-          <div className="table-row three-col header">
+          <div className="table-row four-col header">
             <span>{t("dashboard.patientName")}</span>
             <span>{t("dashboard.gender")}</span>
             <span>{t("dashboard.seeDetails")}</span>
+            <span>{t("common.remove")}</span>
           </div>
 
           <div className="table-scroll">
@@ -302,16 +376,27 @@ export default function Dashboard() {
               </div>
             ) : (
               filteredPatients.map((patient) => (
-                <div key={patient.id} className="table-row three-col">
+                <div key={patient.id} className="table-row four-col">
                   <span>{patient.child_name || t("dashboard.unknownPatient")}</span>
                   <span>{translateGender(patient.child_gender)}</span>
                   <button
+                    type="button"
                     className="link-btn"
                     onClick={() =>
                       navigate(`/home/patient_analytics?childId=${patient.id}`)
                     }
                   >
                     {t("dashboard.seeDetails")}
+                  </button>
+                  <button
+                    type="button"
+                    className="delete-test-btn"
+                    onClick={() => handleDeletePatient(patient.id)}
+                    disabled={deletingPatientId === patient.id}
+                  >
+                    {deletingPatientId === patient.id
+                      ? t("dashboard.deletingPatient")
+                      : t("common.remove")}
                   </button>
                 </div>
               ))
