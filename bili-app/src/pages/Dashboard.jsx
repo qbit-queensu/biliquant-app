@@ -85,6 +85,7 @@ export default function Dashboard() {
         `)
         .eq("user_id", userId)
         .order("date", { ascending: false })
+        .order("time", { ascending: false }) 
         .limit(25);
 
       if (testsError) throw testsError;
@@ -288,6 +289,46 @@ export default function Dashboard() {
     return gender;
   };
 
+  
+
+
+  const testsWithRisk = recentTests.map((test) => {
+  try {
+    const risk = resolveRiskForTest(test);
+    return { test, risk };
+  } catch (e) {
+    console.error("Risk calculation failed:", e);
+    return { test, risk: { level: null, label: "Error" } };
+  }
+});
+  const alertTests = testsWithRisk
+  .map(({ test, risk }) => {
+    if (!risk.level) return null;
+
+    const name =
+      test.children?.child_name || t("dashboard.unknownPatient");
+
+    const date = test.date || "";
+    const time = test.time || "";
+
+    if (risk.level === "high" || risk.level === "critical") {
+      return {
+        id: test.id,
+        message: `${name} is at high risk level, taken at ${date}, ${time}`,
+      };
+    }
+
+    if (risk.level === "high_intermediate") {
+      return {
+        id: test.id,
+        message: `${name} is at high-intermediate risk level, taken at ${date}, ${time}`,
+      };
+    }
+
+    return null;
+  })
+  .filter(Boolean);
+
   return (
   <div className="dashboard">
     <div className="dashboard-header">
@@ -431,9 +472,15 @@ export default function Dashboard() {
       <div className="alerts-card">
         <div className="alerts-header">🔔 {t("dashboard.alerts")}</div>
         <div className="alerts-body">
-          {highRiskCount > 0
-            ? t("dashboard.alertsReady", { count: highRiskCount })
-            : t("dashboard.noAlerts")}
+          {alertTests.length === 0 ? (
+           <div>{t("dashboard.noAlerts")}</div>
+          ) : (
+            alertTests.map((alert) => (
+              <div key={alert.id} className="alert-box">
+               {alert.message}
+              </div>
+           ))
+         )}
         </div>
       </div>
     </div>
