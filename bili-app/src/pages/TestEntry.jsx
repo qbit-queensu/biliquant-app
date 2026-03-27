@@ -112,6 +112,17 @@ export default function TestEntry() {
     setLatestRiskResult(null);
 
     try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        console.error("Unable to resolve authenticated user:", userError);
+        setSubmitStatus("error");
+        return;
+      }
+
       const selectedPatient = patients.find((patient) => patient.id === formData.patientId) || null;
       const postnatalHours = getPostnatalHours({
         birthDate: selectedPatient?.child_date_of_birth || null,
@@ -130,6 +141,7 @@ export default function TestEntry() {
         .insert([
           {
             patient_id: formData.patientId,
+            user_id: user.id,
             date: formData.date,
             time: formData.time,
             bilirubin_concentration: parseFloat(formData.bilirubinConcentration),

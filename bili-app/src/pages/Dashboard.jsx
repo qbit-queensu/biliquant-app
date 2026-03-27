@@ -25,17 +25,38 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchPatients();
-    fetchRecentTests();
-    fetchPatientAnalytics();
+    const initializeDashboardData = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        setPatients([]);
+        setRecentTests([]);
+        setAnalytics([]);
+        setLoadingPatients(false);
+        setLoadingTests(false);
+        setError(t("dashboard.noPatients"));
+        setTestsError(t("dashboard.noRecentTests"));
+        return;
+      }
+
+      fetchPatients(user.id);
+      fetchRecentTests(user.id);
+      fetchPatientAnalytics(user.id);
+    };
+
+    initializeDashboardData();
   }, []);
 
-  const fetchPatients = async () => {
+  const fetchPatients = async (userId) => {
     try {
       setLoadingPatients(true);
       const { data, error: patientsError } = await supabase
         .from("children")
         .select("*")
+        .eq("user_id", userId)
         .order("created_at", { ascending: false });
 
       if (patientsError) throw patientsError;
@@ -47,7 +68,7 @@ export default function Dashboard() {
     }
   };
 
-  const fetchRecentTests = async () => {
+  const fetchRecentTests = async (userId) => {
     try {
       setLoadingTests(true);
       setTestsError(null);
@@ -62,6 +83,7 @@ export default function Dashboard() {
             child_birth_time
           )
         `)
+        .eq("user_id", userId)
         .order("date", { ascending: false })
         .limit(25);
 
@@ -184,11 +206,12 @@ export default function Dashboard() {
     }
   };
 
-  const fetchPatientAnalytics = async () => {
+  const fetchPatientAnalytics = async (userId) => {
     try {
       const { data, error: analyticsError } = await supabase
         .from("patient_analytics")
         .select("*")
+        .eq("user_id", userId)
         .order("created_at", { ascending: false });
 
       if (analyticsError) throw analyticsError;
