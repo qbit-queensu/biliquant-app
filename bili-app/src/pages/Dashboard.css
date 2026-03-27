@@ -95,7 +95,11 @@
 }
 
 .three-col {
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1.5fr;
+}
+
+.four-col {
+  grid-template-columns: 2fr 1fr 1fr 1fr;
 }
 
 .table-header {
@@ -199,7 +203,17 @@
 
 .table-row.three-col {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+  min-width: 0;
+}
+
+
+.table-row.four-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   padding: 1rem;
   border-bottom: 1px solid #eee;
   align-items: center;
@@ -207,6 +221,12 @@
 }
 
 .table-row.three-col.header {
+  background-color: #fbf5cf;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table-row.four-col.header {
   background-color: #fbf5cf;
   font-weight: 600;
   border-bottom: 2px solid #dee2e6;
@@ -363,6 +383,11 @@
   .three-col,
   .table-row.three-col {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .four-col,
+  .table-row.four-col {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 }
 
