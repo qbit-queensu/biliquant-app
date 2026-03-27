@@ -233,7 +233,10 @@ export default function Dashboard() {
               <div className="empty-state">{t("dashboard.noRecentTests")}</div>
             ) : (
               recentTests.map((test) => {
-                const testAnalytics = getAnalyticsForTest(test);
+                const risk = resolveRiskForTest(test);
+                const riskClass = risk.level
+                  ? risk.level.replace(/_/g, "-")
+                  : "unknown";
 
                 return (
                   <div key={test.id} className="table-row six-col">
@@ -246,11 +249,9 @@ export default function Dashboard() {
                         : t("common.notAvailable")}
                     </span>
                     <span
-                      className={`risk-badge risk-${
-                        testAnalytics?.risk_level?.toLowerCase() || "unknown"
-                      }`}
+                      className={`risk-badge risk-${riskClass}`}
                     >
-                      {testAnalytics?.risk_level || t("dashboard.pending")}
+                      {risk.label}
                     </span>
                     <button
                       type="button"
