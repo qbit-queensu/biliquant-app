@@ -328,13 +328,12 @@ export default function Dashboard() {
                     </span>
                     <button
                       type="button"
-                      className="delete-test-btn"
+                      className="delete-test-btn recent-test-delete-btn"
                       onClick={() => handleDeleteTest(test.id)}
                       disabled={deletingTestId === test.id}
+                      aria-label={t("common.remove")}
                     >
-                      {deletingTestId === test.id
-                        ? t("dashboard.deletingTest")
-                        : t("common.remove")}
+                      X
                     </button>
                   </div>
                 );
@@ -360,7 +359,7 @@ export default function Dashboard() {
             <span>{t("dashboard.patientName")}</span>
             <span>{t("dashboard.gender")}</span>
             <span>{t("dashboard.seeDetails")}</span>
-            <span>{t("common.remove")}</span>
+            <span>{t("dashboard.actions")}</span>
           </div>
 
           <div className="table-scroll">
