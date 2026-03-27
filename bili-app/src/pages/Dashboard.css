@@ -162,6 +162,13 @@
   cursor: not-allowed;
 }
 
+.recent-test-delete-btn {
+  min-width: 30px;
+  width: 30px;
+  padding: 6px 0;
+  text-align: center;
+}
+
 /* Empty state */
 .empty-state {
   padding: 30px;
@@ -290,6 +297,15 @@
   padding: 1rem;
   align-items: center;
   min-width: 0;
+}
+
+.table-header.six-col > span:last-child {
+  justify-self: center;
+  text-align: center;
+}
+
+.table-row.six-col > .recent-test-delete-btn {
+  justify-self: center;
 }
 
 .table-header.five-col {
